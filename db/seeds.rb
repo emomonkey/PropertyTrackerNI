@@ -5,3 +5,5 @@
 #
 #   cities = City.create([{ name: 'Chicago' }, { name: 'Copenhagen' }])
 #   Mayor.create(name: 'Emanuel', city: cities.first)
+SearchParams.create(searchtitle: 'N.Ireland', searchparam:'Waringstown',  county:'Co.Armagh')
+SearchParams.create(searchtitle: 'N.Ireland', searchparam:'Donaghcloney', county:'Co.Armagh')

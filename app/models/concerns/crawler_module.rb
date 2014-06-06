@@ -18,16 +18,44 @@ module CrawlerModule
   # parse
 
   def pullxpath(searchtarget)
-    pdetails = Hash.new
-    housecol = new Array()
+
+    housecol = Array.new
     html = Nokogiri::HTML(@result_page.body)
-    @items = html.xpath("//div[contains(@class,'details col span-8 last')]")
+    @items = html.xpath(searchtarget)
     @items.each do |item|
-      pdetails["itmtitle"] = item.css("h2").css("a")[0].content
-      pdetails["itmprice"] = item.css("h3")[0].content
+      pdetails = Hash.new
+      unless item.css("h2").css("a")[0].nil?
+        pdetails["itmtitle"] = item.css("h2").css("a")[0].content
+      end
+      # Parse for currency symbol
+      if item.css("h3")[0].nil?
+        pdetails["itmprice"] = "£0"
+      else
+        pdetails["itmprice"] = item.css("h3")[0].content
+      end
+      if item.css("p").css(".beds")[0].nil?
+        pdetails["beds"] = "0"
+      else
+        pdetails["beds"] = item.css("p").css(".beds")[0].content
+      end
+      if item.css("p").css(".type")[0].nil?
+        pdetails["type"] = "na"
+      else
+        pdetails["type"] = item.css("p").css(".type")[0].content
+      end
+
       housecol.push(pdetails)
     end
     return housecol
+  end
+
+  def nextpage
+    if @agent.page.link_with(:text => 'Next')
+      @result_page = @agent.page.link_with(:text => 'Next').click
+      return true
+    else
+      return false
+    end
   end
 
 

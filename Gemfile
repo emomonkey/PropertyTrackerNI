@@ -33,6 +33,16 @@ group :development, :test do
   gem 'rspec-rails'
 end
 
+group :test do
+  gem 'database_cleaner'
+end
+
+gem 'sidekiq'
+gem  'sass'
+gem 'bourbon'
+gem 'neat'
+gem 'bitters'
+gem 'refills'
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
 
