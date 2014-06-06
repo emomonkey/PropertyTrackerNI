@@ -6,11 +6,10 @@
   <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
   <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
   <%= stylesheet_link_tag    'scraper', media: 'all', 'data-turbolinks-track' => true %>
-  <script src="jquery-1.11.1.js"></script>
   <%= csrf_meta_tags %>
 </head>
 <body>
-<%= render :partial => 'refills/_navigation' %>
+<%= render :partial => 'refills/navigation' %>
 <%= yield %>
 
 </body>
