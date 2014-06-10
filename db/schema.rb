@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140603213923) do
+ActiveRecord::Schema.define(version: 201406102224923) do
 
   create_table "property_site_values", force: true do |t|
     t.integer  "property_site_id"
@@ -30,7 +30,19 @@ ActiveRecord::Schema.define(version: 20140603213923) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "searchtext"
+    t.string   "status"
+    t.date     "solddate"
   end
+
+  create_table "results_analyses", force: true do |t|
+    t.integer  "SearchTypes_id"
+    t.integer  "property_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "result_text"
+  end
+
+  add_index "results_analyses", ["SearchTypes_id"], name: "index_results_analyses_on_SearchTypes_id", using: :btree
 
   create_table "search_params", force: true do |t|
     t.string   "searchtitle"
@@ -38,6 +50,12 @@ ActiveRecord::Schema.define(version: 20140603213923) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "county"
+  end
+
+  create_table "search_types", force: true do |t|
+    t.string   "searchtext"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "tests", force: true do |t|

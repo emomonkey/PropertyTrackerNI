@@ -47,8 +47,8 @@ RSpec.configure do |config|
 
     # Seed dataase. Use it only for essential
     # to run application data.
-
-    Rails.application.load_seed
+    load "#{Rails.root}/db/testseeds.rb"
+    #Rails.application.load_seed
   end
 
   config.order = "random"

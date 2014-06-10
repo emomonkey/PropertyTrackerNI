@@ -43,6 +43,11 @@ module CrawlerModule
       else
         pdetails["type"] = item.css("p").css(".type")[0].content
       end
+      if item.css("p").css(".status")[0].nil?
+        pdetails["status"] = "na"
+      else
+        pdetails["status"] = item.css("p").css(".status")[0].content
+      end
 
       housecol.push(pdetails)
     end

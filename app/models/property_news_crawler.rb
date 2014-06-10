@@ -10,30 +10,46 @@ class PropertyNewsCrawler
     initializecw
     navigatecw(url, searchinput)
   rescue StandardError => e
-    logger.debug 'Error running PropertyNewsCrawler.initialize ' + e
+    Rails.logger.debug 'Error running PropertyNewsCrawler.initialize ' + e.message
 
   end
 
   def parseresult(srcxpath)
-    bvalid = false
+    bfound = false
     currpage = pullxpath(srcxpath)
     currpage.each do |spage|
       sbeds = spage["beds"]
-      propertysite = PropertySite.find_or_create_by(:title => spage["itmtitle"], :propertytype => spage["type"], :beds => sbeds.to_i, :searchtext => @searchinput )
 
-      bvalid = true
+
+      propertysite = PropertySite.find_by :title => spage["itmtitle"]
+
+#      unless PropertySite.exists?(:title => spage["itmtitle"])
+     if propertysite.nil?
+        propertysite = PropertySite.create(:title => spage["itmtitle"], :propertytype => spage["type"], :beds => sbeds.to_i, :searchtext => @searchinput, :status => spage["status"] )
+      else
+        if propertysite.status != "Sold" and property_site.status != spage["status"]
+          propertysite.update(:status => spage["status"])
+        end
+      end
+ #     propertysite = PropertySite.find_by title: spage["itmtitle"]
+      bfound = true
       scurrval = spage["itmprice"]
       spos = scurrval.index("£")
       unless spos.nil?
          sprice = scurrval[spos+1..-1]
          iprice = sprice.delete(',').to_i
-         propertysite.property_site_values.find_or_create_by(:price => iprice)
-       end
+         unless propertysite.property_site_values.exists?(:price => iprice)
+
+           propertysite.property_site_values.save
+         #  Rails.logger.info(propertysite.id)
+           propertysite.property_site_values.create(:price => iprice)
+         end
+      end
 
     end
-    return bvalid
+    return bfound
   rescue StandardError => e
-    logger.debug 'Error running PropertyNewsCrawler.parseresult ' + e
+    Rails.logger.debug 'Error running PropertyNewsCrawler.parseresult ' + e.message
     return false;
   end
 
