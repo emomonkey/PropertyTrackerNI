@@ -23,11 +23,11 @@ class PropertyNewsCrawler
 
       propertysite = PropertySite.find_by :title => spage["itmtitle"]
 
-#      unless PropertySite.exists?(:title => spage["itmtitle"])
+
      if propertysite.nil?
         propertysite = PropertySite.create(:title => spage["itmtitle"], :propertytype => spage["type"], :beds => sbeds.to_i, :searchtext => @searchinput, :status => spage["status"] )
       else
-        if propertysite.status != "Sold" and property_site.status != spage["status"]
+        if propertysite.status != "Sold" and propertysite.status != spage["status"]
           propertysite.update(:status => spage["status"])
         end
       end
@@ -40,7 +40,7 @@ class PropertyNewsCrawler
          iprice = sprice.delete(',').to_i
          unless propertysite.property_site_values.exists?(:price => iprice)
 
-           propertysite.property_site_values.save
+         #  propertysite.property_site_values.save
          #  Rails.logger.info(propertysite.id)
            propertysite.property_site_values.create(:price => iprice)
          end
@@ -58,9 +58,8 @@ class PropertyNewsCrawler
 
     bres = parseresult("//div[contains(@class,'details col span-8 last')]")
 
-    if nextpage
-      currpage = pullxpath("//div[contains(@class,'details col span-8 last')]")
-      bres = parseresult(currpage)
+    while nextpage do
+      bres = parseresult("//div[contains(@class,'details col span-8 last')]")
     end
 
   end

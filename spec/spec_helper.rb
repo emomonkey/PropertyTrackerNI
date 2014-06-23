@@ -51,7 +51,8 @@ RSpec.configure do |config|
     #Rails.application.load_seed
   end
 
-  config.order = "random"
+  #config.order = "random"
+  config.order = "default"
   # emos add
   config.around(:each) do |example|
     # Use really fast transaction strategy for all
@@ -65,9 +66,12 @@ RSpec.configure do |config|
     example.run
 
     # Rollback transaction
-    DatabaseCleaner.clean
+    #DatabaseCleaner.clean
 
 
   end
+
+  # Rollback transaction
+  DatabaseCleaner.clean
 
 end

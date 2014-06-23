@@ -11,7 +11,24 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 201406102224923) do
+ActiveRecord::Schema.define(version: 201406192224923) do
+
+  create_table "historic_analyses", force: true do |t|
+    t.integer  "year"
+    t.integer  "month"
+    t.integer  "search_types_id"
+    t.integer  "property_sites_id"
+    t.integer  "search_params_id"
+    t.string   "resulttext"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "beds"
+    t.string   "propertytype"
+  end
+
+  add_index "historic_analyses", ["property_sites_id"], name: "index_historic_analyses_on_property_sites_id", using: :btree
+  add_index "historic_analyses", ["search_params_id"], name: "index_historic_analyses_on_search_params_id", using: :btree
+  add_index "historic_analyses", ["search_types_id"], name: "index_historic_analyses_on_search_types_id", using: :btree
 
   create_table "property_site_values", force: true do |t|
     t.integer  "property_site_id"
