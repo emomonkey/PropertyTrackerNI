@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 201406192224923) do
+ActiveRecord::Schema.define(version: 201406242224923) do
 
   create_table "historic_analyses", force: true do |t|
     t.integer  "year"
@@ -24,6 +24,7 @@ ActiveRecord::Schema.define(version: 201406192224923) do
     t.datetime "updated_at"
     t.integer  "beds"
     t.string   "propertytype"
+    t.integer  "resultvalue"
   end
 
   add_index "historic_analyses", ["property_sites_id"], name: "index_historic_analyses_on_property_sites_id", using: :btree
@@ -77,6 +78,13 @@ ActiveRecord::Schema.define(version: 201406192224923) do
 
   create_table "tests", force: true do |t|
     t.string   "t"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "transstatuses", force: true do |t|
+    t.string   "name"
+    t.string   "currentparam"
     t.datetime "created_at"
     t.datetime "updated_at"
   end

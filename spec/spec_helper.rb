@@ -65,8 +65,7 @@ RSpec.configure do |config|
     # Run example
     example.run
 
-    # Rollback transaction
-    #DatabaseCleaner.clean
+    #
 
 
   end

@@ -61,6 +61,9 @@ module CrawlerModule
     else
       return false
     end
+  rescue StandardError => e
+    Rails.logger.debug 'Error running ParseResult.nextpage ' + e.message
+    return false;
   end
 
 

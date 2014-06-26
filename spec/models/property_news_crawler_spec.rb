@@ -76,4 +76,29 @@ describe PropertyNewsCrawler do
     @reshis.should_not be_nil
   end
 
+ it "should find a month vol" do
+   @phistvol = PopulateNewsHistoricResults.new
+   @phistvol.calculatemonthvol
+   @stypetxt = SearchType.find_by_searchtext('Volume Sales')
+   @reshis = HistoricAnalysis.find_by_search_types_id(@stypetxt.id)
+   @reshis.should_not be_nil
+ end
+
+
+  it "should generate data for graph" do
+    @gdata = GraphingService.new
+    @vdata = @gdata.fndvolall
+    @vdata.should_not be_nil
+  end
+
+
+  it "should find volume low level types" do
+    @phistsumvol = PopulateNewsHistoricResults.new
+    @phistsumvol.volumelowproptype
+    @presd = SearchType.find_by_searchtext("Volume Summary Property Types")
+    @resd = HistoricAnalysis.find_by_search_types_id(@presd.id)
+    @resd.should_not be_nil
+  end
+
+
 end

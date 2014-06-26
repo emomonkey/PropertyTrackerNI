@@ -1,20 +1,12 @@
 class ScraperController < ApplicationController
+  before_filter :load_graphing_service
 
 
-
+  def load_graphing_service(service = GraphingService.new)
+    @graphing_service ||= service
+  end
 
   def search
-
-  #  @phistavg = PopulateNewsHistoricResults.new
-   # @phistavg.calculatemonthavg
-
-
-
-  #  @psval3 = PropertySite.third
-  #  @psval3.update(status:"Sold")
-
-  #  pnewscrawl = PropertyNewsCrawler.new('http://www.propertynews.com', 'waringstown')
-  #  bres = pnewscrawl.parseresult("//div[contains(@class,'details col span-8 last')]")
 
 
     nosearch = SearchParams.count;
@@ -34,6 +26,84 @@ class ScraperController < ApplicationController
 
   end
 
+
+  def resultarea
+
+
+
+
+    @styp = SearchType.find_by_searchtext("Volume Sales")
+    HistoricAnalysis.find_by_search_types_id(@styp.id)
+
+    #  Barchart Propertytype Price Sale
+    #  Barchart Propertytype Price Sold
+
+    # Total Sold This Year
+    # Total Sale This Year
+
+    # LineChart Increase
+
+    #Properties Biggest Decrease
+    #Properties Biggest Increase
+    #Properties Just Sold
+    #Properties Just Added
+
+    # subscribe news letter
+
+  end
+
+  def resultcounty
+    # For Each County List Top Areas Price
+    # For Each County List Areas Most Sold and Added
+    # BarChart of Each Property Type Volume County
+
+    # Linechart increase property price over time
+
+    # Areas Most Activity Sale  Top 20
+    # Areas Mostly Activity Sold Top 20
+    # Areas increase barchart Top 20
+
+    # Area with Biggest Price Increase
+    # Areas with Biggest Price Decrease
+
+  end
+
   def result
+
+
+    volall = @graphing_service.fndvolall
+
+    @chart =  LazyHighCharts::HighChart.new('graph') do |f|
+      f.title(:text => "Month/Year")
+      f.xAxis(:categories => volall[:categories])
+      f.series(:name => "Sales", :data => volall[:data])
+
+
+      f.yAxis [
+                  {:title => {:text => "Volume Sales", :margin => 70} }
+              ]
+
+      f.legend(:align => 'right', :verticalAlign => 'top', :y => 75, :x => -50, :layout => 'vertical',)
+      f.chart({:defaultSeriesType=>"column"})
+    end
+
+  # HighChart Pie Sold Volume County
+  # Recently Sold By County
+
+  # PieChart  Created Country
+
+  # HighChart Price PropertyType
+  # Top Price Property Type
+
+  # County
+  # Latest Sold
+  # Latest Up Market
+  # Price Property Type Area
+
+  # Price Increase
+
+   # Properties- Biggest Price Increase
+
+
   end
 end

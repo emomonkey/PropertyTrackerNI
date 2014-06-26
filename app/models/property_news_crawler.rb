@@ -62,6 +62,10 @@ class PropertyNewsCrawler
       bres = parseresult("//div[contains(@class,'details col span-8 last')]")
     end
 
+  rescue StandardError => e
+    Rails.logger.debug 'Error running PropertyNewsCrawler.findresult ' + e.message
+    return false;
+
   end
 
 end

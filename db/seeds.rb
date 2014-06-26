@@ -1,8 +1,0 @@
-SearchParams.create(searchtitle: 'N.Ireland', searchparam:'Waringstown',  county:'Co.Armagh')
-SearchParams.create(searchtitle: 'N.Ireland', searchparam:'Donaghcloney', county:'Co.Armagh')
-SearchType.create(searchtext: 'Biggest price increase')
-SearchType.create(searchtext: 'Biggest price decrease')
-SearchType.create(searchtext: 'Newest Additions')
-SearchType.create(searchtext: 'Just Sold')
-SearchType.create(searchtext: "Historic Avg")
-SearchType.create(searchtext: "Historic Min")
