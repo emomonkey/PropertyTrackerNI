@@ -18,7 +18,6 @@
 @import "neat";
 @import "base/base";
 @import "bitters/bitters";
-@import "scraper";
 @import "refills/_navigation";
 @import "refills/_grid-items-lines";
 
@@ -28,3 +27,13 @@
   @include button(pill, #ff9900);
 }
 
+.chart-wrapper {
+  position: relative;
+  height: 100%;
+}
+
+.chart-inner {
+  position: absolute;
+  width: 100%;
+  height: 30%;
+};

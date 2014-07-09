@@ -9,7 +9,11 @@ class ScraperController < ApplicationController
   def search
 
 
+
     nosearch = SearchParams.count;
+
+    vt = PopulateNewsHistoricResults.new
+    vt.volumelowproptype
 
     # 25 is the number of sidekiq workers
     batchsize = 5000;
@@ -70,22 +74,26 @@ class ScraperController < ApplicationController
 
   def result
 
+    @mostsalescnty = @graphing_service.fndvolbycnt
 
-    volall = @graphing_service.fndvolall
+    @volall = @graphing_service.fndvolcntysimple
 
     @chart =  LazyHighCharts::HighChart.new('graph') do |f|
-      f.title(:text => "Month/Year")
-      f.xAxis(:categories => volall[:categories])
-      f.series(:name => "Sales", :data => volall[:data])
+      f.title(:text => "Volume Sales by PropertyType the past Year")
+      f.xAxis(:categories => volall.category)
+      f.series(:name => "Sales", :data => volall.series[0])
 
 
       f.yAxis [
-                  {:title => {:text => "Volume Sales", :margin => 70} }
+                  {:title => {:text => "Volume Sales", :margin => 5} }
               ]
 
       f.legend(:align => 'right', :verticalAlign => 'top', :y => 75, :x => -50, :layout => 'vertical',)
-      f.chart({:defaultSeriesType=>"column"})
+      f.chart({:defaultSeriesType=>"column", :marginbottom=>0, :height => 150})
+
+
     end
+
 
   # HighChart Pie Sold Volume County
   # Recently Sold By County

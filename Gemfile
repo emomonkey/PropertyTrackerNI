@@ -46,6 +46,7 @@ gem 'refills'
 gem 'sinatra', require:false
 gem 'slim'
 gem 'lazy_high_charts'
+gem "sidekiq-cron", "~> 0.2.0"
 
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'

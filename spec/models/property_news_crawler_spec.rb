@@ -1,6 +1,14 @@
 require 'spec_helper'
 
 describe PropertyNewsCrawler do
+
+  it "should run the sidekiq action" do
+    psw = ParseResultsWorker.new
+    psw.perform(1, 10000)
+    pcnt = PropertySite.count()
+    expect(pcnt).to be > 0
+  end
+
   it "should find a price" do
     @pnewscrawlp = PropertyNewsCrawler.new('http://www.propertynews.com', 'waringstown')
     bres = @pnewscrawlp.parseresult("//div[contains(@class,'details col span-8 last')]")
@@ -8,6 +16,9 @@ describe PropertyNewsCrawler do
     expect(bres).to be_truthy
 
   end
+
+
+
 
   it "should populate the database" do
     @firstsrc = SearchParams.first
