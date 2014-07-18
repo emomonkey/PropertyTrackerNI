@@ -12,7 +12,13 @@ module CrawlerModule
   def navigatecw(url, searchinput)
     @agent.get(url)
     @agent.page.forms[1]["search-box-text"] = searchinput
+    @agent.page.forms[1].checkbox_with(:name =>'IncludeAgreed_checkbox').check
+    @agent.page.forms[1]["IncludeAgreed"] = 1
     @result_page = @agent.page.forms[1].submit
+
+  rescue StandardError => e
+    Rails.logger.debug 'Error running crawler_module.navigatecw ' + e.message
+    return false;
   end
 
   # parse

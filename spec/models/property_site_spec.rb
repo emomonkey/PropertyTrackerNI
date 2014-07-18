@@ -20,10 +20,21 @@ describe PropertySite do
     psite.should_not be_valid
   end
 
+  it "should validate the setting of sold date on an insert" do
+    psite = PropertySite.create(:title => "Test Sold Date", :status => "Sale Agreed", :beds => 0)
+    psite.solddate.should_not be_nil
 
- # it  "validates the creation of a linked Property Site Value for a Property Site" do
- #   psite = PropertySite.find_or_create_by(:title => "Test SiteVALUE", :beds => 0)
- #   psite.property_site_values.create(:price => 100)
- # end
+  end
+
+  it "should validate the setting of sold date on an update" do
+    pupd = PropertySite.find_by(:title => "Test Site")
+    pupd.update(:status => "Sale Agreed")
+    pup = PropertySite.find_by(:title => "Test Site")
+    pup.solddate.should_not be_nil
+
+  end
+
+
+
 
 end

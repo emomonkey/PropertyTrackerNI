@@ -111,5 +111,15 @@ describe PropertyNewsCrawler do
     @resd.should_not be_nil
   end
 
+  it "should find sold types" do
+
+    sfsold = SearchType.find_by_searchtext('Sold Summary Prop Type')
+    @phistsold = PopulateNewsHistoricResults.new
+    @phistsold.soldproptype
+
+    @resd = HistoricAnalysis.find_by_search_types_id(sfsold.id)
+    @resd.should_not be_nil
+  end
+
 
 end

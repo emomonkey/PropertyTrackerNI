@@ -9,8 +9,14 @@ class PropertySite < ActiveRecord::Base
     return SearchParams.find_by_searchparam(:searchtext)
   end
 
+  before_create do |property_site|
+    if property_site.status == "Sold" or property_site.status =="Sale Agreed"
+      property_site.solddate = Date.today
+    end
+  end
+
   before_update do |property_site|
-    if property_site.status_was == "For Sale" and property_site.status == "Sold"
+    if property_site.status_was != property_site.status  and (property_site.status == "Sold" or property_site.status == "Sale Agreed")
        property_site.solddate = Date.today
     end
   end

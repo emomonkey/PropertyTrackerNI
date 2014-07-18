@@ -1,0 +1,39 @@
+<div class="grid-items-lines">
+  <a href="javascript:void(0)" class="grid-item">
+
+    <h1>Areas with most volume of sales</h1>
+    <p>
+    <ul class="list2col">
+    <% icnt = 1 %>
+    <% @mostsalescnty.each do |pavol| %>
+      <li><%= icnt.to_s + ":" + pavol.searchparam + " " +  pavol.county %> <li>
+      <% icnt += 1 %>
+    <% end %>
+    </ul>
+    </p>
+  </a>
+  <a href="javascript:void(0)" class="grid-item grid-item-big ">
+
+    <div class="chart-wrapper">
+    <div class="chart-inner">
+    <p><%= high_chart("OverallVolID", @chart) %></p>
+    </div>
+    </div>
+  </a>
+
+  <a href="javascript:void(0)" class="grid-item">
+    <img src="https://raw.githubusercontent.com/thoughtbot/refills/master/source/images/placeholder_logo_2.png" alt="">
+    <h1>Last Grid Item</h1>
+    <p>Lorem ipsum dolor sit amet, elit. Rem, illum.</p>
+  </a>
+  <a href="javascript:void(0)" class="grid-item grid-item-big ">
+    <div class="chart-wrapper">
+      <div class="chart-inner">
+        <p><%= high_chart("AvgPrice", @cntychart) %></p>
+      </div>
+    </div>
+
+
+  </a>
+
+</div>

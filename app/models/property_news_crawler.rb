@@ -20,14 +20,14 @@ class PropertyNewsCrawler
     currpage.each do |spage|
       sbeds = spage["beds"]
 
-
       propertysite = PropertySite.find_by :title => spage["itmtitle"]
 
-
      if propertysite.nil?
+
+
         propertysite = PropertySite.create(:title => spage["itmtitle"], :propertytype => spage["type"], :beds => sbeds.to_i, :searchtext => @searchinput, :status => spage["status"] )
       else
-        if propertysite.status != "Sold" and propertysite.status != spage["status"]
+        if (propertysite.status != "Sold" or propertysite.status !="Sale Agreed") and propertysite.status != spage["status"]
           propertysite.update(:status => spage["status"])
         end
       end

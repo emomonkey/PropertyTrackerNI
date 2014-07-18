@@ -10,10 +10,60 @@ class ScraperController < ApplicationController
 
 
 
-    nosearch = SearchParams.count;
+ #   nosearch = SearchParams.count;
 
-    vt = PopulateNewsHistoricResults.new
-    vt.volumelowproptype
+    @stype = SearchType.find_by_searchtext('Historic Avg')
+    @sid = @stype.id
+
+
+    sSql = "SELECT MONTH(ps.created_at) as vmonth, YEAR(ps.created_at) as vyear, ps.propertytype, ps.beds, AVG(price) as avgprice, sp.id as spid  FROM property_sites ps "\
+            "LEFT JOIN (SELECT DISTINCT CONCAT(year, month) yrm, beds,propertytype, search_types_id FROM historic_analyses WHERE search_types_id = "
+    sSql = sSql + @sid.to_s + " AND propertytype LIKE '%Detached%' AND propertytype NOT LIKE '%Semi-detached%' "
+    sSql <<  ") myear ON DATE_FORMAT(ps.created_at,'%Y%m') = "\
+           " myear.yrm AND ps.beds = myear.beds AND ps.propertytype = myear.propertytype AND myear.search_types_id = "
+    sSql = sSql + @sid.to_s
+    sSql <<  ", property_site_values psv , search_params sp WHERE ps.id = psv.property_site_id AND sp.searchparam = ps.searchtext AND myear.yrm IS NULL "\
+           " AND ps.propertytype LIKE '%Detached%' AND ps.propertytype NOT LIKE '%Semi-detached%' GROUP BY vyear,vmonth, ps.propertytype, ps.beds, spid "
+    @vdresprop = PropertySiteValue.find_by_sql(sSql)
+    @vdresprop.each do |pdet|
+      HistoricAnalysis.create(:year => pdet.vyear ,:month => pdet.vmonth , :search_types_id => @sid , :search_params_id => pdet.spid, :propertytype => 'Detached', :beds => pdet.beds, :resulttext => pdet.avgprice, :resultvalue => pdet.avgprice)
+    end
+
+    sSql = "SELECT MONTH(ps.created_at) as vmonth, YEAR(ps.created_at) as vyear, ps.propertytype, ps.beds, AVG(price) as avgprice, sp.id as spid  FROM property_sites ps "\
+            "LEFT JOIN (SELECT DISTINCT CONCAT(year, month) yrm, beds,propertytype, search_types_id FROM historic_analyses WHERE search_types_id = "
+    sSql = sSql + @sid.to_s + " AND propertytype LIKE '%Semi-detached%'"
+    sSql <<  ") myear ON DATE_FORMAT(ps.created_at,'%Y%m') = "\
+           " myear.yrm AND ps.beds = myear.beds AND ps.propertytype = myear.propertytype AND myear.search_types_id = "
+    sSql = sSql + @sid.to_s
+    sSql <<  ", property_site_values psv , search_params sp WHERE ps.id = psv.property_site_id AND sp.searchparam = ps.searchtext AND myear.yrm IS NULL "\
+           " AND ps.propertytype LIKE '%Semi-detached%' GROUP BY vyear,vmonth, ps.propertytype, ps.beds, spid "
+    @vresprop = PropertySiteValue.find_by_sql(sSql)
+    @vresprop.each do |phist|
+      HistoricAnalysis.create(:year => phist.vyear ,:month => phist.vmonth , :search_types_id => @sid , :search_params_id => phist.spid, :propertytype => 'Semi-detached', :beds => phist.beds, :resulttext => phist.avgprice, :resultvalue => phist.avgprice)
+    end
+
+    stypetxt = SearchType.find_by_searchtext('Volume Summary Property Types')
+    @stid = stypetxt.id
+
+    sSql = "SELECT MONTH(ps.created_at) as vmonth, YEAR(ps.created_at) as vyear, COUNT(ps.id) as vol, sp.id as spid  FROM property_sites ps "\
+            "LEFT JOIN (SELECT DISTINCT CONCAT(year, LPAD(month,2,0)) yrm, search_types_id FROM historic_analyses WHERE search_types_id = "
+    sSql = sSql + @stid.to_s + " AND propertytype LIKE '%Detached%' AND propertytype NOT LIKE '%Semi-detached%'"
+    sSql <<  ") myear ON DATE_FORMAT(ps.created_at,'%Y%m') = "\
+           " myear.yrm  AND myear.search_types_id = "
+    sSql = sSql + @stid.to_s
+    sSql <<  ", property_site_values psv , search_params sp WHERE ps.id = psv.property_site_id AND sp.searchparam = ps.searchtext"\
+           " AND myear.yrm IS NULL "
+    sSql = sSql + " AND propertytype LIKE '%Detached%' AND propertytype NOT LIKE '%Semi-detached%' "
+    sSql = sSql  +     " GROUP BY vyear,vmonth,  spid "
+
+    vdet = PropertySiteValue.find_by_sql(sSql)
+
+    vdet.each do |pdet|
+      HistoricAnalysis.create(:year => pdet.vyear ,:month => pdet.vmonth , :search_types_id => @stid , :search_params_id => pdet.spid, :propertytype => 'Detached', :beds => 0, :resulttext => pdet.vol, :resultvalue => pdet.vol)
+    end
+
+   # vt = PopulateNewsHistoricResults.new
+  #  vt.soldproptype
 
     # 25 is the number of sidekiq workers
     batchsize = 5000;
@@ -74,18 +124,44 @@ class ScraperController < ApplicationController
 
   def result
 
+   volcnty = @graphing_service.fndavgprcmthyr
+
     @mostsalescnty = @graphing_service.fndvolbycnt
 
-    @volall = @graphing_service.fndvolcntysimple
+   @cntychart =  LazyHighCharts::HighChart.new('graph') do |e|
+     e.title(:text => "Average Price PropertyType")
+     e.xAxis(:categories => volcnty.category)
+
+
+     e.legend(:align => 'right', :verticalAlign => 'top', :y => 0, :x => -50, :layout => 'vertical',)
+
+     e.yAxis [
+                 {:title => {:text => "Price", :margin => 5} }
+             ]
+
+
+
+     volcnty.series.each_with_index do  |pseries , index |
+       cval =  pseries.map { |i| i.to_i}
+       e.series(:name => volcnty.arrseries[index], :yAxis => 0, :data =>cval)
+     end
+
+     e.chart({:defaultSeriesType=>"line", :marginbottom=>0, :height => 180})
+   end
+
+    volall = @graphing_service.fndvolcntysimple
 
     @chart =  LazyHighCharts::HighChart.new('graph') do |f|
       f.title(:text => "Volume Sales by PropertyType the past Year")
       f.xAxis(:categories => volall.category)
-      f.series(:name => "Sales", :data => volall.series[0])
-
+      #f.series(:name => "Sales", :data => volall.series[0])
+      volall.series.each_with_index do  |pseries , index |
+        cval =  pseries.map { |i| i.to_i}
+        f.series(:name => volall.arrseries[index], :yAxis => 0, :data =>cval)
+      end
 
       f.yAxis [
-                  {:title => {:text => "Volume Sales", :margin => 5} }
+                  {:title => {:text => "Volume ", :margin => 5} }
               ]
 
       f.legend(:align => 'right', :verticalAlign => 'top', :y => 75, :x => -50, :layout => 'vertical',)
