@@ -1,6 +1,22 @@
 require 'sidekiq/web'
 
 Rails.application.routes.draw do
+  get 'area/volumeview'
+
+  get 'area/priceview'
+
+  get 'area/volumegraph'
+
+  get 'area/pricevolume'
+
+  get 'county_controller/volumeview' => 'county_controller#volumeview' , as: 'county_priceview'
+
+  get 'county_controller/priceview'
+
+  get 'county_controller/volumegraph'
+
+  get 'county_controller/pricevolume'
+
   get 'scraper/search'
 
   get 'scraper/result'

@@ -1,7 +1,7 @@
 class PropertyNewsCrawler
   include CrawlerModule
-
   attr_reader :url, :searchinput, :searchtag, :pageresults
+  PARSELN_CONST = "//div[contains(@class,'details col span-8 last')]"
 
   def initialize(url, searchinput)
     @url = url

@@ -45,8 +45,17 @@ class GraphingService
   end
 
 
-  def fndsoldbycnt
+  def fndavgprice()
+    savgprice_type = SearchType.find_by_searchtext('Historic Avg')
 
+    sSql = "SELECT searchparam, county, resultvalue FROM search_params a, historic_analyses h WHERE "\
+           "search_params_id = a.id AND search_types_id = #{savgprice_type.id} AND h.created_at >  DATE_SUB(CURDATE(), INTERVAL 1 month) GROUP BY  searchparam, county ORDER BY SUM(resultvalue) DESC LIMIT 10"
+
+    savgprice  = HistoricAnalysis.find_by_sql(sSql)
+    return savgprice
+
+  rescue StandardError => e
+    Rails.logger.debug 'Error running graphingservice.fndsoldbycnt ' + e.message
   end
 
   def fndvolbycnt()
@@ -124,9 +133,6 @@ class GraphingService
   end
 
 
-  def fndCounty(cnt)
-    sSql = "SELECT FROM results_analyses RA, property_sites ps, search_params WHERE "
-    ResultsAnalysis.find_by_sql(sSql)
-  end
+
 
 end

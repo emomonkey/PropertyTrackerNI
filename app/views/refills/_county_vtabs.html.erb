@@ -1,0 +1,77 @@
+<div class="vertical-tabs-container">
+  <div class="vertical-tabs">
+    <a href="#" class="js-vertical-tab vertical-tab is-active" rel="antrim" data-element="antrim">Co.Antrim</a>
+    <a href="#" class="js-vertical-tab vertical-tab" rel="armagh">Co.Armagh</a>
+    <a href="#" class="js-vertical-tab vertical-tab" rel="down">Co.Down</a>
+    <a href="#" class="js-vertical-tab vertical-tab" rel="fermanagh">Co.Fermanagh</a>
+    <a href="#" class="js-vertical-tab vertical-tab" rel="londonderry">Co.Londonderry</a>
+    <a href="#" class="js-vertical-tab vertical-tab" rel="tyrone">Co.Tyrone</a>
+  </div>
+
+  <div class="vertical-tab-content-container">
+    <a href="" class="js-vertical-tab-accordion-heading vertical-tab-accordion-heading is-active" rel="antrim">Co.Antrim</a>
+    <div id="antrim" class="js-vertical-tab-content vertical-tab-content">
+      <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras tincidunt pellentesque lorem, id suscipit dolor rutrum id. Morbi facilisis porta volutpat. Fusce adipiscing, mauris quis congue tincidunt, sapien purus suscipit odio, quis dictum odio tortor in sem. Ut sit amet libero nec orci mattis fringilla. Praesent eu ipsum in sapien tincidunt molestie sed ut magna. Nam accumsan dui at orci rhoncus pharetra tincidunt elit ullamcorper. Sed ac mauris ipsum. Nullam imperdiet sapien id purus pretium id aliquam mi ullamcorper.</p>
+    </div>
+
+    <a href="" class="js-vertical-tab-accordion-heading vertical-tab-accordion-heading" rel="armagh">Co.Armagh</a>
+    <div id="armagh" class="js-vertical-tab-content vertical-tab-content">
+      <p>Ut laoreet augue et neque pretium non sagittis nibh pulvinar. Etiam ornare tincidunt orci quis ultrices. Pellentesque ac sapien ac purus gravida ullamcorper. Duis rhoncus sodales lacus, vitae adipiscing tellus pharetra sed. Praesent bibendum.</p>
+    </div>
+
+    <a href="" class="js-vertical-tab-accordion-heading vertical-tab-accordion-heading" rel="down">Co.Down</a>
+    <div id="down" class="js-vertical-tab-content vertical-tab-content">
+      <p>Donec mattis mauris gravida metus laoreet non rutrum sem viverra. Aenean nibh libero, viverra vel vestibulum in, porttitor ut sapien. Phasellus tempor lorem id justo ornare tincidunt. Nulla faucibus, purus eu placerat fermentum, velit mi iaculis nunc, bibendum tincidunt ipsum justo eu mauris. Nulla facilisi. Vestibulum vel lectus ac purus tempus suscipit nec sit amet eros. Nullam fringilla, enim eu lobortis dapibus, quam magna tincidunt nibh, sit amet imperdiet dolor justo congue turpis.</p>
+    </div>
+
+    <a href="" class="js-vertical-tab-accordion-heading vertical-tab-accordion-heading" rel="fermanagh">Co.Fermanagh</a>
+    <div id="fermanagh" class="js-vertical-tab-content vertical-tab-content">
+      <p>Sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Phasellus dui urna, mollis vel suscipit in, pharetra at ligula. Pellentesque a est vel est fermentum pellentesque sed sit amet dolor. Nunc in dapibus nibh. Aliquam erat volutpat. Phasellus vel dui sed nibh iaculis convallis id sit amet urna. Proin nec tellus quis justo consequat accumsan. Vivamus turpis enim, auctor eget placerat eget, aliquam ut sapien.</p>
+    </div>
+
+    <a href="" class="js-vertical-tab-accordion-heading vertical-tab-accordion-heading" rel="londonderry">Co.Londonderry</a>
+    <div id="londonderry" class="js-vertical-tab-content vertical-tab-content">
+      <p>Sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Phasellus dui urna, mollis vel suscipit in, pharetra at ligula. Pellentesque a est vel est fermentum pellentesque sed sit amet dolor. Nunc in dapibus nibh. Aliquam erat volutpat. Phasellus vel dui sed nibh iaculis convallis id sit amet urna. Proin nec tellus quis justo consequat accumsan. Vivamus turpis enim, auctor eget placerat eget, aliquam ut sapien.</p>
+    </div>
+
+    <a href="" class="js-vertical-tab-accordion-heading vertical-tab-accordion-heading" rel="tyrone">Co.Tyrone</a>
+    <div id="tyrone" class="js-vertical-tab-content vertical-tab-content">
+      <p>Sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Phasellus dui urna, mollis vel suscipit in, pharetra at ligula. Pellentesque a est vel est fermentum pellentesque sed sit amet dolor. Nunc in dapibus nibh. Aliquam erat volutpat. Phasellus vel dui sed nibh iaculis convallis id sit amet urna. Proin nec tellus quis justo consequat accumsan. Vivamus turpis enim, auctor eget placerat eget, aliquam ut sapien.</p>
+    </div>
+  </div>
+</div>
+
+<script>
+  $(".js-vertical-tab-content").hide();
+  $(".js-vertical-tab-content:first").show();
+
+  /* if in tab mode */
+  $(".js-vertical-tab").click(function(event) {
+    event.preventDefault();
+
+    $(".js-vertical-tab-content").hide();
+    var activeTab = $(this).attr("rel");
+    $("#"+activeTab).show();
+
+    $(".js-vertical-tab").removeClass("is-active");
+    $(this).addClass("is-active");
+
+    $(".js-vertical-tab-accordion-heading").removeClass("is-active");
+    $(".js-vertical-tab-accordion-heading[rel^='"+activeTab+"']").addClass("is-active");
+  });
+
+  /* if in accordion mode */
+  $(".js-vertical-tab-accordion-heading").click(function(event) {
+    event.preventDefault()
+
+    $(".js-vertical-tab-content").hide();
+    var accordion_activeTab = $(this).attr("rel");
+    $("#"+accordion_activeTab).show();
+
+    $(".js-vertical-tab-accordion-heading").removeClass("is-active");
+    $(this).addClass("is-active");
+
+    $(".js-vertical-tab").removeClass("is-active");
+    $(".js-vertical-tab[rel^='"+accordion_activeTab+"']").addClass("is-active");
+  });
+</script>
