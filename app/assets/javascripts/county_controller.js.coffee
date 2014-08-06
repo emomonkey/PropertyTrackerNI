@@ -5,5 +5,5 @@
 $ ->
   $("a[data-element]").click (e) ->
     velement = $(this).data("element")
-    $.ajax(url: "/test").done (html) ->
-    $("#"+velement).append html
+    $.ajax(url: "/country_tables").done (html) ->
+    $("#"+velement+"table").append html

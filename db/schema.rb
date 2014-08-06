@@ -11,7 +11,10 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 201406242224923) do
+ActiveRecord::Schema.define(version: 201407312224923) do
+
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "plpgsql"
 
   create_table "historic_analyses", force: true do |t|
     t.integer  "year"
@@ -25,6 +28,7 @@ ActiveRecord::Schema.define(version: 201406242224923) do
     t.integer  "beds"
     t.string   "propertytype"
     t.integer  "resultvalue"
+    t.datetime "propdate"
   end
 
   add_index "historic_analyses", ["property_sites_id"], name: "index_historic_analyses_on_property_sites_id", using: :btree
@@ -51,6 +55,8 @@ ActiveRecord::Schema.define(version: 201406242224923) do
     t.string   "status"
     t.date     "solddate"
   end
+
+  add_index "property_sites", ["title"], name: "index_property_sites_on_title", unique: true, using: :btree
 
   create_table "results_analyses", force: true do |t|
     t.integer  "SearchTypes_id"

@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe CountyControllerController, :type => :controller do
+RSpec.describe CountyController, :type => :controller do
 
   describe "GET 'volumeview'" do
     it "returns http success" do

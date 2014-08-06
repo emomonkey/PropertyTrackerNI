@@ -41,6 +41,9 @@ describe PropertyNewsCrawler do
     @analysisworker = AnalysisResultsWorker.new
     @analysisworker.perform
 
+    psitev = PropertySite.create(:title => "Test Withdrawn", :status => "Sale Agreed", :beds => 0)
+    # New Withdrawn worker should go here
+
     @stypeinc = SearchType.find_by_searchtext("Biggest price increase")
     @srespinc = ResultsAnalysis.find_by_SearchTypes_id(@stypeinc.id)
     @srespinc.should_not be_nil
@@ -63,6 +66,10 @@ describe PropertyNewsCrawler do
     expect(@psolddatecnt).to be == @psoldcnt
   end
 
+  it "count of status Withdrawn should be greater than 0" do
+    pwithcnt = PropertySite.count(:conditions => "status = 'Withdrawn'")
+    expect(pwithcnt).to be > 0
+  end
 
   it "should find Just Sold" do
     @stypeins = SearchType.find_by_searchtext("Just Sold")
@@ -121,5 +128,13 @@ describe PropertyNewsCrawler do
     @resd.should_not be_nil
   end
 
+
+  it "should find highest increase by county" do
+    pinc = SearchType.find_by_searchtext("Highest Increase in Cnty")
+  end
+
+  it "should find highest decrease by county" do
+    pdec = SearchType.find_by_searchtext("Highest Decrease in Cnty")
+  end
 
 end

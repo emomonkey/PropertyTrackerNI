@@ -9,13 +9,13 @@ Rails.application.routes.draw do
 
   get 'area/pricevolume'
 
-  get 'county_controller/volumeview' => 'county_controller#volumeview' , as: 'county_priceview'
+  get 'county/volumeview' => 'county#volumeview' , as: 'county_priceview'
 
-  get 'county_controller/priceview'
+  get 'county/priceview'
 
-  get 'county_controller/volumegraph'
+  get 'county/volumegraph'
 
-  get 'county_controller/pricevolume'
+  get 'county/pricevolume'
 
   get 'scraper/search'
 

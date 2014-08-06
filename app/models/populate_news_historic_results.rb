@@ -10,6 +10,7 @@ class PopulateNewsHistoricResults
     calculatemonthvol
     volumelowproptype
     soldproptype
+    areahighestincprice
   end
 
 
@@ -19,10 +20,10 @@ class PopulateNewsHistoricResults
 
     # Calculate month vol for room, propertytype, searchtext, county
 
-    sSql = "SELECT MONTH(ps.created_at) as vmonth, YEAR(ps.created_at) as vyear, ps.propertytype, ps.beds, COUNT(price) as vol, sp.id as spid  FROM property_sites ps "\
-            "LEFT JOIN (SELECT DISTINCT CONCAT(year, LPAD(month,2,0)) yrm, beds,propertytype, search_types_id FROM historic_analyses WHERE search_types_id = "
+    sSql = "SELECT EXTRACT(MONTH FROM ps.created_at) as vmonth, EXTRACT(YEAR FROM ps.created_at) as vyear, ps.propertytype, ps.beds, COUNT(price) as vol, sp.id as spid  FROM property_sites ps "\
+            "LEFT JOIN (SELECT DISTINCT CONCAT(year, month) yrm, beds,propertytype, search_types_id FROM historic_analyses WHERE search_types_id = "
     sSql = sSql + @stid.to_s
-    sSql <<  ") myear ON DATE_FORMAT(ps.created_at,'%Y%m') = "\
+    sSql <<  ") myear ON TO_CHAR(ps.created_at,'YYYYMM') = "\
            " myear.yrm AND ps.beds = myear.beds AND ps.propertytype = myear.propertytype AND myear.search_types_id = "
     sSql = sSql + @stid.to_s
     sSql <<  ", property_site_values psv , search_params sp WHERE ps.id = psv.property_site_id AND sp.searchparam = ps.searchtext AND myear.yrm IS NULL "\
@@ -44,9 +45,9 @@ class PopulateNewsHistoricResults
     stype = stypetxt.id
 
     sSql = "SELECT MONTH(ps.solddate) as vmonth, YEAR(ps.solddate) as vyear, COUNT(ps.id) as vol, sp.id as spid  FROM property_sites ps "\
-            "LEFT JOIN (SELECT DISTINCT CONCAT(year, LPAD(month,2,0)) yrm, search_types_id FROM historic_analyses WHERE search_types_id = "
+            "LEFT JOIN (SELECT DISTINCT CONCAT(year, month) yrm, search_types_id FROM historic_analyses WHERE search_types_id = "
     sSql = sSql + stype.to_s + " AND propertytype LIKE '%Semi-detached%'"
-    sSql <<  ") myear ON DATE_FORMAT(ps.solddate,'%Y%m') = "\
+    sSql <<  ") myear ON TO_CHAR(ps.solddate,'YYYYMM') = "\
            " myear.yrm  AND myear.search_types_id = "
     sSql = sSql + stype.to_s
     sSql <<  ", property_site_values psv , search_params sp WHERE ps.id = psv.property_site_id AND sp.searchparam = ps.searchtext"\
@@ -60,9 +61,9 @@ class PopulateNewsHistoricResults
     end
 
     sSql = "SELECT MONTH(ps.solddate) as vmonth, YEAR(ps.solddate) as vyear, COUNT(ps.id) as vol, sp.id as spid  FROM property_sites ps "\
-            "LEFT JOIN (SELECT DISTINCT CONCAT(year, LPAD(month,2,0)) yrm, search_types_id FROM historic_analyses WHERE search_types_id = "
+            "LEFT JOIN (SELECT DISTINCT CONCAT(year, month) yrm, search_types_id FROM historic_analyses WHERE search_types_id = "
     sSql = sSql + stype.to_s + " AND propertytype LIKE '%Detached%' AND propertytype NOT LIKE '%Semi-detached%' "
-    sSql <<  ") myear ON DATE_FORMAT(ps.solddate,'%Y%m') = "\
+    sSql <<  ") myear ON TO_CHAR(ps.solddate,'YYYYMM') = "\
            " myear.yrm  AND myear.search_types_id = "
     sSql = sSql + stype.to_s
     sSql <<  ", property_site_values psv , search_params sp WHERE ps.id = psv.property_site_id AND sp.searchparam = ps.searchtext"\
@@ -77,9 +78,9 @@ class PopulateNewsHistoricResults
     end
 
     sSql = "SELECT MONTH(ps.solddate) as vmonth, YEAR(ps.solddate) as vyear, COUNT(ps.id) as vol, sp.id as spid  FROM property_sites ps "\
-            "LEFT JOIN (SELECT DISTINCT CONCAT(year, LPAD(month,2,0)) yrm, search_types_id FROM historic_analyses WHERE search_types_id = "
+            "LEFT JOIN (SELECT DISTINCT CONCAT(year, month) yrm, search_types_id FROM historic_analyses WHERE search_types_id = "
     sSql = sSql + stype.to_s + " AND propertytype LIKE '%Terrace%'"
-    sSql <<  ") myear ON DATE_FORMAT(ps.solddate,'%Y%m') = "\
+    sSql <<  ") myear ON TO_CHAR(ps.solddate,'YYYYMM') = "\
            " myear.yrm  AND myear.search_types_id = "
     sSql = sSql + stype.to_s
     sSql <<  ", property_site_values psv , search_params sp WHERE ps.id = psv.property_site_id AND sp.searchparam = ps.searchtext"\
@@ -94,9 +95,9 @@ class PopulateNewsHistoricResults
     end
 
     sSql = "SELECT MONTH(ps.solddate) as vmonth, YEAR(ps.solddate) as vyear, COUNT(ps.id) as vol, sp.id as spid  FROM property_sites ps "\
-            "LEFT JOIN (SELECT DISTINCT CONCAT(year, LPAD(month,2,0)) yrm, search_types_id FROM historic_analyses WHERE search_types_id = "
+            "LEFT JOIN (SELECT DISTINCT CONCAT(year, month) yrm, search_types_id FROM historic_analyses WHERE search_types_id = "
     sSql = sSql + stype.to_s + " AND propertytype LIKE '%Townhouse%'"
-    sSql <<  ") myear ON DATE_FORMAT(ps.solddate,'%Y%m') = "\
+    sSql <<  ") myear ON TO_CHAR(ps.solddate,'YYYYMM') = "\
            " myear.yrm  AND myear.search_types_id = "
     sSql = sSql + stype.to_s
     sSql <<  ", property_site_values psv , search_params sp WHERE ps.id = psv.property_site_id AND sp.searchparam = ps.searchtext"\
@@ -112,9 +113,9 @@ class PopulateNewsHistoricResults
 
 
     sSql = "SELECT MONTH(ps.solddate) as vmonth, YEAR(ps.solddate) as vyear, COUNT(ps.id) as vol, sp.id as spid  FROM property_sites ps "\
-            "LEFT JOIN (SELECT DISTINCT CONCAT(year, LPAD(month,2,0)) yrm, search_types_id FROM historic_analyses WHERE search_types_id = "
+            "LEFT JOIN (SELECT DISTINCT CONCAT(year, month) yrm, search_types_id FROM historic_analyses WHERE search_types_id = "
     sSql = sSql + stype.to_s + " AND propertytype LIKE '%Site%'"
-    sSql <<  ") myear ON DATE_FORMAT(ps.solddate,'%Y%m') = "\
+    sSql <<  ") myear ON TO_CHAR(ps.solddate,'YYYYMM') = "\
            " myear.yrm  AND myear.search_types_id = "
     sSql = sSql + stype.to_s
     sSql <<  ", property_site_values psv , search_params sp WHERE ps.id = psv.property_site_id AND sp.searchparam = ps.searchtext"\
@@ -131,9 +132,9 @@ class PopulateNewsHistoricResults
 
 
     sSql = "SELECT MONTH(ps.solddate) as vmonth, YEAR(ps.solddate) as vyear, COUNT(ps.id) as vol, sp.id as spid  FROM property_sites ps "\
-            "LEFT JOIN (SELECT DISTINCT CONCAT(year, LPAD(month,2,0)) yrm, search_types_id FROM historic_analyses WHERE search_types_id = "
+            "LEFT JOIN (SELECT DISTINCT CONCAT(year, month) yrm, search_types_id FROM historic_analyses WHERE search_types_id = "
     sSql = sSql + stype.to_s + " AND propertytype LIKE '%Cottage%'"
-    sSql <<  ") myear ON DATE_FORMAT(ps.solddate,'%Y%m') = "\
+    sSql <<  ") myear ON TO_CHAR(ps.solddate,'YYYYMM') = "\
            " myear.yrm  AND myear.search_types_id = "
     sSql = sSql + stype.to_s
     sSql <<  ", property_site_values psv , search_params sp WHERE ps.id = psv.property_site_id AND sp.searchparam = ps.searchtext"\
@@ -149,9 +150,9 @@ class PopulateNewsHistoricResults
 
 
     sSql = "SELECT MONTH(ps.solddate) as vmonth, YEAR(ps.solddate) as vyear, COUNT(ps.id) as vol, sp.id as spid  FROM property_sites ps "\
-            "LEFT JOIN (SELECT DISTINCT CONCAT(year, LPAD(month,2,0)) yrm, search_types_id FROM historic_analyses WHERE search_types_id = "
+            "LEFT JOIN (SELECT DISTINCT CONCAT(year, month) yrm, search_types_id FROM historic_analyses WHERE search_types_id = "
     sSql = sSql + stype.to_s + " AND propertytype LIKE '%Apartment%'"
-    sSql <<  ") myear ON DATE_FORMAT(ps.solddate,'%Y%m') = "\
+    sSql <<  ") myear ON TO_CHAR(ps.solddate,'YYYYMM') = "\
            " myear.yrm  AND myear.search_types_id = "
     sSql = sSql + stype.to_s
     sSql <<  ", property_site_values psv , search_params sp WHERE ps.id = psv.property_site_id AND sp.searchparam = ps.searchtext"\
@@ -178,10 +179,10 @@ class PopulateNewsHistoricResults
     @stid = stypetxt.id
     #vsemi = PropertySite.where(["propertytype LIKE :type", {:type => 'Semi-detached'}]).select("MONTH(created_at) as vmonth, YEAR(created_at) as vyear, propertytype, ps.beds, COUNT(price) as vol, sp.id as spid")
 
-    sSql = "SELECT MONTH(ps.created_at) as vmonth, YEAR(ps.created_at) as vyear, COUNT(ps.id) as vol, sp.id as spid  FROM property_sites ps "\
-            "LEFT JOIN (SELECT DISTINCT CONCAT(year, LPAD(month,2,0)) yrm, search_types_id FROM historic_analyses WHERE search_types_id = "
+    sSql = "SELECT EXTRACT(MONTH FROM ps.created_at) as vmonth, EXTRACT(YEAR FROM ps.created_at) as vyear, COUNT(ps.id) as vol, sp.id as spid  FROM property_sites ps "\
+            "LEFT JOIN (SELECT DISTINCT CONCAT(year, month) yrm, search_types_id FROM historic_analyses WHERE search_types_id = "
     sSql = sSql + @stid.to_s + " AND propertytype LIKE '%Semi-detached%'"
-    sSql <<  ") myear ON DATE_FORMAT(ps.created_at,'%Y%m') = "\
+    sSql <<  ") myear ON TO_CHAR(ps.created_at,'YYYYMM') = "\
            " myear.yrm  AND myear.search_types_id = "
     sSql = sSql + @stid.to_s
     sSql <<  ", property_site_values psv , search_params sp WHERE ps.id = psv.property_site_id AND sp.searchparam = ps.searchtext"\
@@ -196,10 +197,10 @@ class PopulateNewsHistoricResults
     end
 
 
-    sSql = "SELECT MONTH(ps.created_at) as vmonth, YEAR(ps.created_at) as vyear, COUNT(ps.id) as vol, sp.id as spid  FROM property_sites ps "\
-            "LEFT JOIN (SELECT DISTINCT CONCAT(year, LPAD(month,2,0)) yrm, search_types_id FROM historic_analyses WHERE search_types_id = "
+    sSql = "SELECT EXTRACT(MONTH FROM ps.created_at) as vmonth, EXTRACT(YEAR FROM ps.created_at) as vyear, COUNT(ps.id) as vol, sp.id as spid  FROM property_sites ps "\
+            "LEFT JOIN (SELECT DISTINCT CONCAT(year, month) yrm, search_types_id FROM historic_analyses WHERE search_types_id = "
     sSql = sSql + @stid.to_s + " AND propertytype LIKE '%Detached%' AND propertytype NOT LIKE '%Semi-detached%'"
-    sSql <<  ") myear ON DATE_FORMAT(ps.created_at,'%Y%m') = "\
+    sSql <<  ") myear ON TO_CHAR(ps.created_at,'YYYYMM') = "\
            " myear.yrm  AND myear.search_types_id = "
     sSql = sSql + @stid.to_s
     sSql <<  ", property_site_values psv , search_params sp WHERE ps.id = psv.property_site_id AND sp.searchparam = ps.searchtext"\
@@ -214,10 +215,10 @@ class PopulateNewsHistoricResults
     end
 
 
-    sSql = "SELECT MONTH(ps.created_at) as vmonth, YEAR(ps.created_at) as vyear, COUNT(ps.id) as vol, sp.id as spid  FROM property_sites ps "\
-            "LEFT JOIN (SELECT DISTINCT CONCAT(year, LPAD(month,2,0)) yrm, search_types_id FROM historic_analyses WHERE search_types_id = "
+    sSql = "SELECT EXTRACT(MONTH FROM ps.created_at) as vmonth, EXTRACT(YEAR FROM ps.created_at) as vyear, COUNT(ps.id) as vol, sp.id as spid  FROM property_sites ps "\
+            "LEFT JOIN (SELECT DISTINCT CONCAT(year, month) yrm, search_types_id FROM historic_analyses WHERE search_types_id = "
     sSql = sSql + @stid.to_s + " AND propertytype LIKE '%Terrace%'"
-    sSql <<  ") myear ON DATE_FORMAT(ps.created_at,'%Y%m') = "\
+    sSql <<  ") myear ON TO_CHAR(ps.created_at,'YYYYMM') = "\
            " myear.yrm  AND myear.search_types_id = "
     sSql = sSql + @stid.to_s
     sSql <<  ", property_site_values psv , search_params sp WHERE ps.id = psv.property_site_id AND sp.searchparam = ps.searchtext"\
@@ -231,10 +232,10 @@ class PopulateNewsHistoricResults
       HistoricAnalysis.create(:year => pterr.vyear ,:month => pterr.vmonth , :search_types_id => @stid , :search_params_id => pterr.spid, :propertytype => 'Terrace', :beds => 0, :resulttext => pterr.vol, :resultvalue => pterr.vol)
     end
 
-    sSql = "SELECT MONTH(ps.created_at) as vmonth, YEAR(ps.created_at) as vyear, COUNT(ps.id) as vol, sp.id as spid  FROM property_sites ps "\
-            "LEFT JOIN (SELECT DISTINCT CONCAT(year, LPAD(month,2,0)) yrm, search_types_id FROM historic_analyses WHERE search_types_id = "
+    sSql = "SELECT EXTRACT(MONTH FROM ps.created_at) as vmonth, EXTRACT(YEAR FROM ps.created_at) as vyear, COUNT(ps.id) as vol, sp.id as spid  FROM property_sites ps "\
+            "LEFT JOIN (SELECT DISTINCT CONCAT(year, month) yrm, search_types_id FROM historic_analyses WHERE search_types_id = "
     sSql = sSql + @stid.to_s + " AND propertytype LIKE '%Townhouse%'"
-    sSql <<  ") myear ON DATE_FORMAT(ps.created_at,'%Y%m') = "\
+    sSql <<  ") myear ON TO_CHAR(ps.created_at,'YYYYMM') = "\
            " myear.yrm  AND myear.search_types_id = "
     sSql = sSql + @stid.to_s
     sSql <<  ", property_site_values psv , search_params sp WHERE ps.id = psv.property_site_id AND sp.searchparam = ps.searchtext"\
@@ -249,10 +250,10 @@ class PopulateNewsHistoricResults
     end
 
 
-    sSql = "SELECT MONTH(ps.created_at) as vmonth, YEAR(ps.created_at) as vyear, COUNT(ps.id) as vol, sp.id as spid  FROM property_sites ps "\
-            "LEFT JOIN (SELECT DISTINCT CONCAT(year, LPAD(month,2,0)) yrm, search_types_id FROM historic_analyses WHERE search_types_id = "
+    sSql = "SELECT EXTRACT(MONTH FROM ps.created_at) as vmonth, EXTRACT(YEAR FROM ps.created_at) as vyear, COUNT(ps.id) as vol, sp.id as spid  FROM property_sites ps "\
+            "LEFT JOIN (SELECT DISTINCT CONCAT(year, month) yrm, search_types_id FROM historic_analyses WHERE search_types_id = "
     sSql = sSql + @stid.to_s + " AND propertytype LIKE '%Site%'"
-    sSql <<  ") myear ON DATE_FORMAT(ps.created_at,'%Y%m') = "\
+    sSql <<  ") myear ON TO_CHAR(ps.created_at,'YYYYMM') = "\
            " myear.yrm  AND myear.search_types_id = "
     sSql = sSql + @stid.to_s
     sSql <<  ", property_site_values psv , search_params sp WHERE ps.id = psv.property_site_id AND sp.searchparam = ps.searchtext"\
@@ -268,10 +269,10 @@ class PopulateNewsHistoricResults
     end
 
 
-    sSql = "SELECT MONTH(ps.created_at) as vmonth, YEAR(ps.created_at) as vyear, COUNT(ps.id) as vol, sp.id as spid  FROM property_sites ps "\
-            "LEFT JOIN (SELECT DISTINCT CONCAT(year, LPAD(month,2,0)) yrm, search_types_id FROM historic_analyses WHERE search_types_id = "
+    sSql = "SELECT EXTRACT(MONTH FROM ps.created_at) as vmonth, EXTRACT(YEAR FROM ps.created_at) as vyear, COUNT(ps.id) as vol, sp.id as spid  FROM property_sites ps "\
+            "LEFT JOIN (SELECT DISTINCT CONCAT(year, month) yrm, search_types_id FROM historic_analyses WHERE search_types_id = "
     sSql = sSql + @stid.to_s + " AND propertytype LIKE '%Cottage%'"
-    sSql <<  ") myear ON DATE_FORMAT(ps.created_at,'%Y%m') = "\
+    sSql <<  ") myear ON TO_CHAR(ps.created_at,'YYYYMM') = "\
            " myear.yrm  AND myear.search_types_id = "
     sSql = sSql + @stid.to_s
     sSql <<  ", property_site_values psv , search_params sp WHERE ps.id = psv.property_site_id AND sp.searchparam = ps.searchtext"\
@@ -286,10 +287,10 @@ class PopulateNewsHistoricResults
     end
 
 
-    sSql = "SELECT MONTH(ps.created_at) as vmonth, YEAR(ps.created_at) as vyear, COUNT(ps.id) as vol, sp.id as spid  FROM property_sites ps "\
-            "LEFT JOIN (SELECT DISTINCT CONCAT(year, LPAD(month,2,0)) yrm, search_types_id FROM historic_analyses WHERE search_types_id = "
+    sSql = "SELECT EXTRACT(MONTH FROM ps.created_at) as vmonth, EXTRACT(YEAR FROM ps.created_at) as vyear, COUNT(ps.id) as vol, sp.id as spid  FROM property_sites ps "\
+            "LEFT JOIN (SELECT DISTINCT CONCAT(year, month) yrm, search_types_id FROM historic_analyses WHERE search_types_id = "
     sSql = sSql + @stid.to_s + " AND propertytype LIKE '%Apartment%'"
-    sSql <<  ") myear ON DATE_FORMAT(ps.created_at,'%Y%m') = "\
+    sSql <<  ") myear ON TO_CHAR(ps.created_at,'YYYYMM') = "\
            " myear.yrm  AND myear.search_types_id = "
     sSql = sSql + @stid.to_s
     sSql <<  ", property_site_values psv , search_params sp WHERE ps.id = psv.property_site_id AND sp.searchparam = ps.searchtext"\
@@ -318,15 +319,46 @@ class PopulateNewsHistoricResults
 
   end
 
+
+  def areahighestincprice
+    savgprice_type = SearchType.find_by_searchtext('Historic Avg')
+
+    vhghprc = SearchType.find_by_searchtext('Highest Price Increase in Cnty')
+
+    # think i need a new created_at field ps_created_at
+    sSql = "SELECT EXTRACT(MONTH FROM ps.created_at) as vmonth, EXTRACT(YEAR FROM ps.created_at) as vyear, ps.propertytype, ps.beds, AVG(price) as avgprice, sp.id as spid  FROM property_sites ps "\
+            "LEFT JOIN (SELECT DISTINCT CONCAT(year, month) yrm, beds,propertytype, search_types_id FROM historic_analyses WHERE search_types_id = "
+    sSql = sSql + vhghprc.id.to_s + " AND propertytype LIKE '%Semi-detached%'"
+    sSql <<  ") myear ON TO_CHAR(ps.created_at,'YYYYMM') = "\
+           " myear.yrm AND ps.beds = myear.beds AND ps.propertytype = myear.propertytype AND myear.search_types_id = "
+    sSql = sSql + vhghprc.id.to_s + ",  (SELECT EXTRACT(MONTH FROM ps.created_at) as vmonth, EXTRACT(YEAR FROM ps.created_at) as vyear, ps.propertytype, ps.beds, AVG(price) as avgprice, sp.id as spid FROM property_sites ps , property_site_values psv , search_params sp WHERE ps.id = psv.property_site_id AND sp.searchparam = ps.searchtext ) allvals "
+    sSql <<  ", property_site_values psv , search_params sp WHERE ps.id = psv.property_site_id AND sp.searchparam = ps.searchtext AND myear.yrm IS NULL "\
+           " AND ps.propertytype LIKE '%Semi-detached%' AND  MONTH(DATE_ADD(ps.created_at, INTERVAL -1 MONTH)) = allvals.vmonth AND YEAR(DATE_ADD(ps.created_at, INTERVAL -1 MONTH)) = allvals.vyear   GROUP BY vyear,vmonth, ps.propertytype, ps.beds, spid "
+
+    vhighestprc = PropertySiteValue.find_by_sql(sSql)
+    vhighestprc.each do |phist|
+      HistoricAnalysis.create(:year => phist.vyear ,:month => phist.vmonth , :search_types_id => vhghprc.id , :search_params_id => phist.spid, :propertytype => 'Semi-detached', :beds => phist.beds, :resulttext => phist.avgprice, :resultvalue => phist.avgprice)
+    end
+
+  rescue StandardError => e
+    Rails.logger.debug 'Error running PopulateNewsHistoric.areahighestincprice ' + e.message
+
+
+  end
+
+  def areahighestincvol
+
+  end
+
   def calculatemonthavg()
     @stype = SearchType.find_by_searchtext('Historic Avg')
     @sid = @stype.id
     # Calculate month avg for room, propertytype, searchtext, county
 
-    sSql = "SELECT MONTH(ps.created_at) as vmonth, YEAR(ps.created_at) as vyear, ps.propertytype, ps.beds, AVG(price) as avgprice, sp.id as spid  FROM property_sites ps "\
+    sSql = "SELECT EXTRACT (MONTH FROM ps.created_at) as vmonth, EXTRACT(YEAR FROM ps.created_at) as vyear, ps.propertytype, ps.beds, AVG(price) as avgprice, sp.id as spid  FROM property_sites ps "\
             "LEFT JOIN (SELECT DISTINCT CONCAT(year, month) yrm, beds,propertytype, search_types_id FROM historic_analyses WHERE search_types_id = "
     sSql = sSql + @sid.to_s + " AND propertytype LIKE '%Semi-detached%'"
-    sSql <<  ") myear ON DATE_FORMAT(ps.created_at,'%Y%m') = "\
+    sSql <<  ") myear ON TO_CHAR(ps.created_at,'YYYYMM') = "\
            " myear.yrm AND ps.beds = myear.beds AND ps.propertytype = myear.propertytype AND myear.search_types_id = "
     sSql = sSql + @sid.to_s
     sSql <<  ", property_site_values psv , search_params sp WHERE ps.id = psv.property_site_id AND sp.searchparam = ps.searchtext AND myear.yrm IS NULL "\
@@ -336,10 +368,10 @@ class PopulateNewsHistoricResults
       HistoricAnalysis.create(:year => phist.vyear ,:month => phist.vmonth , :search_types_id => @sid , :search_params_id => phist.spid, :propertytype => 'Semi-detached', :beds => phist.beds, :resulttext => phist.avgprice, :resultvalue => phist.avgprice)
     end
 
-    sSql = "SELECT MONTH(ps.created_at) as vmonth, YEAR(ps.created_at) as vyear, ps.propertytype, ps.beds, AVG(price) as avgprice, sp.id as spid  FROM property_sites ps "\
+    sSql = "SELECT EXTRACT(MONTH FROM ps.created_at) as vmonth, EXTRACT(YEAR FROM ps.created_at) as vyear, ps.propertytype, ps.beds, AVG(price) as avgprice, sp.id as spid   FROM property_sites ps "\
             "LEFT JOIN (SELECT DISTINCT CONCAT(year, month) yrm, beds,propertytype, search_types_id FROM historic_analyses WHERE search_types_id = "
     sSql = sSql + @sid.to_s + " AND propertytype LIKE '%Detached%' AND propertytype NOT LIKE '%Semi-detached%' "
-    sSql <<  ") myear ON DATE_FORMAT(ps.created_at,'%Y%m') = "\
+    sSql <<  ") myear ON TO_CHAR(ps.created_at,'YYYYMM') = "\
            " myear.yrm AND ps.beds = myear.beds AND ps.propertytype = myear.propertytype AND myear.search_types_id = "
     sSql = sSql + @sid.to_s
     sSql <<  ", property_site_values psv , search_params sp WHERE ps.id = psv.property_site_id AND sp.searchparam = ps.searchtext AND myear.yrm IS NULL "\
@@ -349,10 +381,10 @@ class PopulateNewsHistoricResults
       HistoricAnalysis.create(:year => pdet.vyear ,:month => pdet.vmonth , :search_types_id => @sid , :search_params_id => pdet.spid, :propertytype => 'Detached', :beds => pdet.beds, :resulttext => pdet.avgprice, :resultvalue => pdet.avgprice)
     end
 
-    sSql = "SELECT MONTH(ps.created_at) as vmonth, YEAR(ps.created_at) as vyear, ps.propertytype, ps.beds, AVG(price) as avgprice, sp.id as spid  FROM property_sites ps "\
+    sSql = "SELECT EXTRACT(MONTH FROM ps.created_at) as vmonth, EXTRACT(YEAR FROM ps.created_at) as vyear, ps.propertytype, ps.beds, AVG(price) as avgprice, sp.id as spid   FROM property_sites ps "\
             "LEFT JOIN (SELECT DISTINCT CONCAT(year, month) yrm, beds,propertytype, search_types_id FROM historic_analyses WHERE search_types_id = "
     sSql = sSql + @sid.to_s + " AND propertytype LIKE '%Terrace%'"
-    sSql <<  ") myear ON DATE_FORMAT(ps.created_at,'%Y%m') = "\
+    sSql <<  ") myear ON TO_CHAR(ps.created_at,'YYYYMM') = "\
            " myear.yrm AND ps.beds = myear.beds AND ps.propertytype = myear.propertytype AND myear.search_types_id = "
     sSql = sSql + @sid.to_s
     sSql <<  ", property_site_values psv , search_params sp WHERE ps.id = psv.property_site_id AND sp.searchparam = ps.searchtext AND myear.yrm IS NULL "\
@@ -362,10 +394,10 @@ class PopulateNewsHistoricResults
       HistoricAnalysis.create(:year => pterr.vyear ,:month => pterr.vmonth , :search_types_id => @sid , :search_params_id => pterr.spid, :propertytype => 'Terrace', :beds => pterr.beds, :resulttext => pterr.avgprice, :resultvalue => pterr.avgprice)
     end
 
-    sSql = "SELECT MONTH(ps.created_at) as vmonth, YEAR(ps.created_at) as vyear, ps.propertytype, ps.beds, AVG(price) as avgprice, sp.id as spid  FROM property_sites ps "\
+    sSql = "SELECT EXTRACT(MONTH FROM ps.created_at) as vmonth, EXTRACT(YEAR FROM ps.created_at) as vyear, ps.propertytype, ps.beds, AVG(price) as avgprice, sp.id as spid   FROM property_sites ps "\
             "LEFT JOIN (SELECT DISTINCT CONCAT(year, month) yrm, beds,propertytype, search_types_id FROM historic_analyses WHERE search_types_id = "
     sSql = sSql + @sid.to_s + " AND propertytype LIKE '%Townhouse%'"
-    sSql <<  ") myear ON DATE_FORMAT(ps.created_at,'%Y%m') = "\
+    sSql <<  ") myear ON TO_CHAR(ps.created_at,'YYYYMM') = "\
            " myear.yrm AND ps.beds = myear.beds AND ps.propertytype = myear.propertytype AND myear.search_types_id = "
     sSql = sSql + @sid.to_s
     sSql <<  ", property_site_values psv , search_params sp WHERE ps.id = psv.property_site_id AND sp.searchparam = ps.searchtext AND myear.yrm IS NULL "\
@@ -375,10 +407,10 @@ class PopulateNewsHistoricResults
       HistoricAnalysis.create(:year => ptown.vyear ,:month => ptown.vmonth , :search_types_id => @sid , :search_params_id => ptown.spid, :propertytype => 'Townhouse', :beds => ptown.beds, :resulttext => ptown.avgprice, :resultvalue => ptown.avgprice)
     end
 
-    sSql = "SELECT MONTH(ps.created_at) as vmonth, YEAR(ps.created_at) as vyear, ps.propertytype, ps.beds, AVG(price) as avgprice, sp.id as spid  FROM property_sites ps "\
+    sSql = "SELECT EXTRACT(MONTH FROM ps.created_at) as vmonth, EXTRACT(YEAR FROM ps.created_at) as vyear, ps.propertytype, ps.beds, AVG(price) as avgprice, sp.id as spid   FROM property_sites ps "\
             "LEFT JOIN (SELECT DISTINCT CONCAT(year, month) yrm, beds,propertytype, search_types_id FROM historic_analyses WHERE search_types_id = "
     sSql = sSql + @sid.to_s + " AND propertytype LIKE '%Site%'"
-    sSql <<  ") myear ON DATE_FORMAT(ps.created_at,'%Y%m') = "\
+    sSql <<  ") myear ON TO_CHAR(ps.created_at,'YYYYMM') = "\
            " myear.yrm AND ps.beds = myear.beds AND ps.propertytype = myear.propertytype AND myear.search_types_id = "
     sSql = sSql + @sid.to_s
     sSql <<  ", property_site_values psv , search_params sp WHERE ps.id = psv.property_site_id AND sp.searchparam = ps.searchtext AND myear.yrm IS NULL "\
@@ -390,10 +422,10 @@ class PopulateNewsHistoricResults
       HistoricAnalysis.create(:year => psite.vyear ,:month => psite.vmonth , :search_types_id => @sid , :search_params_id => psite.spid, :propertytype => 'Site', :beds => psite.beds, :resulttext => psite.avgprice, :resultvalue => psite.avgprice)
     end
 
-    sSql = "SELECT MONTH(ps.created_at) as vmonth, YEAR(ps.created_at) as vyear, ps.propertytype, ps.beds, AVG(price) as avgprice, sp.id as spid  FROM property_sites ps "\
+    sSql = "SELECT EXTRACT(MONTH FROM ps.created_at) as vmonth, EXTRACT(YEAR FROM ps.created_at) as vyear, ps.propertytype, ps.beds, AVG(price) as avgprice, sp.id as spid   FROM property_sites ps "\
             "LEFT JOIN (SELECT DISTINCT CONCAT(year, month) yrm, beds,propertytype, search_types_id FROM historic_analyses WHERE search_types_id = "
     sSql = sSql + @sid.to_s + " AND propertytype LIKE '%Cottage%'"
-    sSql <<  ") myear ON DATE_FORMAT(ps.created_at,'%Y%m') = "\
+    sSql <<  ") myear ON TO_CHAR(ps.created_at,'YYYYMM') = "\
            " myear.yrm AND ps.beds = myear.beds AND ps.propertytype = myear.propertytype AND myear.search_types_id = "
     sSql = sSql + @sid.to_s
     sSql <<  ", property_site_values psv , search_params sp WHERE ps.id = psv.property_site_id AND sp.searchparam = ps.searchtext AND myear.yrm IS NULL "\
@@ -403,17 +435,17 @@ class PopulateNewsHistoricResults
       HistoricAnalysis.create(:year => pcot.vyear ,:month => pcot.vmonth , :search_types_id => @sid , :search_params_id => pcot.spid, :propertytype => 'Townhouse', :beds => pcot.beds, :resulttext => pcot.avgprice, :resultvalue => pcot.avgprice)
     end
 
-    sSql = "SELECT MONTH(ps.created_at) as vmonth, YEAR(ps.created_at) as vyear, ps.propertytype, ps.beds, AVG(price) as avgprice, sp.id as spid  FROM property_sites ps "\
+    sSql = "SELECT EXTRACT(MONTH FROM ps.created_at) as vmonth, EXTRACT(YEAR FROM ps.created_at) as vyear, ps.propertytype, ps.beds, AVG(price) as avgprice, sp.id as spid   FROM property_sites ps "\
             "LEFT JOIN (SELECT DISTINCT CONCAT(year, month) yrm, beds,propertytype, search_types_id FROM historic_analyses WHERE search_types_id = "
     sSql = sSql + @sid.to_s + " AND propertytype LIKE '%Apartment%'"
-    sSql <<  ") myear ON DATE_FORMAT(ps.created_at,'%Y%m') = "\
+    sSql <<  ") myear ON TO_CHAR(ps.created_at,'YYYYMM') = "\
            " myear.yrm AND ps.beds = myear.beds AND ps.propertytype = myear.propertytype AND myear.search_types_id = "
     sSql = sSql + @sid.to_s
     sSql <<  ", property_site_values psv , search_params sp WHERE ps.id = psv.property_site_id AND sp.searchparam = ps.searchtext AND myear.yrm IS NULL "\
            " AND ps.propertytype LIKE '%Apartment%' GROUP BY vyear,vmonth, ps.propertytype, ps.beds, spid "
     @vaptprop = PropertySiteValue.find_by_sql(sSql)
     @vaptprop.each do |papt|
-      HistoricAnalysis.create(:year => papt.vyear ,:month => papt.vmonth , :search_types_id => @sid , :search_params_id => papt.spid, :propertytype => 'Apartment', :beds => papt.beds, :resulttext => papt.avgprice, :resultvalue => papt.avgprice)
+      HistoricAnalysis.create(:year => papt.vyear ,:month => papt.vmonth , :search_types_id => @sid , :search_params_id => papt.spid, :propertytype => 'Apartment', :beds => papt.beds, :resulttext => papt.avgprice, :resultvalue => papt.avgprice )
     end
 
       # Semi-detached
@@ -428,14 +460,16 @@ class PopulateNewsHistoricResults
       Rails.logger.debug 'Error running PopulateNewsHistoric.calculatemonthavg ' + e.message
   end
 
+
+
   def calculatemonthmin()
     @stypemin = SearchType.find_by_searchtext('Historic Min')
     @sminid = @stypemin.id
     # Calculate month min for room, propertytype, searchtext, county
-    sSql = "SELECT MONTH(ps.created_at) as vmonth, YEAR(ps.created_at) as vyear, ps.propertytype, ps.beds, MIN(price) as minprice, sp.id as spid  FROM property_sites ps "\
+    sSql = "SELECT EXTRACT(MONTH FROM ps.created_at) as vmonth, EXTRACT(YEAR FROM ps.created_at) as vyear, ps.propertytype, ps.beds, MIN(price) as minprice, sp.id as spid  FROM property_sites ps "\
             "LEFT JOIN (SELECT DISTINCT CONCAT(year, month) yrm, beds,propertytype, search_types_id FROM historic_analyses WHERE search_types_id = "
     sSql = sSql + @sminid.to_s
-    sSql <<  ") myear ON DATE_FORMAT(ps.created_at,'%Y%m') = "\
+    sSql <<  ") myear ON TO_CHAR(ps.created_at,'YYYYMM') = "\
            " myear.yrm AND ps.beds = myear.beds AND ps.propertytype = myear.propertytype AND myear.search_types_id = "
     sSql = sSql + @sminid.to_s
     sSql <<  ", property_site_values psv , search_params sp WHERE ps.id = psv.property_site_id AND sp.searchparam = ps.searchtext AND myear.yrm IS NULL "\

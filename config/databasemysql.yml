@@ -11,13 +11,12 @@
 #
 
 default: &default
-  adapter: postgresql
-  encoding: unicode
-  pool: 5
-  username: ptrack
-  password: scubadive
-  host: localhost
- # socket: /var/run/mysqld/mysqld.sock
+  adapter: mysql2
+  encoding: utf8
+  pool: 25
+  username: root
+  password: scubadive1
+  socket: /var/run/mysqld/mysqld.sock
 
 development:
   <<: *default
@@ -55,4 +54,4 @@ test:
 #
 production:
     <<: *default
-    database: PropertyTracker_production
+    database: DemoDebug_production

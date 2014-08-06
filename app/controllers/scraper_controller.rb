@@ -8,9 +8,24 @@ class ScraperController < ApplicationController
 
   def search
 
+    @stype = SearchType.find_by_searchtext('Historic Avg')
+    @sid = @stype.id
 
+    sSql = "SELECT MONTH(ps.created_at) as vmonth, YEAR(ps.created_at) as vyear, ps.propertytype, ps.beds, AVG(price) as avgprice, sp.id as spid, ps.created_at as propdate   FROM property_sites ps "\
+            "LEFT JOIN (SELECT DISTINCT CONCAT(year, month) yrm, beds,propertytype, search_types_id FROM historic_analyses WHERE search_types_id = "
+    sSql = sSql + @sid.to_s + " AND propertytype LIKE '%Townhouse%'"
+    sSql <<  ") myear ON DATE_FORMAT(ps.created_at,'%Y%m') = "\
+           " myear.yrm AND ps.beds = myear.beds AND ps.propertytype = myear.propertytype AND myear.search_types_id = "
+    sSql = sSql + @sid.to_s
+    sSql <<  ", property_site_values psv , search_params sp WHERE ps.id = psv.property_site_id AND sp.searchparam = ps.searchtext AND myear.yrm IS NULL "\
+           " AND ps.propertytype LIKE '%Townhouse%' GROUP BY vyear,vmonth, ps.propertytype, ps.beds, spid "
 
- #   nosearch = SearchParams.count;
+   vh = PopulateNewsHistoricResults.new
+   vh.start
+
+#    vh.areahighestincprice
+
+    nosearch = SearchParams.count;
 
     # 25 is the number of sidekiq workers
     batchsize = 5000;

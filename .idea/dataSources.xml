@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="DataSourceManagerImpl" format="xml" hash="3619988137">
+  <component name="DataSourceManagerImpl" format="xml" hash="3555224470">
     <data-source source="LOCAL" name="MySQL - PropertyTracker_development@localhost" uuid="7bf25795-fcea-4e54-a4b7-38def12c0127">
       <driver-ref>mysql</driver-ref>
       <synchronize>true</synchronize>
@@ -23,6 +23,30 @@
         <property name="zeroDateTimeBehavior" value="convertToNull" />
         <property name="tinyInt1isBit" value="false" />
       </driver-properties>
+      <libraries />
+    </data-source>
+    <data-source source="LOCAL" name="Rails DemoDebug: development" uuid="c0332a35-f82e-468f-845c-c73982c96944">
+      <driver-ref>postgresql</driver-ref>
+      <jdbc-driver>org.postgresql.Driver</jdbc-driver>
+      <jdbc-url>jdbc:postgresql://127.0.0.1/PropertyTracker_development</jdbc-url>
+      <user-name>ptrack</user-name>
+      <user-password>dfd9dfc9dfdfdfc8dfcbdfcedfc3dfdcdfcf</user-password>
+      <libraries />
+    </data-source>
+    <data-source source="LOCAL" name="Rails DemoDebug: test" uuid="3e0b79fe-4ec5-4460-a7e6-11c6cb609ede">
+      <driver-ref>postgresql</driver-ref>
+      <jdbc-driver>org.postgresql.Driver</jdbc-driver>
+      <jdbc-url>jdbc:postgresql://127.0.0.1/PropertyTracker_test</jdbc-url>
+      <user-name>ptrack</user-name>
+      <user-password>dfd9dfc9dfdfdfc8dfcbdfcedfc3dfdcdfcf</user-password>
+      <libraries />
+    </data-source>
+    <data-source source="LOCAL" name="Rails DemoDebug: production" uuid="55b84198-d51d-4bd3-8030-a665ecc7a15d">
+      <driver-ref>postgresql</driver-ref>
+      <jdbc-driver>org.postgresql.Driver</jdbc-driver>
+      <jdbc-url>jdbc:postgresql://127.0.0.1/PropertyTracker_production</jdbc-url>
+      <user-name>ptrack</user-name>
+      <user-password>dfd9dfc9dfdfdfc8dfcbdfcedfc3dfdcdfcf</user-password>
       <libraries />
     </data-source>
   </component>
