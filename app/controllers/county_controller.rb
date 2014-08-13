@@ -8,12 +8,19 @@ class CountyController < ApplicationController
 
 
   def volumeview
+
+    @arrmstpop = @view_service.CountyStats
+    #continue.maximum(:resultvalue, :group => :county)
+
+    vcntystat = AbHistoricCntyView.all
+    @hshcntyst = Hash.new
+    @hshcntyst = Hash[vcntystat.map { |fcnty| [fcnty['county'].to_sym, [fcnty['volpc'], fcnty['prcsold'], fcnty['percent_price']]] }]
+
   end
 
   def priceview
-    vprice = @view_service.fndrecentpricechange
 
-#    vccnt = CardCounty.new(caption: "test", arrvals:, arrdescs: )
+
   end
 
   def volumegraph

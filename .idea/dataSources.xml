@@ -1,30 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="DataSourceManagerImpl" format="xml" hash="3555224470">
-    <data-source source="LOCAL" name="MySQL - PropertyTracker_development@localhost" uuid="7bf25795-fcea-4e54-a4b7-38def12c0127">
-      <driver-ref>mysql</driver-ref>
-      <synchronize>true</synchronize>
-      <jdbc-driver>com.mysql.jdbc.Driver</jdbc-driver>
-      <jdbc-url>jdbc:mysql://localhost:3306/PropertyTracker_development</jdbc-url>
-      <user-name>root</user-name>
-      <user-password>dfd9dfc9dfdfdfc8dfcbdfcedfc3dfdcdfcfdf9b</user-password>
-      <driver-properties>
-        <property name="zeroDateTimeBehavior" value="convertToNull" />
-        <property name="tinyInt1isBit" value="false" />
-      </driver-properties>
-      <libraries />
-    </data-source>
-    <data-source source="LOCAL" name="MySQL - @localhost [2]" uuid="712dfc6f-7c8c-48be-a0ed-a4d3bbd982cb">
-      <driver-ref>mysql</driver-ref>
-      <synchronize>true</synchronize>
-      <jdbc-driver>com.mysql.jdbc.Driver</jdbc-driver>
-      <jdbc-url>jdbc:mysql://localhost:3306</jdbc-url>
-      <driver-properties>
-        <property name="zeroDateTimeBehavior" value="convertToNull" />
-        <property name="tinyInt1isBit" value="false" />
-      </driver-properties>
-      <libraries />
-    </data-source>
+  <component name="DataSourceManagerImpl" format="xml" hash="1357101385">
     <data-source source="LOCAL" name="Rails DemoDebug: development" uuid="c0332a35-f82e-468f-845c-c73982c96944">
       <driver-ref>postgresql</driver-ref>
       <jdbc-driver>org.postgresql.Driver</jdbc-driver>

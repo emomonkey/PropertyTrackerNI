@@ -10,11 +10,15 @@ class PopulateResults
   end
 
   def start()
-    fndprice
+
     newestaddition
     justsold
   end
 
+  def mostpopular
+
+
+  end
 
   private
   def fndprice
@@ -80,6 +84,14 @@ class PopulateResults
     end
   rescue StandardError => e
     Rails.logger.debug 'Error running PropertyNewsCrawler.justsold ' + e.message
+  end
+
+  private
+  def popareas
+    @stypeinc = SearchType.find_by_searchtext("Most Popular Area")
+    SearchParams.all.each do |param|
+      HistoricAnalysis.find_by_search_params_id(param.id)
+    end
   end
 
 
