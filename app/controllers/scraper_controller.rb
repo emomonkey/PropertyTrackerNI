@@ -8,6 +8,9 @@ class ScraperController < ApplicationController
 
   def search
 
+    @analysisworker = AnalysisResultsWorker.new
+    @analysisworker.perform
+
     @stype = SearchType.find_by_searchtext('Historic Avg')
     @sid = @stype.id
 
@@ -44,9 +47,6 @@ class ScraperController < ApplicationController
 
 
   def resultarea
-
-
-
 
     @styp = SearchType.find_by_searchtext("Volume Sales")
     HistoricAnalysis.find_by_search_types_id(@styp.id)
@@ -88,8 +88,11 @@ class ScraperController < ApplicationController
 
    volcnty = @graphing_service.fndavgprcmthyr
 
-   @mostsalescnty = @graphing_service.fndvolbycnt
-   @mostpricecnty = @graphing_service.fndavgprice
+   vcreatedat = HistoricAnalysis.maximum(:created_at)
+   smxdt = vcreatedat.strftime('%Y%m')
+
+   @mostsalescnty = @graphing_service.fndvolbycnt(smxdt)
+   @mostpricecnty = @graphing_service.fndavgprice(smxdt)
 
    @cntychart =  LazyHighCharts::HighChart.new('graph') do |e|
      e.title(:text => "Average Price PropertyType")

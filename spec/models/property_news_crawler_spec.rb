@@ -44,9 +44,7 @@ describe PropertyNewsCrawler do
     psitev = PropertySite.create(:title => "Test Withdrawn", :status => "Sale Agreed", :beds => 0)
     # New Withdrawn worker should go here
 
-    @stypeinc = SearchType.find_by_searchtext("Biggest price increase")
-    @srespinc = ResultsAnalysis.find_by_SearchTypes_id(@stypeinc.id)
-    @srespinc.should_not be_nil
+
 
 
 
@@ -78,8 +76,7 @@ describe PropertyNewsCrawler do
   end
 
   it "should find an average price" do
-    @phistavg = PopulateNewsHistoricResults.new
-    @phistavg.calculatemonthavg
+
 
     @pres = SearchType.find_by_searchtext("Historic Avg")
     @res = HistoricAnalysis.find_by_search_types_id(@pres.id)
@@ -87,17 +84,15 @@ describe PropertyNewsCrawler do
   end
 
   it "should find a minimum price" do
-    @phistmin = PopulateNewsHistoricResults.new
-    @phistmin.calculatemonthmin
+
     @phis = SearchType.find_by_searchtext("Historic Min")
     @reshis = HistoricAnalysis.find_by_search_types_id(@phis.id)
     @reshis.should_not be_nil
   end
 
  it "should find a month vol" do
-   @phistvol = PopulateNewsHistoricResults.new
-   @phistvol.calculatemonthvol
-   @stypetxt = SearchType.find_by_searchtext('Volume Sales')
+
+   @stypetxt = SearchType.find_by_searchtext('Volume Summary Property Types')
    @reshis = HistoricAnalysis.find_by_search_types_id(@stypetxt.id)
    @reshis.should_not be_nil
  end
@@ -111,8 +106,7 @@ describe PropertyNewsCrawler do
 
 
   it "should find volume low level types" do
-    @phistsumvol = PopulateNewsHistoricResults.new
-    @phistsumvol.volumelowproptype
+
     @presd = SearchType.find_by_searchtext("Volume Summary Property Types")
     @resd = HistoricAnalysis.find_by_search_types_id(@presd.id)
     @resd.should_not be_nil
@@ -121,20 +115,18 @@ describe PropertyNewsCrawler do
   it "should find sold types" do
 
     sfsold = SearchType.find_by_searchtext('Sold Summary Prop Type')
-    @phistsold = PopulateNewsHistoricResults.new
-    @phistsold.soldproptype
 
-    @resd = HistoricAnalysis.find_by_search_types_id(sfsold.id)
-    @resd.should_not be_nil
+    @resld = HistoricAnalysis.find_by_search_types_id(sfsold.id)
+    @resld.should_not be_nil
   end
 
 
   it "should find highest increase by county" do
-    pinc = SearchType.find_by_searchtext("Highest Increase in Cnty")
+    pinc = SearchType.find_by_searchtext("Highest Price Increase in Cnty")
+    @respinc = HistoricAnalysis.find_by_search_types_id(pinc.id)
+    @respinc.should_not be_nil
   end
 
-  it "should find highest decrease by county" do
-    pdec = SearchType.find_by_searchtext("Highest Decrease in Cnty")
-  end
+
 
 end

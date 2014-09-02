@@ -19,7 +19,7 @@ CREATE OR REPLACE FUNCTION ab_historic_sld() RETURNS VOID AS $$
 
 
 INSERT INTO historic_analyses( month, year, search_types_id, search_params_id, resulttext, beds, propertytype, resultvalue, created_at)
-    SELECT EXTRACT(MONTH FROM ps.solddate) as vmonth, EXTRACT(YEAR FROM ps.solddate) as vyear, stype, sp.id as spid ,COUNT(ps.id) as vol,0,'Semi-detached',COUNT(ps.id), now()  FROM property_sites ps
+    SELECT EXTRACT(MONTH FROM ps.solddate) as vmonth, EXTRACT(YEAR FROM ps.solddate) as vyear, stype, sp.id as spid ,COUNT(ps.id) as vol,0,'Detached',COUNT(ps.id), now()  FROM property_sites ps
             LEFT JOIN (SELECT DISTINCT year || trim(to_char(month,'09')) yrm, search_types_id FROM historic_analyses h, search_types a
     WHERE searchtext = 'Sold Summary Prop Type' AND h.search_types_id =  a.id  AND propertytype LIKE '%Detached%'
     ) myear ON TO_CHAR(ps.created_at,'YYYYmm') =  myear.yrm , property_site_values psv , search_params sp
@@ -28,7 +28,7 @@ INSERT INTO historic_analyses( month, year, search_types_id, search_params_id, r
    GROUP BY vyear,vmonth,  spid;
 
 INSERT INTO historic_analyses( month, year, search_types_id, search_params_id, resulttext, beds, propertytype, resultvalue, created_at)
-    SELECT EXTRACT(MONTH FROM ps.solddate) as vmonth, EXTRACT(YEAR FROM ps.solddate) as vyear, stype, sp.id as spid ,COUNT(ps.id) as vol,0,'Semi-detached',COUNT(ps.id), now()  FROM property_sites ps
+    SELECT EXTRACT(MONTH FROM ps.solddate) as vmonth, EXTRACT(YEAR FROM ps.solddate) as vyear, stype, sp.id as spid ,COUNT(ps.id) as vol,0,'Terrace',COUNT(ps.id), now()  FROM property_sites ps
             LEFT JOIN (SELECT DISTINCT year || trim(to_char(month,'09')) yrm, search_types_id FROM historic_analyses h, search_types a
     WHERE searchtext = 'Sold Summary Prop Type' AND h.search_types_id =  a.id  AND propertytype LIKE '%Terrace%'
     ) myear ON TO_CHAR(ps.created_at,'YYYYmm') =  myear.yrm , property_site_values psv , search_params sp
@@ -37,7 +37,7 @@ INSERT INTO historic_analyses( month, year, search_types_id, search_params_id, r
    GROUP BY vyear,vmonth,  spid;
 
 INSERT INTO historic_analyses( month, year, search_types_id, search_params_id, resulttext, beds, propertytype, resultvalue, created_at)
-    SELECT EXTRACT(MONTH FROM ps.solddate) as vmonth, EXTRACT(YEAR FROM ps.solddate) as vyear, stype, sp.id as spid ,COUNT(ps.id) as vol,0,'Semi-detached',COUNT(ps.id), now()  FROM property_sites ps
+    SELECT EXTRACT(MONTH FROM ps.solddate) as vmonth, EXTRACT(YEAR FROM ps.solddate) as vyear, stype, sp.id as spid ,COUNT(ps.id) as vol,0,'Townhouse',COUNT(ps.id), now()  FROM property_sites ps
             LEFT JOIN (SELECT DISTINCT year || trim(to_char(month,'09')) yrm, search_types_id FROM historic_analyses h, search_types a
     WHERE searchtext = 'Sold Summary Prop Type' AND h.search_types_id =  a.id  AND propertytype LIKE '%Townhouse%'
     ) myear ON TO_CHAR(ps.created_at,'YYYYmm') =  myear.yrm , property_site_values psv , search_params sp
@@ -47,7 +47,7 @@ INSERT INTO historic_analyses( month, year, search_types_id, search_params_id, r
 
 
 INSERT INTO historic_analyses( month, year, search_types_id, search_params_id, resulttext, beds, propertytype, resultvalue, created_at)
-    SELECT EXTRACT(MONTH FROM ps.solddate) as vmonth, EXTRACT(YEAR FROM ps.solddate) as vyear, stype, sp.id as spid ,COUNT(ps.id) as vol,0,'Semi-detached',COUNT(ps.id), now()  FROM property_sites ps
+    SELECT EXTRACT(MONTH FROM ps.solddate) as vmonth, EXTRACT(YEAR FROM ps.solddate) as vyear, stype, sp.id as spid ,COUNT(ps.id) as vol,0,'Site',COUNT(ps.id), now()  FROM property_sites ps
             LEFT JOIN (SELECT DISTINCT year || trim(to_char(month,'09')) yrm, search_types_id FROM historic_analyses h, search_types a
     WHERE searchtext = 'Sold Summary Prop Type' AND h.search_types_id =  a.id  AND propertytype LIKE '%Site%'
     ) myear ON TO_CHAR(ps.created_at,'YYYYmm') =  myear.yrm , property_site_values psv , search_params sp
@@ -56,7 +56,7 @@ INSERT INTO historic_analyses( month, year, search_types_id, search_params_id, r
    GROUP BY vyear,vmonth,  spid;
 
 INSERT INTO historic_analyses( month, year, search_types_id, search_params_id, resulttext, beds, propertytype, resultvalue, created_at)
-    SELECT EXTRACT(MONTH FROM ps.solddate) as vmonth, EXTRACT(YEAR FROM ps.solddate) as vyear, stype, sp.id as spid ,COUNT(ps.id) as vol,0,'Semi-detached',COUNT(ps.id), now()  FROM property_sites ps
+    SELECT EXTRACT(MONTH FROM ps.solddate) as vmonth, EXTRACT(YEAR FROM ps.solddate) as vyear, stype, sp.id as spid ,COUNT(ps.id) as vol,0,'Cottage',COUNT(ps.id), now()  FROM property_sites ps
             LEFT JOIN (SELECT DISTINCT year || trim(to_char(month,'09')) yrm, search_types_id FROM historic_analyses h, search_types a
     WHERE searchtext = 'Sold Summary Prop Type' AND h.search_types_id =  a.id  AND propertytype LIKE '%Cottage%'
     ) myear ON TO_CHAR(ps.created_at,'YYYYmm') =  myear.yrm , property_site_values psv , search_params sp
@@ -66,7 +66,7 @@ INSERT INTO historic_analyses( month, year, search_types_id, search_params_id, r
 
 
 INSERT INTO historic_analyses( month, year, search_types_id, search_params_id, resulttext, beds, propertytype, resultvalue, created_at)
-    SELECT EXTRACT(MONTH FROM ps.solddate) as vmonth, EXTRACT(YEAR FROM ps.solddate) as vyear, stype, sp.id as spid ,COUNT(ps.id) as vol,0,'Semi-detached',COUNT(ps.id), now()  FROM property_sites ps
+    SELECT EXTRACT(MONTH FROM ps.solddate) as vmonth, EXTRACT(YEAR FROM ps.solddate) as vyear, stype, sp.id as spid ,COUNT(ps.id) as vol,0,'Apartment',COUNT(ps.id), now()  FROM property_sites ps
             LEFT JOIN (SELECT DISTINCT year || trim(to_char(month,'09')) yrm, search_types_id FROM historic_analyses h, search_types a
     WHERE searchtext = 'Sold Summary Prop Type' AND h.search_types_id =  a.id  AND propertytype LIKE '%Apartment%'
     ) myear ON TO_CHAR(ps.created_at,'YYYYmm') =  myear.yrm , property_site_values psv , search_params sp

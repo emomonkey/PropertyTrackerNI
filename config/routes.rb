@@ -21,6 +21,8 @@ Rails.application.routes.draw do
 
   get 'scraper/result'
 
+  get 'county/pricevolume/:county' => 'county#pricevolume', as:  'countyvol'
+
   #resources :snippets
   #root to: "snippets#new"
   mount Sidekiq::Web, at: "/sidekiq"

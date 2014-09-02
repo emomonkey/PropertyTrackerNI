@@ -5,7 +5,7 @@ class GraphingService
     sgap = Rails.application.secrets.month_gap;
 
     sSql = "SELECT propertytype, year, month, AVG(resultvalue) resval FROM historic_analyses a, search_params b, (SELECT MIN(created_at) startdate FROM historic_analyses WHERE search_types_id= #{svol.id}) c "\
-           " WHERE a.search_params_id = b.id AND  a.created_at >= (c.startdate + INTERVAL '#{sgap} MONTH') AND search_types_id = #{svol.id} GROUP BY propertytype, year, month ORDER BY propertytype, year,month"
+           " WHERE a.search_params_id = b.id AND  a.created_at >= (c.startdate + INTERVAL '#{sgap} MONTH') AND search_types_id = #{svol.id}  GROUP BY propertytype, year, month ORDER BY propertytype, year,month"
 
 
     prptyvol  = HistoricAnalysis.find_by_sql(sSql)
@@ -48,11 +48,11 @@ class GraphingService
 
 
 
-  def fndavgprice()
+  def fndavgprice(vym)
     savgprice_type = SearchType.find_by_searchtext('Historic Avg')
 
     sSql = "SELECT searchparam, county, round(avg(resultvalue)) as resultvalue FROM search_params a, historic_analyses h WHERE "\
-           "search_params_id = a.id AND search_types_id = #{savgprice_type.id} AND h.created_at >  (now() - INTERVAL '1 month') GROUP BY  searchparam, county ORDER BY AVG(resultvalue) DESC LIMIT 10"
+           "search_params_id = a.id AND search_types_id = #{savgprice_type.id} AND TO_CHAR(h.created_at,'YYYYMM') = '#{vym}' GROUP BY  searchparam, county ORDER BY AVG(resultvalue) DESC LIMIT 10"
 
     savgprice  = HistoricAnalysis.find_by_sql(sSql)
     return savgprice
@@ -61,11 +61,11 @@ class GraphingService
     Rails.logger.debug 'Error running graphingservice.fndsoldbycnt ' + e.message
   end
 
-  def fndvolbycnt()
+  def fndvolbycnt(vym)
     svol = SearchType.find_by_searchtext('Volume Summary Property Types')
 
     sSql = "SELECT searchparam, county, sum(resultvalue) FROM search_params a, historic_analyses h WHERE "\
-           "search_params_id = a.id AND search_types_id = #{svol.id} AND h.created_at >  (now() - INTERVAL '1 month') GROUP BY  searchparam, county ORDER BY SUM(resultvalue) DESC LIMIT 10"
+           "search_params_id = a.id AND search_types_id = #{svol.id} AND TO_CHAR(h.created_at,'YYYYMM') = '#{vym}' GROUP BY  searchparam, county ORDER BY SUM(resultvalue) DESC LIMIT 10"
 
     cntyvol  = HistoricAnalysis.find_by_sql(sSql)
     return cntyvol
