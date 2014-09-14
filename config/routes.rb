@@ -23,6 +23,10 @@ Rails.application.routes.draw do
 
   get 'county/pricevolume/:county' => 'county#pricevolume', as:  'countyvol'
 
+  get 'county/detail'
+
+  get 'county/pricevolume/detail/:area' => 'county#detail', as: 'detailvol'
+
   #resources :snippets
   #root to: "snippets#new"
   mount Sidekiq::Web, at: "/sidekiq"

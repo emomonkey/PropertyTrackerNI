@@ -41,7 +41,7 @@ describe PropertyNewsCrawler do
     @analysisworker = AnalysisResultsWorker.new
     @analysisworker.perform
 
-    psitev = PropertySite.create(:title => "Test Withdrawn", :status => "Sale Agreed", :beds => 0)
+
     # New Withdrawn worker should go here
 
 
@@ -50,14 +50,11 @@ describe PropertyNewsCrawler do
 
   end
 
-  it "should find newest addition" do
-    @stypeinc = SearchType.find_by_searchtext("Newest Additions")
-    @srespadd = ResultsAnalysis.find_by_SearchTypes_id(@stypeinc.id)
-    @srespadd.should_not be_nil
-  end
+
 
   it "count of status sold should match count of solddate not null" do
-
+    @psitev = PropertySite.create(:title => "Test Sale", :status => "Sale Agreed", :beds => 0)
+    puts PropertySite.count()
     @psoldcnt = PropertySite.count(:conditions => "status = 'Sold'")
     expect(@psoldcnt).to be > 0
     @psolddatecnt = PropertySite.count(:conditions => "solddate is not null")
@@ -65,33 +62,44 @@ describe PropertyNewsCrawler do
   end
 
   it "count of status Withdrawn should be greater than 0" do
+    @psitevd = PropertySite.create(:title => "Test Sale", :status => "Sale Agreed", :beds => 0, :lastdatescanned => (Date.today - 3.months))
+    PropertySite.lastscanned
     pwithcnt = PropertySite.count(:conditions => "status = 'Withdrawn'")
     expect(pwithcnt).to be > 0
+
   end
 
-  it "should find Just Sold" do
-    @stypeins = SearchType.find_by_searchtext("Just Sold")
-    @srespsold = ResultsAnalysis.find_by_SearchTypes_id(@stypeins.id)
-    @srespsold.should_not be_nil
-  end
 
   it "should find an average price" do
-
-
-    @pres = SearchType.find_by_searchtext("Historic Avg")
-    @res = HistoricAnalysis.find_by_search_types_id(@pres.id)
+    @prest = SearchType.find_by_searchtext("Historic Avg")
+    @firstsrc = SearchParams.first
+    @firstsrc.searchparam.should_not be_nil
+    pnewscrawl = PropertyNewsCrawler.new('http://www.propertynews.com', @firstsrc.searchparam)
+    bres = pnewscrawl.findresult
+    #ScheduledProcedure.parsehistoric()
+    ActiveRecord::Base.connection.execute("SELECT ab_historic_avg();")
+    @res = HistoricAnalysis.find_by_search_types_id(@prest.id)
     @res.should_not be_nil
   end
 
   it "should find a minimum price" do
-
+    @prest = SearchType.find_by_searchtext("Historic Avg")
+    @firstsrc = SearchParams.first
+    @firstsrc.searchparam.should_not be_nil
+    pnewscrawl = PropertyNewsCrawler.new('http://www.propertynews.com', @firstsrc.searchparam)
+    bres = pnewscrawl.findresult
+    ActiveRecord::Base.connection.execute("SELECT ab_historic_min();")
     @phis = SearchType.find_by_searchtext("Historic Min")
     @reshis = HistoricAnalysis.find_by_search_types_id(@phis.id)
     @reshis.should_not be_nil
   end
 
  it "should find a month vol" do
-
+   @firstsrc = SearchParams.first
+   @firstsrc.searchparam.should_not be_nil
+   pnewscrawl = PropertyNewsCrawler.new('http://www.propertynews.com', @firstsrc.searchparam)
+   bres = pnewscrawl.findresult
+   ActiveRecord::Base.connection.execute("SELECT ab_historic_cnt();")
    @stypetxt = SearchType.find_by_searchtext('Volume Summary Property Types')
    @reshis = HistoricAnalysis.find_by_search_types_id(@stypetxt.id)
    @reshis.should_not be_nil
@@ -105,15 +113,23 @@ describe PropertyNewsCrawler do
   end
 
 
-  it "should find volume low level types" do
-
-    @presd = SearchType.find_by_searchtext("Volume Summary Property Types")
+  it "should find volume low level types over" do
+    @firstsrc = SearchParams.first
+    @firstsrc.searchparam.should_not be_nil
+    pnewscrawl = PropertyNewsCrawler.new('http://www.propertynews.com', @firstsrc.searchparam)
+    bres = pnewscrawl.findresult
+    ActiveRecord::Base.connection.execute("SELECT ab_historic_cnt_ovr();")
+    @presd = SearchType.find_by_searchtext("Volume Summary Property Types Overall")
     @resd = HistoricAnalysis.find_by_search_types_id(@presd.id)
     @resd.should_not be_nil
   end
 
   it "should find sold types" do
-
+    @firstsrc = SearchParams.first
+    @firstsrc.searchparam.should_not be_nil
+    pnewscrawl = PropertyNewsCrawler.new('http://www.propertynews.com', @firstsrc.searchparam)
+    bres = pnewscrawl.findresult
+    ActiveRecord::Base.connection.execute("SELECT ab_historic_sld();")
     sfsold = SearchType.find_by_searchtext('Sold Summary Prop Type')
 
     @resld = HistoricAnalysis.find_by_search_types_id(sfsold.id)
@@ -122,6 +138,16 @@ describe PropertyNewsCrawler do
 
 
   it "should find highest increase by county" do
+
+    @firstsrc = SearchParams.first
+    @firstsrc.searchparam.should_not be_nil
+    pnewscrawl = PropertyNewsCrawler.new('http://www.propertynews.com', @firstsrc.searchparam)
+    bres = pnewscrawl.findresult
+    psvalt = PropertySite.last
+    psvalt.should_not be_nil
+    psvalt.property_site_values.create(:price => 99999999)
+    ActiveRecord::Base.connection.execute("SELECT ab_historic_chg();");
+
     pinc = SearchType.find_by_searchtext("Highest Price Increase in Cnty")
     @respinc = HistoricAnalysis.find_by_search_types_id(pinc.id)
     @respinc.should_not be_nil

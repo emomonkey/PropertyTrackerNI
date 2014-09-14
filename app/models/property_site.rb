@@ -9,6 +9,13 @@ class PropertySite < ActiveRecord::Base
     return SearchParams.find_by_searchparam(:searchtext)
   end
 
+
+  def self.lastscanned
+    where('lastdatescanned <= ?',(Date.today - 3.months)).update_all(status: "Withdrawn")
+  end
+
+
+
   before_create do |property_site|
     if property_site.status == "Sold" or property_site.status =="Sale Agreed"
       property_site.solddate = Date.today

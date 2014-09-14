@@ -1,5 +1,5 @@
 class AbHistoricCntyView <  ActiveRecord::Base
-  attr_reader :id, :county, :year, :month, :volpc, :prcsold, :percent_price
+  attr_reader :id, :county, :year, :month, :volpc, :prcsold, :month_price_diff
   self.primary_key = :id
 
   def self.current_month

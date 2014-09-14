@@ -27,6 +27,7 @@ describe PropertySite do
   end
 
   it "should validate the setting of sold date on an update" do
+    psite = PropertySite.create(:title => "Test Site", :beds => 0)
     pupd = PropertySite.find_by(:title => "Test Site")
     pupd.update(:status => "Sale Agreed")
     pup = PropertySite.find_by(:title => "Test Site")

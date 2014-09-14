@@ -1,5 +1,5 @@
 
-<h3>Monthly Volume Sales for <%= @county %></h3>
+<h3>Annual Volume Properties put on Sale for <%= @county %></h3>
 
 <table class="table-borders">
   <thead>
@@ -10,13 +10,13 @@
     </tr>
   </thead>
   <tbody>
-  <% @histvol.each do |itmvol|   %>
+  <% @vhistvol.each do |itmvol|   %>
     <tr>
-      <td> <%= itmvol.search_params.searchparam %></td>
-      <td> <%= itmvol.resultvalue %></td>
-      <td><%= button_to 'Detail', detail_path(county: itmvol.search_params.searchparam) %></td>
+      <td> <%= itmvol['searchparam'] %></td>
+      <td> <%= itmvol['totalval'] %></td>
+      <td><%=  link_to "Detail", detailvol_path(itmvol['searchparam']) %></td>
     </tr>
  <% end %>
   </tbody>
 </table>
-<%= will_paginate @histvol %>
+<%= will_paginate @vhistvol %>

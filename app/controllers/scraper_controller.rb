@@ -7,6 +7,7 @@ class ScraperController < ApplicationController
   end
 
   def search
+   # psitev = PropertySite.create(:title => "Test Withdrawn", :status => "Sale Agreed", :beds => 0)
 
     @analysisworker = AnalysisResultsWorker.new
     @analysisworker.perform
@@ -98,21 +99,18 @@ class ScraperController < ApplicationController
      e.title(:text => "Average Price PropertyType")
      e.xAxis(:categories => volcnty.category)
 
-
      e.legend(:align => 'right', :verticalAlign => 'top', :y => 0, :x => -50, :layout => 'vertical',)
 
      e.yAxis [
                  {:title => {:text => "Price", :margin => 5} }
              ]
 
-
-
      volcnty.series.each_with_index do  |pseries , index |
        cval =  pseries.map { |i| i.to_i}
        e.series(:name => volcnty.arrseries[index], :yAxis => 0, :data =>cval)
      end
 
-     e.chart({:defaultSeriesType=>"line", :marginbottom=>0, :height => 180})
+     e.chart({:defaultSeriesType=>"line", :marginbottom=>0, :height => 150})
    end
 
     volall = @graphing_service.fndvolcntysimple

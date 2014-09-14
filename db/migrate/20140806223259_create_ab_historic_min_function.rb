@@ -10,7 +10,7 @@ SELECT id INTO stype FROM search_types WHERE searchtext = 'Historic Min';
 
 INSERT INTO historic_analyses( month, year, search_types_id, search_params_id, resulttext, beds, propertytype, resultvalue, created_at)
 SELECT EXTRACT(MONTH FROM ps.created_at) as vmonth, EXTRACT(YEAR FROM ps.created_at) as vyear, stype,sp.id as spid,MIN(price), ps.beds , ps.propertytype,
-       MIN(price) as minprice, now() FROM property_sites ps LEFT JOIN (SELECT DISTINCT year || trim(to_char(month,'09')) yrm,
+       MIN(price) as minprice, to_date('01/' || EXTRACT (MONTH FROM ps.created_at) || '/' || EXTRACT (YEAR FROM ps.created_at),'dd/mm/yyyy') FROM property_sites ps LEFT JOIN (SELECT DISTINCT year || trim(to_char(month,'09')) yrm,
        beds,propertytype, search_types_id FROM historic_analyses WHERE search_types_id = stype
        ) myear ON TO_CHAR(ps.created_at,'YYYYMM') = myear.yrm AND ps.beds = myear.beds AND ps.propertytype = myear.propertytype
       AND myear.search_types_id = stype , property_site_values psv , search_params sp WHERE ps.id = psv.property_site_id

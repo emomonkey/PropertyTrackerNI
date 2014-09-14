@@ -24,11 +24,6 @@ RSpec.describe CountyController, :type => :controller do
     end
   end
 
-  describe "GET 'pricevolume'" do
-    it "returns http success" do
-      get 'pricevolume'
-      expect(response).to be_success
-    end
-  end
+
 
 end

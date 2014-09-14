@@ -1,11 +1,11 @@
 class GraphingService
 
   def fndavgprcmthyr()
-    svol = SearchType.find_by_searchtext('Historic Avg')
+    svol = SearchType.find_by_searchtext('Historic Avg Overall')
     sgap = Rails.application.secrets.month_gap;
 
-    sSql = "SELECT propertytype, year, month, AVG(resultvalue) resval FROM historic_analyses a, search_params b, (SELECT MIN(created_at) startdate FROM historic_analyses WHERE search_types_id= #{svol.id}) c "\
-           " WHERE a.search_params_id = b.id AND  a.created_at >= (c.startdate + INTERVAL '#{sgap} MONTH') AND search_types_id = #{svol.id}  GROUP BY propertytype, year, month ORDER BY propertytype, year,month"
+    sSql = "SELECT propertytype, year, month, AVG(resultvalue) resval FROM historic_analyses a,  (SELECT MIN(created_at) startdate FROM historic_analyses WHERE search_types_id= #{svol.id}) c "\
+           " WHERE  a.created_at >= (c.startdate + INTERVAL '#{sgap} MONTH') AND search_types_id = #{svol.id}  GROUP BY propertytype, year, month ORDER BY propertytype, year,month"
 
 
     prptyvol  = HistoricAnalysis.find_by_sql(sSql)
@@ -76,9 +76,13 @@ class GraphingService
 
 
   def fndvolcntysimple()
-    stypevol = SearchType.find_by_searchtext('Volume Summary Property Types')
+    stypevol = SearchType.find_by_searchtext('Volume Summary Property Types Overall')
     vpyear = 1.month.ago
-    graphvol  = HistoricAnalysis.select("propertytype ,sum(resultvalue) as vol").where(" search_types_id = ?  and created_at > ?", stypevol.id, vpyear).group(" propertytype")
+
+    vmonth = vpyear.month
+    vyear = vpyear.year
+
+    graphvol  = HistoricAnalysis.select("propertytype ,sum(resultvalue) as vol").where(" search_types_id = ?  and month = ? and year = ?", stypevol.id, vmonth, vyear).group(" propertytype")
 
 
     vgraph = GraphData.new
@@ -87,7 +91,7 @@ class GraphingService
     arrsold = Array.new
     soldvol = SearchType.find_by_searchtext('Sold Summary Prop Type')
 
-    @soldgraph  = HistoricAnalysis.select("propertytype ,sum(resultvalue) as vol").where(" search_types_id = ?  and created_at > ?", soldvol.id, vpyear).group(" propertytype")
+    @soldgraph  = HistoricAnalysis.select("propertytype ,sum(resultvalue) as vol").where(" search_types_id = ?  and month = ? and year = ?", soldvol.id, vmonth, vyear).group(" propertytype")
 
 
     graphvol.each do |gdata|

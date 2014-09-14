@@ -2330,7 +2330,7 @@
       <column name="month" sqlType="int4" precision="10" scale="0" nullable="true" jdbcType="4"/>
       <column name="volpc" sqlType="numeric" precision="131089" scale="0" nullable="true" jdbcType="2"/>
       <column name="prcsold" sqlType="numeric" precision="131089" scale="0" nullable="true" jdbcType="2"/>
-      <column name="percent_price" sqlType="numeric" precision="131089" scale="0" nullable="true" jdbcType="2"/>
+      <column name="month_price_diff" sqlType="numeric" precision="131089" scale="0" nullable="true" jdbcType="2"/>
       <column name="id" sqlType="int8" precision="19" scale="0" nullable="true" jdbcType="-5"/>
     </table>
     <table name="ac_historic_currvol_view" schema="public" catalog="PropertyTracker_development" type="VIEW">
@@ -2340,6 +2340,23 @@
       <column name="fermanagh" sqlType="varchar" precision="255" scale="0" nullable="true" jdbcType="12"/>
       <column name="tyrone" sqlType="varchar" precision="255" scale="0" nullable="true" jdbcType="12"/>
       <column name="lderry" sqlType="varchar" precision="255" scale="0" nullable="true" jdbcType="12"/>
+    </table>
+    <table name="ad_historic_cntyvol_view" schema="public" catalog="PropertyTracker_development" type="VIEW">
+      <column name="county" sqlType="varchar" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="created_at" sqlType="timestamp" precision="29" scale="6" nullable="true" jdbcType="93"/>
+      <column name="year" sqlType="int4" precision="10" scale="0" nullable="true" jdbcType="4"/>
+      <column name="month" sqlType="int4" precision="10" scale="0" nullable="true" jdbcType="4"/>
+      <column name="searchparam" sqlType="varchar" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="totalval" sqlType="int8" precision="19" scale="0" nullable="true" jdbcType="-5"/>
+    </table>
+    <table name="ad_historic_cntyvol_views" schema="public" catalog="PropertyTracker_development" type="VIEW">
+      <column name="county" sqlType="varchar" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="created_at" sqlType="timestamp" precision="29" scale="6" nullable="true" jdbcType="93"/>
+      <column name="year" sqlType="int4" precision="10" scale="0" nullable="true" jdbcType="4"/>
+      <column name="month" sqlType="int4" precision="10" scale="0" nullable="true" jdbcType="4"/>
+      <column name="searchparam" sqlType="varchar" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="totalval" sqlType="int8" precision="19" scale="0" nullable="true" jdbcType="-5"/>
+      <column name="id" sqlType="int8" precision="19" scale="0" nullable="true" jdbcType="-5"/>
     </table>
     <table name="historic_analyses" schema="public" catalog="PropertyTracker_development" type="TABLE">
       <column name="id" sqlType="serial" precision="10" scale="0" nullable="false" jdbcType="4" def="bmV4dHZhbCgnaGlzdG9yaWNfYW5hbHlzZXNfaWRfc2VxJzo6cmVnY2xhc3Mp" autoIncrement="true"/>
@@ -2404,6 +2421,7 @@
       <column name="searchtext" sqlType="varchar" precision="255" scale="0" nullable="true" jdbcType="12"/>
       <column name="status" sqlType="varchar" precision="255" scale="0" nullable="true" jdbcType="12"/>
       <column name="solddate" sqlType="date" precision="13" scale="0" nullable="true" jdbcType="91"/>
+      <column name="lastdatescanned" sqlType="timestamp" precision="29" scale="6" nullable="true" jdbcType="93"/>
       <primary-key name="property_sites_pkey" columns="id"/>
       <index name="index_property_sites_on_title" unique="true" columns="title"/>
     </table>
@@ -19030,6 +19048,11 @@
         <parameter name="returnValue" sqlType="void" precision="0" scale="0" nullable="true" jdbcType="1111" type="5" index="0"/>
       </prototype>
     </procedure>
+    <procedure name="ab_historic_avg_ovr" schema="public" catalog="PropertyTracker_development" type="2">
+      <prototype>
+        <parameter name="returnValue" sqlType="void" precision="0" scale="0" nullable="true" jdbcType="1111" type="5" index="0"/>
+      </prototype>
+    </procedure>
     <procedure name="ab_historic_avg_sum" schema="public" catalog="PropertyTracker_development" type="2">
       <prototype>
         <parameter name="returnValue" sqlType="void" precision="0" scale="0" nullable="true" jdbcType="1111" type="5" index="0"/>
@@ -19041,6 +19064,11 @@
       </prototype>
     </procedure>
     <procedure name="ab_historic_cnt" schema="public" catalog="PropertyTracker_development" type="2">
+      <prototype>
+        <parameter name="returnValue" sqlType="void" precision="0" scale="0" nullable="true" jdbcType="1111" type="5" index="0"/>
+      </prototype>
+    </procedure>
+    <procedure name="ab_historic_cnt_ovr" schema="public" catalog="PropertyTracker_development" type="2">
       <prototype>
         <parameter name="returnValue" sqlType="void" precision="0" scale="0" nullable="true" jdbcType="1111" type="5" index="0"/>
       </prototype>
@@ -21465,6 +21493,7 @@
       <column name="searchtext" sqlType="varchar" precision="255" scale="0" nullable="true" jdbcType="12"/>
       <column name="status" sqlType="varchar" precision="255" scale="0" nullable="true" jdbcType="12"/>
       <column name="solddate" sqlType="date" precision="13" scale="0" nullable="true" jdbcType="91"/>
+      <column name="lastdatescanned" sqlType="timestamp" precision="29" scale="6" nullable="true" jdbcType="93"/>
       <primary-key name="property_sites_pkey" columns="id"/>
       <index name="index_property_sites_on_title" unique="true" columns="title"/>
     </table>
@@ -38091,7 +38120,37 @@
         <parameter name="returnValue" sqlType="void" precision="0" scale="0" nullable="true" jdbcType="1111" type="5" index="0"/>
       </prototype>
     </procedure>
+    <procedure name="ab_historic_avg_sum" schema="public" catalog="PropertyTracker_test" type="2">
+      <prototype>
+        <parameter name="returnValue" sqlType="void" precision="0" scale="0" nullable="true" jdbcType="1111" type="5" index="0"/>
+      </prototype>
+    </procedure>
+    <procedure name="ab_historic_chg" schema="public" catalog="PropertyTracker_test" type="2">
+      <prototype>
+        <parameter name="returnValue" sqlType="void" precision="0" scale="0" nullable="true" jdbcType="1111" type="5" index="0"/>
+      </prototype>
+    </procedure>
     <procedure name="ab_historic_cnt" schema="public" catalog="PropertyTracker_test" type="2">
+      <prototype>
+        <parameter name="returnValue" sqlType="void" precision="0" scale="0" nullable="true" jdbcType="1111" type="5" index="0"/>
+      </prototype>
+    </procedure>
+    <procedure name="ab_historic_cnt_ovr" schema="public" catalog="PropertyTracker_test" type="2">
+      <prototype>
+        <parameter name="returnValue" sqlType="void" precision="0" scale="0" nullable="true" jdbcType="1111" type="5" index="0"/>
+      </prototype>
+    </procedure>
+    <procedure name="ab_historic_cnt_sum" schema="public" catalog="PropertyTracker_test" type="2">
+      <prototype>
+        <parameter name="returnValue" sqlType="void" precision="0" scale="0" nullable="true" jdbcType="1111" type="5" index="0"/>
+      </prototype>
+    </procedure>
+    <procedure name="ab_historic_min" schema="public" catalog="PropertyTracker_test" type="2">
+      <prototype>
+        <parameter name="returnValue" sqlType="void" precision="0" scale="0" nullable="true" jdbcType="1111" type="5" index="0"/>
+      </prototype>
+    </procedure>
+    <procedure name="ab_historic_sld" schema="public" catalog="PropertyTracker_test" type="2">
       <prototype>
         <parameter name="returnValue" sqlType="void" precision="0" scale="0" nullable="true" jdbcType="1111" type="5" index="0"/>
       </prototype>

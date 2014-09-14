@@ -54,6 +54,7 @@ ActiveRecord::Schema.define(version: 201408202325923) do
     t.string   "searchtext"
     t.string   "status"
     t.date     "solddate"
+    t.datetime "lastdatescanned"
   end
 
   add_index "property_sites", ["title"], name: "index_property_sites_on_title", unique: true, using: :btree

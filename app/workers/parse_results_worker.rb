@@ -22,6 +22,8 @@ class ParseResultsWorker
     end
     etime = Time.now
     vet = etime.strftime("%H:%M:%S");
+    PropertySite.lastscanned
+
     Rails.logger.debug ' ParseResultsWorker end job ' + vet
   rescue StandardError => e
     Rails.logger.debug 'Error running ParseResultsWorker.perform ' + e.message

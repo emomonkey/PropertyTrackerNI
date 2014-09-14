@@ -10,67 +10,54 @@ Dir[Rails.root.join("spec/support/**/*.rb")].each { |f| require f }
 
 # Checks for pending migrations before tests are run.
 # If you are not using ActiveRecord, you can remove this line.
-ActiveRecord::Migration.maintain_test_schema!
+#ActiveRecord::Migration.maintain_test_schema!
+
 
 RSpec.configure do |config|
-  # ## Mock Framework
-  #
-  # If you prefer to use mocha, flexmock or RR, uncomment the appropriate line:
-  #
-  # config.mock_with :mocha
-  # config.mock_with :flexmock
-  # config.mock_with :rr
-
-  # Remove this line if you're not using ActiveRecord or ActiveRecord fixtures
-  config.fixture_path = "#{::Rails.root}/spec/fixtures"
-
-  # If you're not using ActiveRecord, or you'd prefer not to run each of your
-  # examples within a transaction, remove the following line or assign false
-  # instead of true.
-  config.use_transactional_fixtures = false
-
-  # If true, the base class of anonymous controllers will be inferred
-  # automatically. This will be the default behavior in future versions of
-  # rspec-rails.
-  config.infer_base_class_for_anonymous_controllers = false
-
-  # Run specs in random order to surface order dependencies. If you find an
-  # order dependency and want to debug it, you can fix the order by providing
-  # the seed, which is printed after each run.
-  #     --seed 1234
-
-  # emos add
   config.before(:suite) do
-    # Truncate database to clean up garbage from
-    # interrupted or badly written examples
-    DatabaseCleaner.clean_with(:truncation)
+    config.use_transactional_fixtures = false
+    DatabaseCleaner.clean_with :truncation
 
-    # Seed dataase. Use it only for essential
-    # to run application data.
-    load "#{Rails.root}/db/testseeds.rb"
-    #Rails.application.load_seed
   end
 
-  #config.order = "random"
-  config.order = "default"
-  # emos add
-  config.around(:each) do |example|
-    # Use really fast transaction strategy for all
-    # examples except `js: true` capybara specs
-    DatabaseCleaner.strategy = example.metadata[:js] ? :truncation : :transaction
+  config.after(:suite) do
+    DatabaseCleaner.clean
+  end
 
-    # Start transaction
+
+  config.before(:each) do
+    DatabaseCleaner.strategy = :transaction
+  end
+
+  config.before(:each, :js => true) do
+    DatabaseCleaner.strategy = :truncation
+  end
+
+  config.before(:each) do
     DatabaseCleaner.start
+    load "#{Rails.root}/db/testseeds.rb"
+  end
 
-    # Run example
-    example.run
-
-    #
+  config.after(:each) do
+    DatabaseCleaner.clean
 
 
   end
 
-  # Rollback transaction
-  DatabaseCleaner.clean
+  config.around do |example|
+    # For examples using capybara-webkit for example.
+    # Remove this if you don't use it or anything similar
+    if example.metadata[:js]
+      example.run
 
+      ActiveRecord::Base.connection.execute("TRUNCATE #{ActiveRecord::Base.connection.tables.join(',')} RESTART IDENTITY")
+    else
+      ActiveRecord::Base.transaction do
+        example.run
+        raise ActiveRecord::Rollback
+      end
+    end
+  end
 end
+
+

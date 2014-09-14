@@ -13,9 +13,14 @@ class CountyController < ApplicationController
     @arrmstpop = @view_service.CountyStats
     #continue.maximum(:resultvalue, :group => :county)
 
+    vcreatedat = HistoricAnalysis.maximum(:created_at)
+    vselectdat = vcreatedat.months_ago(1)
+    vyear = vselectdat.strftime("%Y")
+    vmonth = vselectdat.strftime("%m")
+    vqdat = Date.strptime("01/" + vmonth + "/" + vyear, '%m/%d/%Y')
     vcntystat = AbHistoricCntyView.all
     @hshcntyst = Hash.new
-    @hshcntyst = Hash[vcntystat.map { |fcnty| [fcnty['county'].to_sym, [fcnty['volpc'], fcnty['prcsold'], fcnty['percent_price']]] }]
+    @hshcntyst = Hash[vcntystat.map { |fcnty| [fcnty['county'].to_sym, [fcnty['volpc'], fcnty['prcsold'], fcnty['month_price_diff']]] }]
 
   end
 
@@ -29,13 +34,27 @@ class CountyController < ApplicationController
 
   def pricevolume
 
-    stype = SearchType.find_by searchtext: 'Volume County Summary Property Types'
+
     vcreatedat = HistoricAnalysis.maximum(:created_at)
-    smxdt = vcreatedat.strftime('%Y%m')
-    vcnty = params[:county]
-#    @histvol = HistoricAnalysis.search_yyyymm(smxdt).search_restype(stype.id)
-    @histvol = HistoricAnalysis.search_county(vcnty).search_restype(stype.id).search_yyyymm(smxdt).paginate(:page => params[:page], per_page: 20).order('resultvalue desc')
-    t = @histvol.first
-    @county = t.search_params.county
+    vlastdat = vcreatedat.months_ago(12)
+    vyear = vlastdat.strftime("%Y")
+    vmonth = vlastdat.strftime("%m")
+    vstartdat =  Date.strptime("01/" + vmonth + "/" + vyear, '%m/%d/%Y')
+    vcnty = 'Co.' + params[:county]
+
+
+ #   @vhistvol = AdHistoricCntyvolView.where("county = ? and year = ?  and month = ?", vcnty, vyear, vmonth).paginate(:page => params[:page], per_page: 20)
+    @vhistvol = AdHistoricCntyvolView.where("county = ? and created_at >= ?" , vcnty, vstartdat).paginate(:page => params[:page], per_page: 20)
+    @county = vcnty
   end
+
+  def detail
+    vcnty = params[:detail]
+
+
+
+  end
+
+
+
 end
