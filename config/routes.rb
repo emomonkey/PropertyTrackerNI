@@ -25,7 +25,7 @@ Rails.application.routes.draw do
 
   get 'county/detail'
 
-  get 'county/pricevolume/detail/:area' => 'county#detail', as: 'detailvol'
+  get 'county/pricevolume/detail/:searchparam' => 'county#detail', as: 'detailvol'
 
   #resources :snippets
   #root to: "snippets#new"

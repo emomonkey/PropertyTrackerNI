@@ -8,33 +8,33 @@ FROM
 SELECT county, year, month, searchparam, SUM(resultvalue) totalval FROM historic_analyses h
   , search_types a, search_params p  WHERE searchtext = 'Volume Summary Property Types'
                                            AND p.id = h.search_params_id AND county = 'Co.Antrim'
-GROUP BY county,year, month, searchparam ORDER BY county, year , month,totalval desc LIMIT 1
+GROUP BY county,year, month, searchparam ORDER BY county, year desc, month desc,totalval desc LIMIT 1
 ) a,
 (SELECT county, year, month, searchparam, SUM(resultvalue) totalval FROM historic_analyses h
       , search_types a, search_params p  WHERE searchtext = 'Volume Summary Property Types'
         AND p.id = h.search_params_id AND county = 'Co.Armagh'
-GROUP BY county,year, month, searchparam ORDER BY county, year , month,totalval desc LIMIT 1)b,
+GROUP BY county,year, month, searchparam ORDER BY county, year desc, month desc,totalval desc LIMIT 1)b,
   (SELECT county, year, month, searchparam, SUM(resultvalue) totalval FROM historic_analyses h
     , search_types a, search_params p  WHERE searchtext = 'Volume Summary Property Types'
                                              AND p.id = h.search_params_id AND county = 'Co.Down'
-  GROUP BY county,year, month, searchparam ORDER BY county, year , month,totalval desc LIMIT 1)c,
+  GROUP BY county,year, month, searchparam ORDER BY county, year desc, month desc,totalval desc LIMIT 1)c,
   (SELECT county, year, month, searchparam, SUM(resultvalue) totalval FROM historic_analyses h
     , search_types a, search_params p  WHERE searchtext = 'Volume Summary Property Types'
                                              AND p.id = h.search_params_id AND county = 'Co.Fermanagh'
-  GROUP BY county,year, month, searchparam ORDER BY county, year , month,totalval desc LIMIT 1)d,
+  GROUP BY county,year, month, searchparam ORDER BY county, year desc, month desc,totalval desc LIMIT 1)d,
   (SELECT county, year, month, searchparam, SUM(resultvalue) totalval FROM historic_analyses h
     , search_types a, search_params p  WHERE searchtext = 'Volume Summary Property Types'
                                              AND p.id = h.search_params_id AND county = 'Co.Tyrone'
-  GROUP BY county,year, month, searchparam ORDER BY county, year , month,totalval desc LIMIT 1)e,
+  GROUP BY county,year, month, searchparam ORDER BY county, year desc, month desc,totalval desc LIMIT 1)e,
   (SELECT county, year, month, searchparam, SUM(resultvalue) totalval FROM historic_analyses h
     , search_types a, search_params p  WHERE searchtext = 'Volume Summary Property Types'
                                              AND p.id = h.search_params_id AND county = 'Co.Londonderry'
-  GROUP BY county,year, month, searchparam ORDER BY county, year , month,totalval desc LIMIT 1)f;
+  GROUP BY county,year, month, searchparam ORDER BY county, year desc, month desc,totalval desc LIMIT 1)f;
 
 SELECT county, year, month, searchparam, SUM(resultvalue) totalval FROM historic_analyses h
   , search_types a, search_params p  WHERE searchtext = 'Volume Summary Property Types'
                                            AND p.id = h.search_params_id AND county = 'Co.Down'
-GROUP BY county,year, month, searchparam ORDER BY county, year , month,totalval desc LIMIT 1)
+GROUP BY county,year, month, searchparam ORDER BY county, year desc, month desc,totalval desc LIMIT 1)
 
   end
 

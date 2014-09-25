@@ -12,6 +12,7 @@ class ScheduledProcedure < ActiveRecord::Base
     self.connection.execute("SELECT ab_historic_avg_sum();")
     self.connection.execute("SELECT ab_historic_avg_ovr();")
     self.connection.execute("SELECT ab_historic_cnt_ovr();")
+    self.connection.execute("SELECT ab_historiccnt_area();")
   rescue StandardError => e
     Rails.logger.debug 'Error running ScheduledProcedure.parsehistoric ' + e.message
 

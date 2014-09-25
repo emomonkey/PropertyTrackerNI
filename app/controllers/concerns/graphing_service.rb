@@ -26,9 +26,15 @@ class GraphingService
         arrdata = Array.new
       end
 
-      if bfirst
+  #  if bfirst
+  #      arrcat  <<  "%d%02d" % [paramprop.year, paramprop.month]
+  #    end
+
+      unless arrcat.include?("%d%02d" % [paramprop.year, paramprop.month])
         arrcat  <<  "%d%02d" % [paramprop.year, paramprop.month]
       end
+
+
       arrdata << paramprop.resval
 
       vprev = paramprop.propertytype
