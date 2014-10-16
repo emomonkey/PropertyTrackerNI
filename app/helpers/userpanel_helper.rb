@@ -1,0 +1,2 @@
+module UserpanelHelper
+end

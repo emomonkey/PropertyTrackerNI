@@ -1,0 +1,129 @@
+<div class="cards">
+  <div class="card">
+    <%= link_to countyprice_path("Armagh") do %>
+    <div class="card-image">
+      <%= image_tag "armagh1.png" %>
+    </div>
+    <div class="card-header">
+      Co.Armagh
+    </div>
+    <div class="card-copy">
+      <p>Largest price increase this month in Co.Armagh <%= @arrmstpop[0]['armagh'] %></p>
+    </div>
+    <div class="card-stats">
+      <ul>
+        <li><%=@hshcntyst["Co.Armagh".to_sym][0] %>%<span>Volume of Market</span></li>
+        <li><%=@hshcntyst["Co.Armagh".to_sym][1] %>%<span>Sold</span></li>
+        <li>£<%=@hshcntyst["Co.Armagh".to_sym][2] %><span>Price Change Amount</span></li>
+      </ul>
+    </div>
+   <% end %>
+  </div>
+
+  <div class="card">
+    <div class="ribbon-wrapper"><div class="ribbon">RIBBON</div></div>
+    <%= link_to countyprice_path("Antrim") do %>
+    <div class="card-image">
+      <%= image_tag "antrim1.png" %>
+    </div>
+    <div class="card-header">
+      Co.Antrim
+    </div>
+    <div class="card-copy">
+      <p>Largest price increase this month in Co.Antrim <%= @arrmstpop[0]['antrim'] %></p>
+    </div>
+    <div class="card-stats">
+      <ul>
+        <li><%=@hshcntyst["Co.Antrim".to_sym][0] %>%<span>Volume of Market</span></li>
+        <li><%=@hshcntyst["Co.Antrim".to_sym][1] %>%<span>Sold</span></li>
+        <li>£<%=@hshcntyst["Co.Antrim".to_sym][2] %><span>Price Change Amount</span></li>
+      </ul>
+    </div>
+   <% end %>
+  </div>
+
+  <div class="card">
+    <%= link_to countyprice_path("Down") do %>
+    <div class="card-image">
+      <%= image_tag "down1.png" %>
+    </div>
+    <div class="card-header">
+      Co.Down
+    </div>
+    <div class="card-copy">
+      <p>Largest price increase this month in Co.Down <%= @arrmstpop[0]['down'] %></p>
+    </div>
+    <div class="card-stats">
+      <ul>
+        <li><%=@hshcntyst["Co.Down".to_sym][0] %>%<span>Volume of Market</span></li>
+        <li><%=@hshcntyst["Co.Down".to_sym][1] %>%<span>Sold</span></li>
+        <li>£<%=@hshcntyst["Co.Down".to_sym][2] %><span>Price Change Amount</span></li>
+      </ul>
+    </div>
+   <%end%>
+  </div>
+
+  <div class="card">
+    <%= link_to countyprice_path("Fermanagh") do %>
+    <div class="card-image">
+      <%= image_tag "fermanagh1.png" %>
+    </div>
+    <div class="card-header">
+      Co.Fermanagh
+    </div>
+    <div class="card-copy">
+      <p>Larges price increase this month in Co.Fermanagh <%= @arrmstpop[0]['fermanagh'] %></p>
+    </div>
+    <div class="card-stats">
+    <ul>
+      <li><%=@hshcntyst["Co.Fermanagh".to_sym][0] %>%<span>Volume of Market</span></li>
+      <li><%=@hshcntyst["Co.Fermanagh".to_sym][1] %>%<span>Sold</span></li>
+      <li>£<%=@hshcntyst["Co.Fermanagh".to_sym][2] %><span>Price Change Amount</span></li>
+    </ul>
+    </div>
+   <% end %>
+  </div>
+
+  <div class="card">
+    <%= link_to countyprice_path("Londonderry") do %>
+    <div class="ribbon-wrapper"><div class="ribbon">RIBBON</div></div>
+    <div class="card-image">
+      <%= image_tag "derry1.png" %>
+    </div>
+    <div class="card-header">
+      Co.Londonderry
+    </div>
+    <div class="card-copy">
+      <p>Largest price increase this month in Co.Londonderry <%= @arrmstpop[0]['lderry'] %></p>
+    </div>
+    <div class="card-stats">
+      <ul>
+        <li><%=@hshcntyst["Co.Londonderry".to_sym][0] %>%<span>Volume of Market</span></li>
+        <li><%=@hshcntyst["Co.Londonderry".to_sym][1] %>%<span>Sold</span></li>
+        <li>£<%=@hshcntyst["Co.Londonderry".to_sym][2] %><span>Price Change Amount</span></li>
+      </ul>
+    </div>
+   <% end %>
+  </div>
+
+  <div class="card">
+    <%= link_to countyprice_path("Tyrone") do %>
+    <div class="card-image">
+      <%= image_tag "tyrone1.png" %>
+    </div>
+    <div class="card-header">
+      Co.Tyrone
+    </div>
+    <div class="card-copy">
+      <p>Largest price increase this month in Co.Tyrone <%= @arrmstpop[0]['tyrone'] %></p>
+    </div>
+    <div class="card-stats">
+      <ul>
+        <li><%=@hshcntyst["Co.Tyrone".to_sym][0] %>%<span>Volume of Market</span></li>
+        <li><%=@hshcntyst["Co.Tyrone".to_sym][1] %>%<span>Sold</span></li>
+        <li>£<%=@hshcntyst["Co.Tyrone".to_sym][2] %><span>Price Change Amount</span></li>
+      </ul>
+    </div>
+  </div>
+ <% end %>
+</div>

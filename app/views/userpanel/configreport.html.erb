@@ -1,0 +1,36 @@
+<head>
+  <link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,800,700,600,300' rel='stylesheet' type='text/css'>
+  <link href='http://fonts.googleapis.com/css?family=Roboto+Slab:400,300,100,700' rel='stylesheet' type='text/css'>
+</head>
+
+
+<fieldset>
+<%= form_tag( 'update_area', remote:true) do %>
+
+<h3>Userprofile: <%= @email %></h3>
+
+
+  <p><label for="select_county">Select County:</label>
+    <%= select_tag("select_county", options_for_select([['Co.Antrim', 'Co.Antrim'], ['Co.Armagh', 'Co.Armagh'], ['Co.Fermanagh', 'Co.Fermanagh'], ['Co.Londonderry', 'Co.Londonderry'], ['Co.Tyrone', 'Co.Tyrone']], selected: 'Co.Antrim' )) %>
+  </p>
+
+  <p><label for="select_area">Select Area:</label>
+    <select name="select_area" id="select_area">
+        <%= @areacol.each do |itma| %>
+            <option value = "<%= itma['id'] %>"><%= itma['searchparam'] %> </option>
+        <% end %>
+    </select>
+    <%=  submit_tag "Add Area"%>
+  </p>
+
+  <p>
+  <label for="items_grid">Selected Areas:</label>
+  <div id="items_grid" >
+    <%= render partial: 'update_area'  %>
+  </div>
+  </p>
+
+<% end %>
+  <%= button_to "Clear Selection", { action: "clear_area" }, :remote=>true%>
+</fieldset>
+

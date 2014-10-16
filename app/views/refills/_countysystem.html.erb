@@ -1,0 +1,108 @@
+<head>
+  <link href='http://fonts.googleapis.com/css?family=Radley:400,400italic' rel='stylesheet' type='text/css'>
+  <link href='http://fonts.googleapis.com/css?family=Noto+Sans:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+</head>
+
+<article class="type-system-traditional">
+  <p class="type"></p>
+  <h1>Monthly View for <%= @vAreaRec.searchparam  %>  <%= Time.now.strftime("%d/%m/%Y") %></h1>
+  <h2>The graphs displayed on this screen detail the changes in the price, volume on sale and volume sold </h2>
+
+
+  <h3>Source of Data</h3>
+  <p>Gathered from Internet Property Advertising site this data is independently gathered on a monthly basis to show changes in the movement of properties in Northern Ireland.</p>
+  <hr>
+
+  <p class="author">Price Changes in <%= @vAreaRec.searchparam  %></p>
+  <div class="chart-wrapper">
+    <div class="chart-inner">
+      <p><%= high_chart("AvgPrice",@prccntychart) %></p>
+    </div>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+  </div>
+
+
+</article>
+
+<article class="type-system-traditional">
+
+<p class="type"></p>
+<h1></h1>
+<h2></h2>
+
+
+<h3></h3>
+
+<div class="chart-wrapper">
+<div class="chart-inner">
+  <p><%= high_chart("VolumeSale", @volcntychart) %></p>
+</div>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+</div>
+</article>
+
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+  <br>
+
+<article class="type-system-traditional">
+  <p class="type"></p>
+  <h1></h1>
+  <h2></h2>
+
+
+  <h3></h3>
+    <div class="chart-wrapper">
+    <div class="chart-inner">
+      <p><%= high_chart("VolumeSold", @sldcntychart) %></p>
+    </div>
+      <br>
+      <br>
+      <br>
+      <br>
+      <br>
+      <br>
+      <br>
+      <br>
+      <br>
+      <br>
+      <br>
+      <br>
+      <br>
+      <br>
+      <br>
+    </div>
+</article>
+
+
