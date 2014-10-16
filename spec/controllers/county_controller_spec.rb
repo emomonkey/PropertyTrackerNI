@@ -29,7 +29,7 @@ RSpec.describe CountyController, :type => :controller do
     @view_service ||= ViewService.new
     it "should find Average Price Area" do
 
-      vret =  @view_service.fndavgareaprcmthyr(varea)
+      vret =  @view_service.fndavgareaprcmthyr('Waringstown')
 
     end
 

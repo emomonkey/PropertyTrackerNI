@@ -1,6 +1,10 @@
 class ViewService
 
+def CountyPriceStats
+  sSql = "SELECT * FROM ae_historic_curravg_view"
+  countystat = HistoricAnalysis.find_by_sql [sSql]
 
+end
 
 def CountyStats
 

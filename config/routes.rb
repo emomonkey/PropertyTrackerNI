@@ -1,6 +1,22 @@
 require 'sidekiq/web'
 
 Rails.application.routes.draw do
+  get 'userpanel/configreport'
+
+  get 'userpanel/displayreport'
+
+  devise_for :admins, controllers: { sessions: "admins/sessions" }
+  get 'userpanel/configreport', as: 'user_root'
+
+  get 'userpanel/update_selarea', as: 'update_selarea'
+  post 'userpanel/update_area', as: 'update_area'
+  post 'userpanel/clear_area', as: 'clear_area'
+  get 'userpanel/show'
+  post 'userpanel/saveprofile'
+
+  get 'manage/jobs', as: 'admin_root'
+
+  devise_for :users
   get 'area/volumeview'
 
   get 'area/priceview'
@@ -13,15 +29,27 @@ Rails.application.routes.draw do
 
   get 'county/priceview'
 
+  get 'county/pricingview' => 'county#pricingview', as: 'county_pricingview'
+
   get 'county/volumegraph'
 
   get 'county/pricevolume'
 
   get 'scraper/search'
 
+  get 'scraper/contactus'
+
+  get 'county/searcharea'
+
+  get 'county/searcharea' => 'county#searcharea', as: 'countysearcharea'
+
   get 'scraper/result'
 
+  get 'scraper/aboutus'
+
   get 'county/pricevolume/:county' => 'county#pricevolume', as:  'countyvol'
+
+  get 'county/pricingvolume/:county' => 'county#pricingvolume', as:  'countyprice'
 
   get 'county/detail'
 
@@ -29,7 +57,7 @@ Rails.application.routes.draw do
 
   #resources :snippets
   #root to: "snippets#new"
-  mount Sidekiq::Web, at: "/sidekiq"
+  mount Sidekiq::Web, at: "manage/sidekiq"
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
@@ -80,9 +108,9 @@ Rails.application.routes.draw do
   #   resources :photos, concerns: :toggleable
 
   # Example resource route within a namespace:
-  #   namespace :admin do
-  #     # Directs /admin/products/* to Admin::ProductsController
-  #     # (app/controllers/admin/products_controller.rb)
+  #   namespace :manage do
+  #     # Directs /manage/products/* to Admin::ProductsController
+  #     # (app/controllers/manage/products_controller.rb)
   #     resources :products
   #   end
 end

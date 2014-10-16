@@ -24,11 +24,17 @@ class PropertyNewsCrawler
 
      if propertysite.nil?
         propertysite = PropertySite.create(:title => spage["itmtitle"], :propertytype => spage["type"], :beds => sbeds.to_i, :searchtext => @searchinput, :status => spage["status"], :lastdatescanned => DateTime.now )
+        vsearch = SearchParams.where("searchparam = ?", @searchinput).first
+        vsearch.update(searchdate: DateTime.now)
       else
         if (propertysite.status != "Sold" or propertysite.status !="Sale Agreed") and propertysite.status != spage["status"]
           propertysite.update(:status => spage["status"], :lastdatescanned => DateTime.now)
+          vsearch = SearchParams.where("searchparam = ?", @searchinput).first
+          vsearch.update(searchdate: DateTime.now)
         else
           propertysite.update(:lastdatescanned => DateTime.now)
+          vsearch = SearchParams.where("searchparam = ?", @searchinput).first
+          vsearch.update(searchdate: DateTime.now)
         end
       end
  #     propertysite = PropertySite.find_by title: spage["itmtitle"]

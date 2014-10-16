@@ -11,10 +11,28 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 201408202325923) do
+ActiveRecord::Schema.define(version: 201410012221323) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "admins", force: true do |t|
+    t.string   "email",                  default: "", null: false
+    t.string   "encrypted_password",     default: "", null: false
+    t.string   "reset_password_token"
+    t.datetime "reset_password_sent_at"
+    t.datetime "remember_created_at"
+    t.integer  "sign_in_count",          default: 0,  null: false
+    t.datetime "current_sign_in_at"
+    t.datetime "last_sign_in_at"
+    t.inet     "current_sign_in_ip"
+    t.inet     "last_sign_in_ip"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "admins", ["email"], name: "index_admins_on_email", unique: true, using: :btree
+  add_index "admins", ["reset_password_token"], name: "index_admins_on_reset_password_token", unique: true, using: :btree
 
   create_table "historic_analyses", force: true do |t|
     t.integer  "year"
@@ -34,6 +52,14 @@ ActiveRecord::Schema.define(version: 201408202325923) do
   add_index "historic_analyses", ["property_sites_id"], name: "index_historic_analyses_on_property_sites_id", using: :btree
   add_index "historic_analyses", ["search_params_id"], name: "index_historic_analyses_on_search_params_id", using: :btree
   add_index "historic_analyses", ["search_types_id"], name: "index_historic_analyses_on_search_types_id", using: :btree
+
+  create_table "profilesearchparams", force: true do |t|
+    t.integer  "user_profile_id"
+    t.integer  "search_params_id"
+    t.datetime "appointment_date"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
 
   create_table "property_site_values", force: true do |t|
     t.integer  "property_site_id"
@@ -75,6 +101,7 @@ ActiveRecord::Schema.define(version: 201408202325923) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "county"
+    t.datetime "searchdate"
   end
 
   create_table "search_types", force: true do |t|
@@ -95,5 +122,29 @@ ActiveRecord::Schema.define(version: 201408202325923) do
     t.datetime "created_at"
     t.datetime "updated_at"
   end
+
+  create_table "user_profiles", force: true do |t|
+    t.string   "name"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  create_table "users", force: true do |t|
+    t.string   "email",                  default: "", null: false
+    t.string   "encrypted_password",     default: "", null: false
+    t.string   "reset_password_token"
+    t.datetime "reset_password_sent_at"
+    t.datetime "remember_created_at"
+    t.integer  "sign_in_count",          default: 0,  null: false
+    t.datetime "current_sign_in_at"
+    t.datetime "last_sign_in_at"
+    t.inet     "current_sign_in_ip"
+    t.inet     "last_sign_in_ip"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "users", ["email"], name: "index_users_on_email", unique: true, using: :btree
+  add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
 
 end

@@ -6,26 +6,13 @@ class ScraperController < ApplicationController
     @graphing_service ||= service
   end
 
+
+
+
   def search
    # psitev = PropertySite.create(:title => "Test Withdrawn", :status => "Sale Agreed", :beds => 0)
 
-    @analysisworker = AnalysisResultsWorker.new
-    @analysisworker.perform
 
-    @stype = SearchType.find_by_searchtext('Historic Avg')
-    @sid = @stype.id
-
-    sSql = "SELECT MONTH(ps.created_at) as vmonth, YEAR(ps.created_at) as vyear, ps.propertytype, ps.beds, AVG(price) as avgprice, sp.id as spid, ps.created_at as propdate   FROM property_sites ps "\
-            "LEFT JOIN (SELECT DISTINCT CONCAT(year, month) yrm, beds,propertytype, search_types_id FROM historic_analyses WHERE search_types_id = "
-    sSql = sSql + @sid.to_s + " AND propertytype LIKE '%Townhouse%'"
-    sSql <<  ") myear ON DATE_FORMAT(ps.created_at,'%Y%m') = "\
-           " myear.yrm AND ps.beds = myear.beds AND ps.propertytype = myear.propertytype AND myear.search_types_id = "
-    sSql = sSql + @sid.to_s
-    sSql <<  ", property_site_values psv , search_params sp WHERE ps.id = psv.property_site_id AND sp.searchparam = ps.searchtext AND myear.yrm IS NULL "\
-           " AND ps.propertytype LIKE '%Townhouse%' GROUP BY vyear,vmonth, ps.propertytype, ps.beds, spid "
-
-   vh = PopulateNewsHistoricResults.new
-   vh.start
 
 #    vh.areahighestincprice
 
@@ -36,9 +23,12 @@ class ScraperController < ApplicationController
     isize = 1;
     begin
       SearchParams.find_each(start:isize, batch_size: batchsize) do |params|
+        pdate = params['searchdate']
    #   @pnewscrawl = PropertyNewsCrawler.new('http://www.propertynews.com', params.searchparam)
-        @pnewscrawl = PropertyNewsCrawler.new('http://www.propertynews.com', "waringstown")
+        if pdate == nil or (pdate.year != Time.now.year and pdate.mon != Time.now.month)
+        @pnewscrawl = PropertyNewsCrawler.new('http://www.propertynews.com', "Waringstown")
       @pnewscrawl.findresult
+         end
       end
       isize = isize + batchsize
     end while isize < nosearch
@@ -85,9 +75,17 @@ class ScraperController < ApplicationController
 
   end
 
+
+  def aboutus
+
+  end
+
+
   def result
 
    volcnty = @graphing_service.fndavgprcmthyr
+
+   volmthcty = @graphing_service.fndvolmthyr
 
    vcreatedat = HistoricAnalysis.maximum(:created_at)
    smxdt = vcreatedat.strftime('%Y%m')
@@ -134,6 +132,24 @@ class ScraperController < ApplicationController
 
     end
 
+   volmthcty = @graphing_service.fndvolmthyr
+   @volchart =  LazyHighCharts::HighChart.new('graph') do |e|
+     e.title(:text => "Volume on Sale Over the Year")
+     e.xAxis(:categories => volmthcty.category)
+
+     e.legend(:align => 'right', :verticalAlign => 'top', :y => 0, :x => -50, :layout => 'vertical',)
+
+     e.yAxis [
+                 {:title => {:text => "Volume", :margin => 5} }
+             ]
+
+     volmthcty.series.each_with_index do  |pseries , index |
+       cval =  pseries.map { |i| i.to_i}
+       e.series(:name => volcnty.arrseries[index], :yAxis => 0, :data =>cval)
+     end
+
+     e.chart({:defaultSeriesType=>"line", :marginbottom=>0, :height => 150})
+   end
 
   # HighChart Pie Sold Volume County
   # Recently Sold By County

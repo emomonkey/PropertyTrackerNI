@@ -30,11 +30,7 @@ GROUP BY county,year, month, searchparam ORDER BY county, year desc, month desc,
     , search_types a, search_params p  WHERE searchtext = 'Volume Summary Property Types'
                                              AND p.id = h.search_params_id AND county = 'Co.Londonderry'
   GROUP BY county,year, month, searchparam ORDER BY county, year desc, month desc,totalval desc LIMIT 1)f;
-
-SELECT county, year, month, searchparam, SUM(resultvalue) totalval FROM historic_analyses h
-  , search_types a, search_params p  WHERE searchtext = 'Volume Summary Property Types'
-                                           AND p.id = h.search_params_id AND county = 'Co.Down'
-GROUP BY county,year, month, searchparam ORDER BY county, year desc, month desc,totalval desc LIMIT 1)
+)
 
   end
 

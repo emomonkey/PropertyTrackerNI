@@ -10,7 +10,7 @@ describe PropertyNewsCrawler do
   end
 
   it "should find a price" do
-    @pnewscrawlp = PropertyNewsCrawler.new('http://www.propertynews.com', 'waringstown')
+    @pnewscrawlp = PropertyNewsCrawler.new('http://www.propertynews.com', 'Waringstown')
     bres = @pnewscrawlp.parseresult("//div[contains(@class,'details col span-8 last')]")
 
     expect(bres).to be_truthy

@@ -2329,6 +2329,7 @@
       <column name="year" sqlType="int4" precision="10" scale="0" nullable="true" jdbcType="4"/>
       <column name="month" sqlType="int4" precision="10" scale="0" nullable="true" jdbcType="4"/>
       <column name="volpc" sqlType="numeric" precision="131089" scale="0" nullable="true" jdbcType="2"/>
+      <column name="created_at" sqlType="timestamp" precision="29" scale="6" nullable="true" jdbcType="93"/>
       <column name="prcsold" sqlType="numeric" precision="131089" scale="0" nullable="true" jdbcType="2"/>
       <column name="month_price_diff" sqlType="numeric" precision="131089" scale="0" nullable="true" jdbcType="2"/>
       <column name="id" sqlType="int8" precision="19" scale="0" nullable="true" jdbcType="-5"/>
@@ -2351,12 +2352,47 @@
     </table>
     <table name="ad_historic_cntyvol_views" schema="public" catalog="PropertyTracker_development" type="VIEW">
       <column name="county" sqlType="varchar" precision="255" scale="0" nullable="true" jdbcType="12"/>
-      <column name="created_at" sqlType="timestamp" precision="29" scale="6" nullable="true" jdbcType="93"/>
-      <column name="year" sqlType="int4" precision="10" scale="0" nullable="true" jdbcType="4"/>
-      <column name="month" sqlType="int4" precision="10" scale="0" nullable="true" jdbcType="4"/>
       <column name="searchparam" sqlType="varchar" precision="255" scale="0" nullable="true" jdbcType="12"/>
       <column name="totalval" sqlType="int8" precision="19" scale="0" nullable="true" jdbcType="-5"/>
       <column name="id" sqlType="int8" precision="19" scale="0" nullable="true" jdbcType="-5"/>
+    </table>
+    <table name="admins" schema="public" catalog="PropertyTracker_development" type="TABLE">
+      <column name="id" sqlType="serial" precision="10" scale="0" nullable="false" jdbcType="4" def="bmV4dHZhbCgnYWRtaW5zX2lkX3NlcSc6OnJlZ2NsYXNzKQ==" autoIncrement="true"/>
+      <column name="email" sqlType="varchar" precision="255" scale="0" nullable="false" jdbcType="12" def="Jyc="/>
+      <column name="encrypted_password" sqlType="varchar" precision="255" scale="0" nullable="false" jdbcType="12" def="Jyc="/>
+      <column name="reset_password_token" sqlType="varchar" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="reset_password_sent_at" sqlType="timestamp" precision="29" scale="6" nullable="true" jdbcType="93"/>
+      <column name="remember_created_at" sqlType="timestamp" precision="29" scale="6" nullable="true" jdbcType="93"/>
+      <column name="sign_in_count" sqlType="int4" precision="10" scale="0" nullable="false" jdbcType="4" def="MA=="/>
+      <column name="current_sign_in_at" sqlType="timestamp" precision="29" scale="6" nullable="true" jdbcType="93"/>
+      <column name="last_sign_in_at" sqlType="timestamp" precision="29" scale="6" nullable="true" jdbcType="93"/>
+      <column name="current_sign_in_ip" sqlType="inet" precision="2147483647" scale="0" nullable="true" jdbcType="1111"/>
+      <column name="last_sign_in_ip" sqlType="inet" precision="2147483647" scale="0" nullable="true" jdbcType="1111"/>
+      <column name="created_at" sqlType="timestamp" precision="29" scale="6" nullable="true" jdbcType="93"/>
+      <column name="updated_at" sqlType="timestamp" precision="29" scale="6" nullable="true" jdbcType="93"/>
+      <primary-key name="admins_pkey" columns="id"/>
+      <index name="index_admins_on_email" unique="true" columns="email"/>
+      <index name="index_admins_on_reset_password_token" unique="true" columns="reset_password_token"/>
+    </table>
+    <table name="admins_id_seq" schema="public" catalog="PropertyTracker_development" type="SEQUENCE">
+      <column name="sequence_name" sqlType="name" precision="2147483647" scale="0" nullable="false" jdbcType="12"/>
+      <column name="last_value" sqlType="int8" precision="19" scale="0" nullable="false" jdbcType="-5"/>
+      <column name="start_value" sqlType="int8" precision="19" scale="0" nullable="false" jdbcType="-5"/>
+      <column name="increment_by" sqlType="int8" precision="19" scale="0" nullable="false" jdbcType="-5"/>
+      <column name="max_value" sqlType="int8" precision="19" scale="0" nullable="false" jdbcType="-5"/>
+      <column name="min_value" sqlType="int8" precision="19" scale="0" nullable="false" jdbcType="-5"/>
+      <column name="cache_value" sqlType="int8" precision="19" scale="0" nullable="false" jdbcType="-5"/>
+      <column name="log_cnt" sqlType="int8" precision="19" scale="0" nullable="false" jdbcType="-5"/>
+      <column name="is_cycled" sqlType="bool" precision="1" scale="0" nullable="false" jdbcType="-7"/>
+      <column name="is_called" sqlType="bool" precision="1" scale="0" nullable="false" jdbcType="-7"/>
+    </table>
+    <table name="ae_historic_curravg_view" schema="public" catalog="PropertyTracker_development" type="VIEW">
+      <column name="antrim" sqlType="varchar" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="armagh" sqlType="varchar" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="down" sqlType="varchar" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="fermanagh" sqlType="varchar" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="tyrone" sqlType="varchar" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="lderry" sqlType="varchar" precision="255" scale="0" nullable="true" jdbcType="12"/>
     </table>
     <table name="historic_analyses" schema="public" catalog="PropertyTracker_development" type="TABLE">
       <column name="id" sqlType="serial" precision="10" scale="0" nullable="false" jdbcType="4" def="bmV4dHZhbCgnaGlzdG9yaWNfYW5hbHlzZXNfaWRfc2VxJzo6cmVnY2xhc3Mp" autoIncrement="true"/>
@@ -2378,6 +2414,27 @@
       <index name="index_historic_analyses_on_search_types_id" unique="false" columns="search_types_id"/>
     </table>
     <table name="historic_analyses_id_seq" schema="public" catalog="PropertyTracker_development" type="SEQUENCE">
+      <column name="sequence_name" sqlType="name" precision="2147483647" scale="0" nullable="false" jdbcType="12"/>
+      <column name="last_value" sqlType="int8" precision="19" scale="0" nullable="false" jdbcType="-5"/>
+      <column name="start_value" sqlType="int8" precision="19" scale="0" nullable="false" jdbcType="-5"/>
+      <column name="increment_by" sqlType="int8" precision="19" scale="0" nullable="false" jdbcType="-5"/>
+      <column name="max_value" sqlType="int8" precision="19" scale="0" nullable="false" jdbcType="-5"/>
+      <column name="min_value" sqlType="int8" precision="19" scale="0" nullable="false" jdbcType="-5"/>
+      <column name="cache_value" sqlType="int8" precision="19" scale="0" nullable="false" jdbcType="-5"/>
+      <column name="log_cnt" sqlType="int8" precision="19" scale="0" nullable="false" jdbcType="-5"/>
+      <column name="is_cycled" sqlType="bool" precision="1" scale="0" nullable="false" jdbcType="-7"/>
+      <column name="is_called" sqlType="bool" precision="1" scale="0" nullable="false" jdbcType="-7"/>
+    </table>
+    <table name="profilesearchparams" schema="public" catalog="PropertyTracker_development" type="TABLE">
+      <column name="id" sqlType="serial" precision="10" scale="0" nullable="false" jdbcType="4" def="bmV4dHZhbCgncHJvZmlsZXNlYXJjaHBhcmFtc19pZF9zZXEnOjpyZWdjbGFzcyk=" autoIncrement="true"/>
+      <column name="user_profile_id" sqlType="int4" precision="10" scale="0" nullable="true" jdbcType="4"/>
+      <column name="search_params_id" sqlType="int4" precision="10" scale="0" nullable="true" jdbcType="4"/>
+      <column name="appointment_date" sqlType="timestamp" precision="29" scale="6" nullable="true" jdbcType="93"/>
+      <column name="created_at" sqlType="timestamp" precision="29" scale="6" nullable="true" jdbcType="93"/>
+      <column name="updated_at" sqlType="timestamp" precision="29" scale="6" nullable="true" jdbcType="93"/>
+      <primary-key name="profilesearchparams_pkey" columns="id"/>
+    </table>
+    <table name="profilesearchparams_id_seq" schema="public" catalog="PropertyTracker_development" type="SEQUENCE">
       <column name="sequence_name" sqlType="name" precision="2147483647" scale="0" nullable="false" jdbcType="12"/>
       <column name="last_value" sqlType="int8" precision="19" scale="0" nullable="false" jdbcType="-5"/>
       <column name="start_value" sqlType="int8" precision="19" scale="0" nullable="false" jdbcType="-5"/>
@@ -2470,6 +2527,7 @@
       <column name="created_at" sqlType="timestamp" precision="29" scale="6" nullable="true" jdbcType="93"/>
       <column name="updated_at" sqlType="timestamp" precision="29" scale="6" nullable="true" jdbcType="93"/>
       <column name="county" sqlType="varchar" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="searchdate" sqlType="timestamp" precision="29" scale="6" nullable="true" jdbcType="93"/>
       <primary-key name="search_params_pkey" columns="id"/>
     </table>
     <table name="search_params_id_seq" schema="public" catalog="PropertyTracker_development" type="SEQUENCE">
@@ -2531,6 +2589,55 @@
       <primary-key name="transstatuses_pkey" columns="id"/>
     </table>
     <table name="transstatuses_id_seq" schema="public" catalog="PropertyTracker_development" type="SEQUENCE">
+      <column name="sequence_name" sqlType="name" precision="2147483647" scale="0" nullable="false" jdbcType="12"/>
+      <column name="last_value" sqlType="int8" precision="19" scale="0" nullable="false" jdbcType="-5"/>
+      <column name="start_value" sqlType="int8" precision="19" scale="0" nullable="false" jdbcType="-5"/>
+      <column name="increment_by" sqlType="int8" precision="19" scale="0" nullable="false" jdbcType="-5"/>
+      <column name="max_value" sqlType="int8" precision="19" scale="0" nullable="false" jdbcType="-5"/>
+      <column name="min_value" sqlType="int8" precision="19" scale="0" nullable="false" jdbcType="-5"/>
+      <column name="cache_value" sqlType="int8" precision="19" scale="0" nullable="false" jdbcType="-5"/>
+      <column name="log_cnt" sqlType="int8" precision="19" scale="0" nullable="false" jdbcType="-5"/>
+      <column name="is_cycled" sqlType="bool" precision="1" scale="0" nullable="false" jdbcType="-7"/>
+      <column name="is_called" sqlType="bool" precision="1" scale="0" nullable="false" jdbcType="-7"/>
+    </table>
+    <table name="user_profiles" schema="public" catalog="PropertyTracker_development" type="TABLE">
+      <column name="id" sqlType="serial" precision="10" scale="0" nullable="false" jdbcType="4" def="bmV4dHZhbCgndXNlcl9wcm9maWxlc19pZF9zZXEnOjpyZWdjbGFzcyk=" autoIncrement="true"/>
+      <column name="name" sqlType="varchar" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="created_at" sqlType="timestamp" precision="29" scale="6" nullable="true" jdbcType="93"/>
+      <column name="updated_at" sqlType="timestamp" precision="29" scale="6" nullable="true" jdbcType="93"/>
+      <primary-key name="user_profiles_pkey" columns="id"/>
+    </table>
+    <table name="user_profiles_id_seq" schema="public" catalog="PropertyTracker_development" type="SEQUENCE">
+      <column name="sequence_name" sqlType="name" precision="2147483647" scale="0" nullable="false" jdbcType="12"/>
+      <column name="last_value" sqlType="int8" precision="19" scale="0" nullable="false" jdbcType="-5"/>
+      <column name="start_value" sqlType="int8" precision="19" scale="0" nullable="false" jdbcType="-5"/>
+      <column name="increment_by" sqlType="int8" precision="19" scale="0" nullable="false" jdbcType="-5"/>
+      <column name="max_value" sqlType="int8" precision="19" scale="0" nullable="false" jdbcType="-5"/>
+      <column name="min_value" sqlType="int8" precision="19" scale="0" nullable="false" jdbcType="-5"/>
+      <column name="cache_value" sqlType="int8" precision="19" scale="0" nullable="false" jdbcType="-5"/>
+      <column name="log_cnt" sqlType="int8" precision="19" scale="0" nullable="false" jdbcType="-5"/>
+      <column name="is_cycled" sqlType="bool" precision="1" scale="0" nullable="false" jdbcType="-7"/>
+      <column name="is_called" sqlType="bool" precision="1" scale="0" nullable="false" jdbcType="-7"/>
+    </table>
+    <table name="users" schema="public" catalog="PropertyTracker_development" type="TABLE">
+      <column name="id" sqlType="serial" precision="10" scale="0" nullable="false" jdbcType="4" def="bmV4dHZhbCgndXNlcnNfaWRfc2VxJzo6cmVnY2xhc3Mp" autoIncrement="true"/>
+      <column name="email" sqlType="varchar" precision="255" scale="0" nullable="false" jdbcType="12" def="Jyc="/>
+      <column name="encrypted_password" sqlType="varchar" precision="255" scale="0" nullable="false" jdbcType="12" def="Jyc="/>
+      <column name="reset_password_token" sqlType="varchar" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="reset_password_sent_at" sqlType="timestamp" precision="29" scale="6" nullable="true" jdbcType="93"/>
+      <column name="remember_created_at" sqlType="timestamp" precision="29" scale="6" nullable="true" jdbcType="93"/>
+      <column name="sign_in_count" sqlType="int4" precision="10" scale="0" nullable="false" jdbcType="4" def="MA=="/>
+      <column name="current_sign_in_at" sqlType="timestamp" precision="29" scale="6" nullable="true" jdbcType="93"/>
+      <column name="last_sign_in_at" sqlType="timestamp" precision="29" scale="6" nullable="true" jdbcType="93"/>
+      <column name="current_sign_in_ip" sqlType="inet" precision="2147483647" scale="0" nullable="true" jdbcType="1111"/>
+      <column name="last_sign_in_ip" sqlType="inet" precision="2147483647" scale="0" nullable="true" jdbcType="1111"/>
+      <column name="created_at" sqlType="timestamp" precision="29" scale="6" nullable="true" jdbcType="93"/>
+      <column name="updated_at" sqlType="timestamp" precision="29" scale="6" nullable="true" jdbcType="93"/>
+      <primary-key name="users_pkey" columns="id"/>
+      <index name="index_users_on_email" unique="true" columns="email"/>
+      <index name="index_users_on_reset_password_token" unique="true" columns="reset_password_token"/>
+    </table>
+    <table name="users_id_seq" schema="public" catalog="PropertyTracker_development" type="SEQUENCE">
       <column name="sequence_name" sqlType="name" precision="2147483647" scale="0" nullable="false" jdbcType="12"/>
       <column name="last_value" sqlType="int8" precision="19" scale="0" nullable="false" jdbcType="-5"/>
       <column name="start_value" sqlType="int8" precision="19" scale="0" nullable="false" jdbcType="-5"/>
@@ -19088,6 +19195,34 @@
         <parameter name="returnValue" sqlType="void" precision="0" scale="0" nullable="true" jdbcType="1111" type="5" index="0"/>
       </prototype>
     </procedure>
+    <procedure name="ab_historicavg_area" schema="public" catalog="PropertyTracker_development" type="2">
+      <prototype>
+        <parameter name="returnValue" sqlType="void" precision="0" scale="0" nullable="true" jdbcType="1111" type="5" index="0"/>
+      </prototype>
+    </procedure>
+    <procedure name="ab_historiccnt_area" schema="public" catalog="PropertyTracker_development" type="2">
+      <prototype>
+        <parameter name="returnValue" sqlType="void" precision="0" scale="0" nullable="true" jdbcType="1111" type="5" index="0"/>
+      </prototype>
+    </procedure>
+    <procedure name="ad_historic_cntyvol_function" schema="public" catalog="PropertyTracker_development" type="2">
+      <prototype>
+        <parameter name="varea" sqlType="varchar" precision="0" scale="0" nullable="true" jdbcType="12" type="1" index="1"/>
+        <parameter name="county" sqlType="varchar" precision="0" scale="0" nullable="true" jdbcType="12" type="1" index="2"/>
+        <parameter name="searchparam" sqlType="varchar" precision="0" scale="0" nullable="true" jdbcType="12" type="1" index="3"/>
+        <parameter name="totalval" sqlType="int8" precision="0" scale="0" nullable="true" jdbcType="-5" type="1" index="4"/>
+        <parameter name="id" sqlType="int8" precision="0" scale="0" nullable="true" jdbcType="-5" type="1" index="5"/>
+      </prototype>
+    </procedure>
+    <procedure name="create_ad_historic_cntyvol_function" schema="public" catalog="PropertyTracker_development" type="2">
+      <prototype>
+        <parameter name="varea" sqlType="text" precision="0" scale="0" nullable="true" jdbcType="12" type="1" index="1"/>
+        <parameter name="county" sqlType="text" precision="0" scale="0" nullable="true" jdbcType="12" type="1" index="2"/>
+        <parameter name="searchparam" sqlType="text" precision="0" scale="0" nullable="true" jdbcType="12" type="1" index="3"/>
+        <parameter name="totalval" sqlType="int8" precision="0" scale="0" nullable="true" jdbcType="-5" type="1" index="4"/>
+        <parameter name="id" sqlType="int8" precision="0" scale="0" nullable="true" jdbcType="-5" type="1" index="5"/>
+      </prototype>
+    </procedure>
   </data-source>
   <data-source source="LOCAL" name="Rails DemoDebug: test" uuid="3e0b79fe-4ec5-4460-a7e6-11c6cb609ede">
     <database-info product="PostgreSQL" version="9.3.4" jdbc-version="4.0" driver-name="PostgreSQL Native Driver" driver-version="PostgreSQL 9.3 JDBC4 (build 1100)">
@@ -21542,6 +21677,7 @@
       <column name="created_at" sqlType="timestamp" precision="29" scale="6" nullable="true" jdbcType="93"/>
       <column name="updated_at" sqlType="timestamp" precision="29" scale="6" nullable="true" jdbcType="93"/>
       <column name="county" sqlType="varchar" precision="255" scale="0" nullable="true" jdbcType="12"/>
+      <column name="searchdate" sqlType="timestamp" precision="29" scale="6" nullable="true" jdbcType="93"/>
       <primary-key name="search_params_pkey" columns="id"/>
     </table>
     <table name="search_params_id_seq" schema="public" catalog="PropertyTracker_test" type="SEQUENCE">

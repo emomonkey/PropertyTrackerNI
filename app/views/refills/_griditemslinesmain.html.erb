@@ -6,7 +6,7 @@
       <%= ul_column2(@mostsalescnty) %>
     </p>
   </a>
-  <a href="javascript:void(0)" class="grid-item grid-item-big ">
+  <a href="<%= county_priceview_path %>" class="grid-item grid-item-big ">
 
     <div class="chart-wrapper">
     <div class="chart-inner">
@@ -15,20 +15,34 @@
     </div>
   </a>
 
-  <a href="javascript:void(0)" class="grid-item">
+  <a href="<%= county_pricingview_path %>" class="grid-item">
     <h1>Highest Average Price (Past Month)</h1>
     <p>
       <%= ul_column2(@mostpricecnty) %>
     </p>
   </a>
-  <a href="javascript:void(0)" class="grid-item grid-item-big ">
+  <a href="<%= county_pricingview_path %>" class="grid-item grid-item-big ">
     <div class="chart-wrapper">
       <div class="chart-inner">
         <p><%= high_chart("AvgPrice", @cntychart) %></p>
       </div>
     </div>
-
-
   </a>
+  <a href="" class="grid-item">
+    <h1>Learn More</h1>
+    <p>
+      Test Text
+    </p>
+  </a>
+  <a href="<%= county_pricingview_path %>" class="grid-item grid-item-big ">
+    <div class="chart-wrapper">
+      <div class="chart-inner">
+        <p><%= high_chart("Volumeyear", @volchart) %></p>
+      </div>
+    </div>
+  </a>
+
+
+
 
 </div>

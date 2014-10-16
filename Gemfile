@@ -50,6 +50,8 @@ gem 'slim'
 gem 'lazy_high_charts'
 gem "sidekiq-cron", "~> 0.2.0"
 gem 'will_paginate'
+gem 'devise'
+
 
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'

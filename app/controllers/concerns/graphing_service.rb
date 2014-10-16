@@ -1,12 +1,12 @@
 class GraphingService
 
-  def fndavgprcmthyr()
-    svol = SearchType.find_by_searchtext('Historic Avg Overall')
+  def fndvolmthyr
+    # should be based on the below
+    stypevol = SearchType.find_by_searchtext('Volume Summary Property Types Overall')
     sgap = Rails.application.secrets.month_gap;
 
-    sSql = "SELECT propertytype, year, month, AVG(resultvalue) resval FROM historic_analyses a,  (SELECT MIN(created_at) startdate FROM historic_analyses WHERE search_types_id= #{svol.id}) c "\
-           " WHERE  a.created_at >= (c.startdate + INTERVAL '#{sgap} MONTH') AND search_types_id = #{svol.id}  GROUP BY propertytype, year, month ORDER BY propertytype, year,month"
-
+    sSql = "SELECT propertytype, year, month, resultvalue resval FROM historic_analyses a,  (SELECT MIN(created_at) startdate FROM historic_analyses WHERE search_types_id= #{stypevol.id}) c "\
+           " WHERE  a.created_at >= (c.startdate + INTERVAL '#{sgap} MONTH') AND search_types_id = #{stypevol.id} ORDER BY propertytype, year,month"
 
     prptyvol  = HistoricAnalysis.find_by_sql(sSql)
     vgraph = GraphData.new
@@ -26,14 +26,55 @@ class GraphingService
         arrdata = Array.new
       end
 
-  #  if bfirst
-  #      arrcat  <<  "%d%02d" % [paramprop.year, paramprop.month]
-  #    end
-
       unless arrcat.include?("%d%02d" % [paramprop.year, paramprop.month])
         arrcat  <<  "%d%02d" % [paramprop.year, paramprop.month]
       end
 
+      arrdata << paramprop.resval
+
+      vprev = paramprop.propertytype
+    end
+    arrseries << vprev
+    vgraph.arrseries = arrseries
+    vgraph.addseries(arrdata)
+    vgraph.category = arrcat
+    return vgraph
+
+  rescue StandardError => e
+    Rails.logger.debug 'Error running graphingservice.fndvolmthyr ' + e.message
+
+
+
+  end
+
+  def fndavgprcmthyr
+    svol = SearchType.find_by_searchtext('Historic Avg Overall')
+    sgap = Rails.application.secrets.month_gap;
+
+    sSql = "SELECT propertytype, year, month, AVG(resultvalue) resval FROM historic_analyses a,  (SELECT MIN(created_at) startdate FROM historic_analyses WHERE search_types_id= #{svol.id}) c "\
+           " WHERE  a.created_at >= (c.startdate + INTERVAL '#{sgap} MONTH') AND search_types_id = #{svol.id}  GROUP BY propertytype, year, month ORDER BY propertytype, year,month"
+
+    prptyvol  = HistoricAnalysis.find_by_sql(sSql)
+    vgraph = GraphData.new
+    arrcat = Array.new
+
+    arrseries = Array.new
+
+    vprev = ""
+    bfirst = true
+    arrdata = Array.new
+    prptyvol.each do |paramprop|
+
+      if vprev != paramprop.propertytype and vprev != ""
+        arrseries << vprev
+        vgraph.addseries(arrdata)
+        bfirst = false
+        arrdata = Array.new
+      end
+
+      unless arrcat.include?("%d%02d" % [paramprop.year, paramprop.month])
+        arrcat  <<  "%d%02d" % [paramprop.year, paramprop.month]
+      end
 
       arrdata << paramprop.resval
 
