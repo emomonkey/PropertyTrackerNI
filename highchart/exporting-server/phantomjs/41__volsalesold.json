@@ -1,0 +1,1 @@
+{"chart":{"type":"column"},"title":"Annual Volume Sales/Sold","xAxis":{"categories":["Semi-detached","Townhouse","Detached","Apartment","Cottage","Site","Terrace"]},"yAxis":{"title":{"text":"Volume"}},"series":[{"name":"On Sale","data":[444,136,490,171,10,85,279]},{"name":"Sold/Sale Agreed","data":[320,96,323,115,3,41,191]}]}

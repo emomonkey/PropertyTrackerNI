@@ -1,0 +1,2 @@
+module MailarticlesHelper
+end

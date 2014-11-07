@@ -1,0 +1,22 @@
+{"chart": {
+        "type": "line"
+    },
+    "title": null,
+    "yAxis": {
+        "title": {
+            "text": "Temperature (°C)"
+        }
+    },
+ "xAxis":{"categories":["201409","201410"]},
+ "series":[{"name":"Apartment",
+            "data":[121721.0,122023.0]},
+           { "name":"Cottage",
+             "data":[143335.0,142124.0]},
+            {"name":"Detached",
+             "data":[233731.0,217572.0]},
+            {"name":"Semi-detached",
+             "data":[124845.0,130664.0]},
+            {"name":"Site",
+             "data":[132291.0,164822.0]}
+   ]}
+

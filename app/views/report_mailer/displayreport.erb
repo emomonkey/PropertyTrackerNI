@@ -1,0 +1,30 @@
+<head>
+  <link href='http://fonts.googleapis.com/css?family=Radley:400,400italic' rel='stylesheet' type='text/css'>
+  <link href='http://fonts.googleapis.com/css?family=Noto+Sans:400,700,400italic,700italic' rel='stylesheet' type='text/css'>
+</head>
+
+<article class="type-system-traditional">
+  <p class="type">Article Type</p>
+  <h1>Article Heading</h1>
+  <h2>These override some of the styles specified in the <code>_variables.scss</code> and <code>_typography.scss</code> partials in <a href="//bitters.bourbon.io">Bitters</a>. You can replace the typography variables and the header font specifications in Bitters with these styles. Then you won&rsquo;t need the wrapping class <code>.type-system-name</code>.</h2>
+  <p class="date">30 Mar 2014</p>
+  <p><span>Lorem ipsum dolor sit amet</span>, consectetur adipisicing elit. Consequatur a, ullam, voluptatum incidunt neque doloremque vel inventore distinctio laudantium harum</a> illo quam nulla dolor alias iure impedit! Accusamus! Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus! Lorem ipsum dolor sit amet, consectetur adipisicing elit. Consequatur, a, ullam, voluptatum incidunt neque porro numquam doloremque vel inventore distinctio laudantium harum illo quam nulla dolor alias iure impedit.
+    <a href="javascript:void(0)" class="read-more">Read More <span>&rsaquo;</span></a>
+  </p>
+  <h3>Average Annual Price Change in Northern Ireland </h3>
+  <p><%=  image_tag attachments['imageavgprc.jpg'].url %> </p>
+  <h3>Average Annual Volume Change in Northern Ireland</h3>
+  <p><%=  image_tag attachments['imagevol.jpg'].url %></p>
+  <h3>Annual Volume Sale versus Sale Agreed</h3>
+  <p><%=  image_tag attachments['imagesalesold.jpg'].url %>
+  </p>
+  <% @vAreas.each do |area| %>
+      <h3><%= area %></h3>
+      <p><%=  image_tag attachments["image_yr_#{area}.jpg"].url %>  </p>
+      <p><%=  image_tag attachments["avgpc_yr_#{area}.jpg"].url %>  </p>
+      <p><%=  image_tag attachments["sold_yr_#{area}.jpg"].url %>  </p>
+  <% end %>
+  <hr>
+
+</article>
+

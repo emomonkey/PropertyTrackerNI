@@ -1,6 +1,10 @@
 require 'sidekiq/web'
 
 Rails.application.routes.draw do
+  #resources :mailarticles
+  get 'mailarticles/list', as: 'mailarticles'
+  get 'mailarticles/new', as: 'new_mailarticle'
+  post 'mailarticles/create', as: 'mailarticle'
   get 'userpanel/configreport'
 
   get 'userpanel/displayreport'
@@ -54,6 +58,8 @@ Rails.application.routes.draw do
   get 'county/detail'
 
   get 'county/pricevolume/detail/:searchparam' => 'county#detail', as: 'detailvol'
+
+
 
   #resources :snippets
   #root to: "snippets#new"

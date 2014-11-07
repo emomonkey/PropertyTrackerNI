@@ -21,7 +21,6 @@ class CountyController < ApplicationController
 
   def pricingview
     @arrmstpop = @view_service.CountyPriceStats
-    #continue.maximum(:resultvalue, :group => :county)
 
     vcntystat = AbHistoricCntyView.all
     @hshcntyst = Hash.new

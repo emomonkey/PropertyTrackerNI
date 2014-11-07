@@ -3,7 +3,7 @@ class GraphingService
   def fndvolmthyr
     # should be based on the below
     stypevol = SearchType.find_by_searchtext('Volume Summary Property Types Overall')
-    sgap = Rails.application.secrets.month_gap;
+    sgap = 1
 
     sSql = "SELECT propertytype, year, month, resultvalue resval FROM historic_analyses a,  (SELECT MIN(created_at) startdate FROM historic_analyses WHERE search_types_id= #{stypevol.id}) c "\
            " WHERE  a.created_at >= (c.startdate + INTERVAL '#{sgap} MONTH') AND search_types_id = #{stypevol.id} ORDER BY propertytype, year,month"
@@ -76,7 +76,7 @@ class GraphingService
         arrcat  <<  "%d%02d" % [paramprop.year, paramprop.month]
       end
 
-      arrdata << paramprop.resval
+      arrdata << paramprop.resval.to_i
 
       vprev = paramprop.propertytype
     end
@@ -160,9 +160,7 @@ class GraphingService
     vgraph.addseries(arrsold)
     vgraph.arrseries = ['On Sale', 'Sold/Sale Agreed']
 
-
     return vgraph
-
 
   end
 

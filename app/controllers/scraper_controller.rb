@@ -82,8 +82,16 @@ class ScraperController < ApplicationController
 
 
   def result
+ #   ScheduledProcedure.parsehistoric()
+#    pw = ParseResultsWorker.new
+#    pw.perform()
+#    vexp = ExportGraphJson.new
+#    vexp.generatejson
 
-   volcnty = @graphing_service.fndavgprcmthyr
+#    ReportMailer.displayreport('stephen.emo@gmail.com', vexp.currtrans.id).deliver
+
+
+    volcnty = @graphing_service.fndavgprcmthyr
 
    volmthcty = @graphing_service.fndvolmthyr
 
@@ -114,9 +122,9 @@ class ScraperController < ApplicationController
     volall = @graphing_service.fndvolcntysimple
 
     @chart =  LazyHighCharts::HighChart.new('graph') do |f|
-      f.title(:text => "Volume Sales by PropertyType the past Year")
+      f.title(:text => "Volume Sales/Sold by PropertyType the past Year")
       f.xAxis(:categories => volall.category)
-      #f.series(:name => "Sales", :data => volall.series[0])
+
       volall.series.each_with_index do  |pseries , index |
         cval =  pseries.map { |i| i.to_i}
         f.series(:name => volall.arrseries[index], :yAxis => 0, :data =>cval)
@@ -125,11 +133,8 @@ class ScraperController < ApplicationController
       f.yAxis [
                   {:title => {:text => "Volume ", :margin => 5} }
               ]
-
       f.legend(:align => 'right', :verticalAlign => 'top', :y => 75, :x => -50, :layout => 'vertical',)
       f.chart({:defaultSeriesType=>"column", :marginbottom=>0, :height => 150})
-
-
     end
 
    volmthcty = @graphing_service.fndvolmthyr
@@ -145,7 +150,7 @@ class ScraperController < ApplicationController
 
      volmthcty.series.each_with_index do  |pseries , index |
        cval =  pseries.map { |i| i.to_i}
-       e.series(:name => volcnty.arrseries[index], :yAxis => 0, :data =>cval)
+       e.series(:name => volmthcty.arrseries[index], :yAxis => 0, :data =>cval)
      end
 
      e.chart({:defaultSeriesType=>"line", :marginbottom=>0, :height => 150})

@@ -17,7 +17,7 @@ class ParseResultsWorker
     Rails.logger.debug ' ParseResultsWorker start job ' + vst
     SearchParams.find_each(start:isize, batch_size: batchsize) do |params|
       pdate = params['searchdate']
-      if pdate == nil or (pdate.year != Time.now.year and pdate.mon != Time.now.month)
+      if pdate == nil or (pdate.year <= Time.now.year and pdate.mon != Time.now.month)
 
 
       tstat.update(currentparam: params.searchparam)

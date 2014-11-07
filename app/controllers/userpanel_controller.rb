@@ -4,14 +4,19 @@ class UserpanelController < ApplicationController
 
 
   def configreport
+    unless UserProfile.exists?(['name = ?', current_user.email])
+      ReportMailer.welcome_email(current_user.email).deliver
+    end
+
     @userprofile = UserProfile.find_or_create_by(name: current_user.email)
     @email = current_user.email
     @areacol = SearchParams.where(county:'Co.Antrim').order(:searchparam)
     @areasel = Array.new
     @areaitems = Array.new
     @psearchparams = @userprofile.profilesearchparams
-
-   end
+  rescue StandardError => e
+    Rails.logger.debug 'Error running userpanel_controller.configreport ' + e.message
+  end
 
 
 

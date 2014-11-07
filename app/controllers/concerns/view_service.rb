@@ -24,8 +24,15 @@ def fndavgareasldmthyr(varea)
   vyear = vpyear.year
 
 
-  sSql = "SELECT propertytype, year, month, SUM(resultvalue) resval FROM historic_analyses a,  (SELECT MIN(created_at) startdate FROM historic_analyses WHERE search_types_id= #{soldvol.id}) c "\
-           ", search_params sp WHERE sp.id = search_params_id AND search_params_id = #{varea} and a.created_at >= (c.startdate + INTERVAL '#{sgap} MONTH') AND search_types_id = #{soldvol.id}  GROUP BY propertytype, year, month ORDER BY propertytype, year,month"
+#  sSql = "SELECT propertytype, year, month, SUM(resultvalue) resval FROM historic_analyses a,  (SELECT MIN(created_at) startdate FROM historic_analyses WHERE search_types_id= #{soldvol.id}) c "\
+#           ", search_params sp WHERE sp.id = search_params_id AND search_params_id = #{varea} and a.created_at >= (c.startdate + INTERVAL '#{sgap} MONTH') AND search_types_id = #{soldvol.id}  GROUP BY propertytype, year, month ORDER BY propertytype, year,month"
+
+  sSql = " SELECT d.propertytype, d.year, d.month, totalvalue resval FROM   ae_historic_propyear_mview d " \
+  " LEFT OUTER JOIN (SELECT propertytype, year, month, SUM(resultvalue) totalvalue FROM historic_analyses, search_params sp WHERE sp.id = search_params_id "\
+  " AND search_params_id = #{varea} AND search_types_id = #{soldvol.id} GROUP BY propertytype, year, month ) a "\
+  " ON d.propertytype= a.propertytype AND d.year = a.year AND d.month = a.month   ORDER BY propertytype, year,month"
+
+
 
   graphvol = HistoricAnalysis.find_by_sql(sSql)
 
@@ -70,9 +77,17 @@ def fndavgareavolmthyr(varea)
   vmonth = vpyear.month
   vyear = vpyear.year
 
+  # query to generate year and month for
+  # generate query + outer join
 
-  sSql = "SELECT propertytype, year, month, SUM(resultvalue) resval FROM historic_analyses a,  (SELECT MIN(created_at) startdate FROM historic_analyses WHERE search_types_id= #{stypevol.id}) c "\
-           ", search_params sp WHERE sp.id = search_params_id AND search_params_id = #{varea} and a.created_at >= (c.startdate + INTERVAL '#{sgap} MONTH') AND search_types_id = #{stypevol.id}  GROUP BY propertytype, year, month ORDER BY propertytype, year,month"
+#  sSql = "SELECT propertytype, year, month, SUM(resultvalue) resval FROM historic_analyses a,  (SELECT MIN(created_at) startdate FROM historic_analyses WHERE search_types_id= #{stypevol.id}) c "\
+#           ", search_params sp WHERE sp.id = search_params_id AND search_params_id = #{varea} and a.created_at >= (c.startdate + INTERVAL '#{sgap} MONTH') AND search_types_id = #{stypevol.id}  GROUP BY propertytype, year, month ORDER BY propertytype, year,month"
+
+  sSql = " SELECT d.propertytype, d.year, d.month, totalvalue resval FROM   ae_historic_propyear_mview d " \
+  " LEFT OUTER JOIN (SELECT propertytype, year, month, SUM(resultvalue) totalvalue FROM historic_analyses, search_params sp WHERE sp.id = search_params_id "\
+  " AND search_params_id = #{varea} AND search_types_id = #{stypevol.id} GROUP BY propertytype, year, month ) a "\
+  " ON d.propertytype= a.propertytype AND d.year = a.year AND d.month = a.month   ORDER BY propertytype, year,month"
+
 
   graphvol = HistoricAnalysis.find_by_sql(sSql)
 
@@ -110,8 +125,13 @@ def fndavgareaprcmthyr(varea)
   svol = SearchType.find_by_searchtext('Historic Avg')
   sgap = Rails.application.secrets.month_gap;
 
-  sSql = "SELECT propertytype, year, month, AVG(resultvalue) resval FROM historic_analyses a,  (SELECT MIN(created_at) startdate FROM historic_analyses WHERE search_types_id= #{svol.id}) c "\
-           ", search_params sp WHERE sp.id = search_params_id AND search_params_id = #{varea} and a.created_at >= (c.startdate + INTERVAL '#{sgap} MONTH') AND search_types_id = #{svol.id}  GROUP BY propertytype, year, month ORDER BY propertytype, year,month"
+#  sSql = "SELECT propertytype, year, month, AVG(resultvalue) resval FROM historic_analyses a,  (SELECT MIN(created_at) startdate FROM historic_analyses WHERE search_types_id= #{svol.id}) c "\
+#           ", search_params sp WHERE sp.id = search_params_id AND search_params_id = #{varea} and a.created_at >= (c.startdate + INTERVAL '#{sgap} MONTH') AND search_types_id = #{svol.id}  GROUP BY propertytype, year, month ORDER BY propertytype, year,month"
+
+  sSql = " SELECT d.propertytype, d.year, d.month, totalvalue resval FROM   ae_historic_propyear_mview d " \
+  " LEFT OUTER JOIN (SELECT propertytype, year, month, AVG(resultvalue) totalvalue FROM historic_analyses, search_params sp WHERE sp.id = search_params_id "\
+  " AND search_params_id = #{varea} AND search_types_id = #{svol.id} GROUP BY propertytype, year, month ) a "\
+  " ON d.propertytype= a.propertytype AND d.year = a.year AND d.month = a.month   ORDER BY propertytype, year,month"
 
 
   prptyvol  = HistoricAnalysis.find_by_sql(sSql)
@@ -136,7 +156,7 @@ def fndavgareaprcmthyr(varea)
       arrcat  <<  "%d%02d" % [paramprop.year, paramprop.month]
     end
 
-    arrdata << paramprop.resval
+    arrdata << paramprop.resval.to_i
 
     vprev = paramprop.propertytype
   end

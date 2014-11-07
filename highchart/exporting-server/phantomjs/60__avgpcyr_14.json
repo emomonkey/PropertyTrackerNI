@@ -1,0 +1,1 @@
+{"chart":{"type":"line"},"title":"Average Price PropertyType","xAxis":{"categories":["201410","201408","201411"]},"yAxis":{"title":{"text":"Price"}},"series":[{"name":"Detached","data":[134950]},{"name":"Site","data":[80000]},{"name":"Terrace","data":[67500]}]}

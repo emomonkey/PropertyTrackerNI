@@ -25,19 +25,19 @@ RSpec.describe CountyController, :type => :controller do
   end
 
 
-  describe "GET Queries" do
-    @view_service ||= ViewService.new
-    it "should find Average Price Area" do
+#  describe "GET Queries" do
+ #   @view_service ||= ViewService.new
+  #  it "should find Average Price Area" do
 
-      vret =  @view_service.fndavgareaprcmthyr('Waringstown')
+#      vret =  @view_service.fndavgareaprcmthyr('Waringstown')
 
-    end
+#    end
 
-    it "should find Sale and Sold Area" do
+ #   it "should find Sale and Sold Area" do
 
-    end
+  #  end
 
-  end
+#  end
 
 
 end
