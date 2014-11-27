@@ -1,16 +1,21 @@
+<fieldset>
 <h1>Listing articles</h1>
+<p>
 <%= link_to 'New article', new_mailarticle_path %>
-
-<table>
+</p>
+  <table>
   <tr>
     <th>Title</th>
     <th>Text</th>
+    <th>Action</th>
   </tr>
 
   <% @Mailarticles.each do |mailarticle| %>
       <tr>
         <td><%= mailarticle.title %></td>
         <td><%= mailarticle.text %></td>
+        <td><%= link_to "Edit", edit_mailarticle_path(mailarticle.id) %></td>
       </tr>
   <% end %>
 </table>
+</fieldset>

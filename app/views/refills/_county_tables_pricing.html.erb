@@ -1,0 +1,23 @@
+
+<h3>Monthly Average Asking Price for Properties put on Sale <%= @county %></h3>
+
+<table class="table-borders">
+  <thead>
+    <tr>
+      <th>Area</th>
+      <th>Average Asking Price</th>
+      <th>Detail</th>
+    </tr>
+  </thead>
+  <tbody>
+  <% @vhistvol.each do |itmvol|   %>
+    <tr>
+      <td> <%= itmvol.search_params['searchparam'] %></td>
+      <td> <%= itmvol['resultvalue'] %></td>
+      <td><%=  button_to "Expand", detailvol_path(itmvol['search_params_id']) %></td>
+    </tr>
+ <% end %>
+
+  </tbody>
+</table>
+<%= will_paginate @vhistvol %>

@@ -19,7 +19,7 @@ class GraphingService
     arrdata = Array.new
     prptyvol.each do |paramprop|
 
-      if vprev != paramprop.propertytype and vprev != ""
+      if vprev != paramprop.propertytype && vprev != ""
         arrseries << vprev
         vgraph.addseries(arrdata)
         bfirst = false
@@ -39,18 +39,13 @@ class GraphingService
     vgraph.addseries(arrdata)
     vgraph.category = arrcat
     return vgraph
-
   rescue StandardError => e
     Rails.logger.debug 'Error running graphingservice.fndvolmthyr ' + e.message
-
-
-
   end
 
   def fndavgprcmthyr
     svol = SearchType.find_by_searchtext('Historic Avg Overall')
-    sgap = Rails.application.secrets.month_gap;
-
+    sgap = Rails.application.secrets.month_gap
     sSql = "SELECT propertytype, year, month, AVG(resultvalue) resval FROM historic_analyses a,  (SELECT MIN(created_at) startdate FROM historic_analyses WHERE search_types_id= #{svol.id}) c "\
            " WHERE  a.created_at >= (c.startdate + INTERVAL '#{sgap} MONTH') AND search_types_id = #{svol.id}  GROUP BY propertytype, year, month ORDER BY propertytype, year,month"
 
@@ -76,7 +71,12 @@ class GraphingService
         arrcat  <<  "%d%02d" % [paramprop.year, paramprop.month]
       end
 
-      arrdata << paramprop.resval.to_i
+      if paramprop.resval.to_i == 0
+        arrdata << null
+      else
+        arrdata << paramprop.resval.to_i
+      end
+
 
       vprev = paramprop.propertytype
     end
@@ -106,6 +106,20 @@ class GraphingService
 
   rescue StandardError => e
     Rails.logger.debug 'Error running graphingservice.fndsoldbycnt ' + e.message
+  end
+
+  def fndvolbysld(vym)
+    soldrec = SearchType.find_by_searchtext('Sold Summary Prop Type')
+
+    sSql = "SELECT searchparam, county, sum(resultvalue) FROM search_params a, historic_analyses h WHERE "\
+           " search_params_id = a.id AND search_types_id = #{soldrec.id} GROUP BY  searchparam, county ORDER BY SUM(resultvalue) DESC LIMIT 10 "
+
+    cntysld  = HistoricAnalysis.find_by_sql(sSql)
+    return cntysld
+  rescue StandardError => e
+    Rails.logger.debug 'Error running graphingservice.fndvolbysld ' + e.message
+
+
   end
 
   def fndvolbycnt(vym)
@@ -184,7 +198,72 @@ class GraphingService
     return {:categories =>  arrcat, :data => arrdata}
   end
 
+  def generate_linegraph(graph_title, resultdata, ytitle)
+    gen_linechart =  LazyHighCharts::HighChart.new('graph') do |e|
+      e.title(text: graph_title)
+
+      e.xAxis(categories: resultdata.category)
+#      e.op plotOptions: {
+ #         line: {
+  #            connectNulls: false
+   #       }
+
+    #  }
+
+      e.options[:plotOptions] = { line: { connectNulls: false  }}
+      e.legend(:align => 'right', :verticalAlign => 'top', :y => 0, :x => -50, :layout => 'vertical',)
+
+      e.yAxis [
+                  {:title => {:text => ytitle, :margin => 5} }
+              ]
+
+      resultdata.series.each_with_index do  |pseries , index |
+   #     cval =  pseries.map { |i| i.to_i}
+        e.series(:name => resultdata.arrseries[index], :yAxis => 0, :data => pseries)
+      end
+
+      e.chart({:defaultSeriesType=>"line", :marginbottom=>0, :height => 150,:connectNulls=> false})
+    end
+    return gen_linechart
+  end
 
 
+#  prccntychart =  LazyHighCharts::HighChart.new('graph') do |e|
+#    e.title(:text => "Average Price PropertyType")
+#    e.xAxis(:categories => prccnty.category)
+
+#    e.chart({:defaultSeriesType=>"column"})
+
+#    e.legend(:align => 'right', :verticalAlign => 'top', :y => 0, :x => -50, :layout => 'vertical',)
+
+#    e.yAxis [
+#                {:title => {:text => "Price", :margin => 5} }
+#            ]
+
+#    prccnty.series.each_with_index do  |pseries , index |
+      # cval =  pseries.map { |i| i.to_i}
+#      e.series(:name => prccnty.arrseries[index], :yAxis => 0, :data => pseries)
+#    end
+#  end
+
+
+  def generate_bargraph(graph_title, resultdata, ytitle)
+    LazyHighCharts::HighChart.new('graph') do |f|
+        f.title(text: graph_title)
+        f.xAxis(categories: resultdata.category)
+
+        resultdata.series.each_with_index do  |pseries, index |
+          cval =  pseries.map { |i| i.to_i}
+          f.series(:name => resultdata.arrseries[index], :yAxis => 0, :data =>cval)
+        end
+
+        f.yAxis [
+                    {:title => {:text => ytitle, :margin => 5} }
+                ]
+
+        f.legend(:align => 'right', :verticalAlign => 'top', :y => 0, :x => -50, :layout => 'vertical',)
+        f.chart({:defaultSeriesType=>"column", :marginbottom=>0, :height => 150})
+        end
+  end
 
 end

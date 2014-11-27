@@ -1,8 +1,11 @@
 class CreateAbHistoricCntareaFunction < ActiveRecord::Migration
   def up
     execute <<-SPROC
-CREATE OR REPLACE FUNCTION ab_historiccnt_area() RETURNS VOID AS $$
-Declare stype integer;
+CREATE OR REPLACE FUNCTION ab_historiccnt_area ()
+  RETURNS void
+AS
+$BODY$
+  Declare stype integer;
 BEGIN
 SELECT id INTO stype FROM search_types WHERE searchtext = 'Monthly Volume Summary Property Types';
 
@@ -13,7 +16,7 @@ INSERT INTO historic_analyses( month, year, search_types_id, search_params_id, r
     (SELECT DISTINCT year || trim(to_char(month,'09')) yrm, search_types_id FROM historic_analyses h, search_types a
     WHERE searchtext = 'Monthly Volume Summary Property Types' AND h.search_types_id =  a.id
     ) myear ON TO_CHAR(ps.created_at,'YYYYmm') =  myear.yrm
-    , property_site_values psv , search_params sp WHERE ps.id = psv.property_site_id AND sp.searchparam = ps.searchtext
+    ,  search_params sp WHERE  sp.searchparam = ps.searchtext
                                                         AND myear.yrm IS NULL
   GROUP BY vyear,vmonth, spid;
 

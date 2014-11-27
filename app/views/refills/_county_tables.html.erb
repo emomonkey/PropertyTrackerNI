@@ -14,7 +14,7 @@
     <tr>
       <td> <%= itmvol.search_params['searchparam'] %></td>
       <td> <%= itmvol['resultvalue'] %></td>
-      <td><%=  link_to "Detail", detailvol_path(itmvol['search_params_id']) %></td>
+      <td><%=  button_to "Expand", detailvol_path(itmvol['search_params_id']) %></td>
     </tr>
  <% end %>
 

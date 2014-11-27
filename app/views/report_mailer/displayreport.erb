@@ -4,11 +4,11 @@
 </head>
 
 <article class="type-system-traditional">
-  <p class="type">Article Type</p>
-  <h1>Article Heading</h1>
-  <h2>These override some of the styles specified in the <code>_variables.scss</code> and <code>_typography.scss</code> partials in <a href="//bitters.bourbon.io">Bitters</a>. You can replace the typography variables and the header font specifications in Bitters with these styles. Then you won&rsquo;t need the wrapping class <code>.type-system-name</code>.</h2>
-  <p class="date">30 Mar 2014</p>
-  <p><span>Lorem ipsum dolor sit amet</span>, consectetur adipisicing elit. Consequatur a, ullam, voluptatum incidunt neque doloremque vel inventore distinctio laudantium harum</a> illo quam nulla dolor alias iure impedit! Accusamus! Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus! Lorem ipsum dolor sit amet, consectetur adipisicing elit. Consequatur, a, ullam, voluptatum incidunt neque porro numquam doloremque vel inventore distinctio laudantium harum illo quam nulla dolor alias iure impedit.
+  <p class="type"><%= @user_name %></p>
+  <h1>Email Report - Property Tracker N.I</h1>
+  <h2><%= @latestarticle.title %> </h2>
+  <p class="date"><%= Time.now.strftime("%d/%m/%Y") %></p>
+  <p><%= @latestarticle.text %>
     <a href="javascript:void(0)" class="read-more">Read More <span>&rsaquo;</span></a>
   </p>
   <h3>Average Annual Price Change in Northern Ireland </h3>
@@ -20,8 +20,11 @@
   </p>
   <% @vAreas.each do |area| %>
       <h3><%= area %></h3>
+      <p>Annual Volume Sales</p>
       <p><%=  image_tag attachments["image_yr_#{area}.jpg"].url %>  </p>
+      <p>Average Price PropertyType</p>
       <p><%=  image_tag attachments["avgpc_yr_#{area}.jpg"].url %>  </p>
+      <p>Volume Sold by PropertyType</p>
       <p><%=  image_tag attachments["sold_yr_#{area}.jpg"].url %>  </p>
   <% end %>
   <hr>

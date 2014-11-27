@@ -1,15 +1,32 @@
 require 'spec_helper'
 
 describe PropertySite do
-  it "validates the presense of title" do
-    @psiten = PropertySite.new(:title => "Test Site", :beds => 0)
-    @psiten.should be_valid
+
+
+  describe 'instantiation' do
+   # let(:PropertySite) { Factory(:PropertySite) }
+    it 'has a valid Factory' do
+      @psiten = FactoryGirl.create(:PropertySite).should be_valid
+    end
 
   end
 
+  it "validates the presense of Created Item" do
+    @psiteb = FactoryGirl.create(:PropertySite).should be_valid
+    @psiteb.should be_truthy
+  end
+
+  it "validates the presense of propertyvalues" do
+    @psitec = FactoryGirl.create(:PropertySite)
+
+    @pvalues = @psitec.property_site_values.create(price:20000)
+
+    puts @pvalues.price
+    @pvalues.price.should equal(20000)
+  end
 
   it "validates the saving of Property Site" do
-    @psite = PropertySite.create(:title => "Test Site", :beds => 0)
+    @psite = PropertySite.create(:title => "Test Site 2", :beds => 0)
     @psite.should be_valid
 
 

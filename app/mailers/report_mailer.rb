@@ -33,7 +33,8 @@ class ReportMailer < ActionMailer::Base
     attachments.inline['imagevol.jpg'] = File.read("#{Rails.root}/public/export/chartdatvol_#{trans_id}.png" )
     attachments.inline['imagesalesold.jpg'] = File.read("#{Rails.root}/public/export/chartdatsale_#{trans_id}.png" )
     @vAreas = generateuserimagechart(user, trans_id)
-
+    @latestarticle = Mailarticle.last
+    @user_name = user
     mail(to: user, subject: 'PropertyTrack NI Report')
   rescue StandardError => e
     Rails.logger.debug 'Error running ReportMailer.displayreport ' + e.message

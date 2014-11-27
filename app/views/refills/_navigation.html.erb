@@ -6,7 +6,7 @@
  <%= form_tag(countysearcharea_path, method: 'get')  do%>
   <div class="menu-wrapper">
     <a href="javascript:void(0)" class="logo">
-      <img src="https://raw.github.com/Magnus-G/Random/master/placeholder_logo_1.png" alt="">
+     <%= image_tag("housing.png") %>
     </a>
     <p class="navigation-menu-button" id="js-mobile-menu">MENU</p>
     <div class="nav">
@@ -34,7 +34,11 @@
           </button>
         </div>
       </div>
-      <a href="/users/sign_in" class="sign-up">Sign In</a>
+      <% if !user_signed_in? %>
+        <a href="/users/sign_in" class="sign-up">Sign In</a>
+      <% else %>
+        <%= link_to "Sign Out" ,destroy_user_session_path, :method => :delete, :class => "sign-up" %>
+      <% end %>
     </div>
   </div>
 

@@ -113,15 +113,35 @@ class ExportGraphJson
     Rails.logger.debug 'Error running ExportGraphJson.generatelngraph ' + e.message
   end
 
+  def generatebarGraph(vrecinput, pytitle,ptitle,pjson)
+
+    cats = {:categories => vrecinput.category}
+    icnt = 0
+    vdatavol = Array.new
+    vrecinput.series.each do |volitm|
+      vdatavol << Hash(:name => vrecinput.arrseries[icnt], :data => volitm)
+      icnt+=1
+    end
+
+    types = {:type => "column"}
+    yax = {:title => {:text => pytitle}}
+
+    graphvolsale = {:chart => types,:title => ptitle,:xAxis => cats,:yAxis => yax, :series => vdatavol}
+    File.open("#{Rails.root}/highchart/exporting-server/phantomjs/#{@currtrans.id}__#{pjson}.json", "w") { |f| f.write(graphvolsale.to_json) }
+  rescue StandardError => e
+    Rails.logger.debug 'Error running ExportGraphJson.generatelngraph ' + e.message
+  end
+
   def generateprofilejson
     UserProfile.find_each do |userprofile|
       userprofile.profilesearchparams.find_each do |searchp|
-        prccnty = @vwservice.fndavgareaprcmthyr(searchp.id)
-        generatelnGraph(prccnty,'Price', 'Average Price PropertyType',"avgpcyr_#{searchp.id}")
-        volareacnty = @vwservice.fndavgareavolmthyr(searchp.id)
-        generatelnGraph(volareacnty,'Volume','Annual Volume Sales',"volyr_#{searchp.id}")
-        soldcnty = @vwservice.fndavgareasldmthyr(searchp.id)
-        generatelnGraph(soldcnty,'Volume','Volume Sold by PropertyType',"soldyr_#{searchp.id}")
+
+        prccnty = @vwservice.fndavgareaprcmthyr(searchp.search_params_id)
+        generatebarGraph(prccnty,'Price', 'Average Price PropertyType',"avgpcyr_#{searchp.id}")
+        volareacnty = @vwservice.fndavgareavolmthyr(searchp.search_params_id)
+        generatebarGraph(volareacnty,'Volume','Annual Volume Sales',"volyr_#{searchp.id}")
+        soldcnty = @vwservice.fndavgareasldmthyr(searchp.search_params_id)
+        generatebarGraph(soldcnty,'Volume','Volume Sold by PropertyType',"soldyr_#{searchp.id}")
 
       end
     end

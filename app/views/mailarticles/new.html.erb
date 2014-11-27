@@ -1,6 +1,6 @@
+<fieldset>
 <h1>New Mail Article</h1>
-
-<%= form_for :mailarticle, url: mailarticle_path do |f| %>
+<%= form_for :mailarticle, url: mailarticle_path, method: 'post' do |f| %>
     <p>
       <%= f.label :title %><br>
       <%= f.text_field :title %>
@@ -16,3 +16,4 @@
     </p>
 <% end %>
 <%= link_to 'Back', mailarticles_path %>
+</fieldset>

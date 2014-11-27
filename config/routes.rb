@@ -4,7 +4,10 @@ Rails.application.routes.draw do
   #resources :mailarticles
   get 'mailarticles/list', as: 'mailarticles'
   get 'mailarticles/new', as: 'new_mailarticle'
+  get 'mailarticles/edit/:id' => 'mailarticles#edit', as: 'edit_mailarticle'
   post 'mailarticles/create', as: 'mailarticle'
+  post 'mailarticles/update', as: 'mailarticle_update'
+
   get 'userpanel/configreport'
 
   get 'userpanel/displayreport'
@@ -20,7 +23,7 @@ Rails.application.routes.draw do
 
   get 'manage/jobs', as: 'admin_root'
 
-  devise_for :users
+  devise_for :users, controllers: { sessions: "users/sessions" }
   get 'area/volumeview'
 
   get 'area/priceview'
@@ -39,18 +42,6 @@ Rails.application.routes.draw do
 
   get 'county/pricevolume'
 
-  get 'scraper/search'
-
-  get 'scraper/contactus'
-
-  get 'county/searcharea'
-
-  get 'county/searcharea' => 'county#searcharea', as: 'countysearcharea'
-
-  get 'scraper/result'
-
-  get 'scraper/aboutus'
-
   get 'county/pricevolume/:county' => 'county#pricevolume', as:  'countyvol'
 
   get 'county/pricingvolume/:county' => 'county#pricingvolume', as:  'countyprice'
@@ -59,11 +50,27 @@ Rails.application.routes.draw do
 
   get 'county/pricevolume/detail/:searchparam' => 'county#detail', as: 'detailvol'
 
+  post 'county/pricevolume/detail/:searchparam' => 'county#detail'
 
+ # get 'county/detail/:searchparam' => 'county#detail', as: 'detailvol'
+
+  get 'county/searcharea' => 'county#searcharea', as: 'countysearcharea'
+
+  get 'scraper/search'
+
+  get 'scraper/contactus'
+
+  get 'county/searcharea'
+
+  get 'scraper/result'
+
+  get 'scraper/aboutus'
 
   #resources :snippets
   #root to: "snippets#new"
-  mount Sidekiq::Web, at: "manage/sidekiq"
+  authenticate :admin do
+    mount Sidekiq::Web, at: "manage/sidekiq", as:  'sidekiqmg'
+  end
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

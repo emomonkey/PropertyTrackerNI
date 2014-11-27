@@ -27,6 +27,14 @@
 @import "refills/_type-system-slab.scss";
 @import "refills/_dropdown.scss";
 
+
+.refills-wrapper {
+  max-width: 78em;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 1em;
+}
+
 .pill-button {
   @include button(pill, #ff9900);
 }

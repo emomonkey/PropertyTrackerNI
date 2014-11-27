@@ -2,3 +2,6 @@
 :pidfile: ./tmp/pids/sidekiq.pid
 :logfile: ./log/sidekiq.log
 :concurrency:  25
+:limits:
+  queue_analysis: 1
+  queue_scraper: 15

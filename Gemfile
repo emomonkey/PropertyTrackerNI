@@ -37,6 +37,7 @@ end
 
 group :test do
   gem 'database_cleaner'
+  gem "factory_girl_rails"
 end
 
 gem 'sidekiq'
@@ -52,6 +53,8 @@ gem "sidekiq-cron", "~> 0.2.0"
 gem 'will_paginate'
 gem 'devise'
 gem 'figaro'
+gem 'sidekiq-limit_fetch'
+gem 'whenever', :require => false
 
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
