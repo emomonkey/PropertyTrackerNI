@@ -19,11 +19,11 @@
 
 # Learn more: http://github.com/javan/whenever
 
-every 1.month, :at => 'start of the month at 12:13am' do
-#   runner "ParseResultsWorker.perform_async"
+every 1.month, :at => 'start of the month at 6:53pm' do
+   runner "ParseResultsWorker.perform_async"
 end
 
-every 1.month,  :at => 'start of the month at 7:13am' do
+every 1.month,  :at => 'start of the month at 11:54pm' do
    runner "AnalysisResultsWorker.perform_async"
 end
 

@@ -61,13 +61,17 @@ class PropertyNewsCrawler
 
   def findresult()
 
+#   parse_string = 'search_results'
+   # parse_string = 'details col span-8 last'
+    parse_string = 'result__details'
 
-    bres = parseresult("//div[contains(@class,'details col span-8 last')]")
-
+    bres = parseresult("//div[contains(@class,'#{parse_string}')]")
+#    bres = parseresult("//div[@id='#{parse_string}']")
     while nextpage do
-      bres = parseresult("//div[contains(@class,'details col span-8 last')]")
+ #     bres = parseresult("//div[@id='#{parse_string}']")
+      bres = parseresult("//div[contains(@class,'#{parse_string}')]")
     end
-
+    return bres
   rescue StandardError => e
     Rails.logger.debug 'Error running PropertyNewsCrawler.findresult ' + e.message
     return false;

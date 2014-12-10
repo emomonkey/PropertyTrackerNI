@@ -30,8 +30,11 @@ module CrawlerModule
     @items = html.xpath(searchtarget)
     @items.each do |item|
       pdetails = Hash.new
-      unless item.css("h2").css("a")[0].nil?
-        pdetails["itmtitle"] = item.css("h2").css("a")[0].content
+
+
+    #  unless item.css("h2").css("a")[0].nil?
+      unless item.css("h2")[0].nil?
+        pdetails["itmtitle"] = item.css("h2")[0].content
       end
       # Parse for currency symbol
       if item.css("h3")[0].nil?
@@ -39,20 +42,20 @@ module CrawlerModule
       else
         pdetails["itmprice"] = item.css("h3")[0].content
       end
-      if item.css("p").css(".beds")[0].nil?
+      if item.css(".beds")[0].nil?
         pdetails["beds"] = "0"
       else
-        pdetails["beds"] = item.css("p").css(".beds")[0].content
+        pdetails["beds"] = item.css(".beds")[0].content
       end
-      if item.css("p").css(".type")[0].nil?
+      if item.css(".property-type")[0].nil?
         pdetails["type"] = "na"
       else
-        pdetails["type"] = item.css("p").css(".type")[0].content
+        pdetails["type"] = item.css(".property-type")[0].content
       end
-      if item.css("p").css(".status")[0].nil?
+      if item.css(".property-status")[0].nil?
         pdetails["status"] = "na"
       else
-        pdetails["status"] = item.css("p").css(".status")[0].content
+        pdetails["status"] = item.css(".property-status")[0].content
       end
 
       housecol.push(pdetails)
@@ -61,8 +64,10 @@ module CrawlerModule
   end
 
   def nextpage
-    if @agent.page.link_with(:text => 'Next')
-      @result_page = @agent.page.link_with(:text => 'Next').click
+    if @agent.page.link_with(:text => 'Next',:href => /search/)
+     # @result_page = @agent.page.link_with(:text => 'Next').click
+      @agent.page.link_with(:text => 'Next',:href => /search/).click
+      @result_page = @agent.page
       return true
     else
       return false

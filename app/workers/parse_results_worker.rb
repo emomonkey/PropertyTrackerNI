@@ -2,7 +2,7 @@
 
 class ParseResultsWorker
   include Sidekiq::Worker
-  sidekiq_options :queue => :queue_scraper
+ # sidekiq_options :queue => :queue_scraper
 
   def perform(*args)
     isize = 1

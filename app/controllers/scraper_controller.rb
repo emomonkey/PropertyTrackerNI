@@ -16,15 +16,9 @@ class ScraperController < ApplicationController
 
   end
 
-
   def result
-
-#    vexp = ExportGraphJson.new
-#    vexp.generatejson
-#    ReportMailer.displayreport('stephen.emo@gmail.com', vexp.currtrans.id).deliver
-
-    volcnty = @graphing_service.fndavgprcmthyr
-  vcreatedat = HistoricAnalysis.maximum(:created_at)
+   volcnty = @graphing_service.fndavgprcmthyr
+   vcreatedat = HistoricAnalysis.maximum(:created_at)
    smxdt = vcreatedat.strftime('%Y%m')
 
    @mostsalescnty = @graphing_service.fndvolbycnt(smxdt)
