@@ -1,6 +1,8 @@
 require 'sidekiq/web'
+require 'sidekiq-cron'
 
 Rails.application.routes.draw do
+  root :to => 'scraper#result'
   #resources :mailarticles
   get 'mailarticles/list', as: 'mailarticles'
   get 'mailarticles/new', as: 'new_mailarticle'
@@ -67,7 +69,7 @@ Rails.application.routes.draw do
   get 'scraper/aboutus'
 
   #resources :snippets
-  #root to: "snippets#new"
+  
   authenticate :admin do
     mount Sidekiq::Web, at: "manage/sidekiq", as:  'sidekiqmg'
   end

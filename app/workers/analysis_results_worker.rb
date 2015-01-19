@@ -1,6 +1,6 @@
 class AnalysisResultsWorker
   include Sidekiq::Worker
-  sidekiq_options :queue => :queue_analysis
+#  sidekiq_options :queue => :queue_analysis
 
   def initialize()
    #  @popresult = PopulateResults.new

@@ -2,7 +2,9 @@ source 'https://rubygems.org'
 
 gem 'unicorn'
 
-# Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
+gem "rack", "~> 1.5.2" 
+
+# t Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '4.1.1'
 # Use mysql as the database for Active Record
 #gem 'mysql2'

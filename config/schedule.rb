@@ -27,4 +27,8 @@ every 1.month,  :at => 'start of the month at 11:54pm' do
    runner "AnalysisResultsWorker.perform_async"
 end
 
+every :sunday, :at => '12pm' do
+   runner "ScheduledEmailWorker.perform_async" 
+end
+
 #AnalysisResultsWorker.perform_in(1.minutes, 10000)

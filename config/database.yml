@@ -14,8 +14,8 @@ default: &default
   adapter: postgresql
   encoding: unicode
   pool: 10
-  username: ptrack
-  password: scubadive
+  username: ENV["dbuser"]
+  password: ENV["dbpassword"]
   host: localhost
  # socket: /var/run/mysqld/mysqld.sock
 

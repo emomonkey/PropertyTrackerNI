@@ -20,14 +20,19 @@ Rails.application.configure do
   # config.action_dispatch.rack_cache = true
 
   # Disable Rails's static asset server (Apache or nginx will already do this).
-  config.serve_static_assets = false
+# emos debug log reason
+#  config.serve_static_assets = false
+  config.serve_static_assets = true	
 
   # Compress JavaScripts and CSS.
   config.assets.js_compressor = :uglifier
   # config.assets.css_compressor = :sass
 
   # Do not fallback to assets pipeline if a precompiled asset is missed.
-  config.assets.compile = false
+  # emos added
+  config.assets.compile = true
+  config.assets.precompile =  ['*.js', '*.css', '*.css.erb']
+  config.assets.precompile += ['rollover.js', 'highcharts.js']  
 
   # Generate digests for assets URLs.
   config.assets.digest = true
@@ -44,6 +49,7 @@ Rails.application.configure do
 
   # Set to :debug to see everything in the log.
   config.log_level = :info
+#  config.log_level = :debug
 
   # Prepend all log lines with the following tags.
   # config.log_tags = [ :subdomain, :uuid ]
@@ -80,5 +86,20 @@ Rails.application.configure do
 
   # Do not dump schema after migrations.
   config.active_record.dump_schema_after_migration = false
-  config.logger = Logger.new(STDOUT)
+#  config.logger = Logger.new(STDOUT)
+   config.logger = Logger.new(File.join(Rails.root, "log", "production.log"))
+
+   config.action_mailer.raise_delivery_errors = true
+  config.action_mailer.delivery_method = :smtp
+  config.action_mailer.smtp_settings = {
+      address:              'smtp.gmail.com',
+      port:                 587,
+      domain:               'gmail.com',
+      user_name:            ENV["email"],
+      password:             ENV["password"],
+      authentication:       'plain',
+      enable_starttls_auto: true  }
+
+
+
 end

@@ -5,12 +5,17 @@ class UserpanelController < ApplicationController
 
   def configreport
     unless UserProfile.exists?(['name = ?', current_user.email])
+      Rails.logger.debug 'Before Welcome email'
       ReportMailer.welcome_email(current_user.email).deliver
+      Rails.logger.debug 'After welcome email'
     end
 
     @userprofile = UserProfile.find_or_create_by(name: current_user.email)
+    Rails.logger.debug ' config report uprf create ' + @userprofile.name
     @email = current_user.email
+    Rails.logger.debug ' config report before @areacol ' + @email
     @areacol = SearchParams.where(county:'Co.Antrim').order(:searchparam)
+    Rails.logger.debug ' config report after @areacol' 
     @areasel = Array.new
     @areaitems = Array.new
     @psearchparams = @userprofile.profilesearchparams

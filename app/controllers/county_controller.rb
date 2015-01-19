@@ -9,14 +9,14 @@ class CountyController < ApplicationController
     @arrmstpop = @view_service.CountyStats
     vcntystat = AbHistoricCntyView.all
     @hshcntyst = Hash.new
-    @hshcntyst = Hash[vcntystat.map { |fcnty| [fcnty['county'].to_sym, [fcnty['volpc'], fcnty['prcsold'], fcnty['month_price_diff']]] }]
+    @hshcntyst = Hash[vcntystat.map { |fcnty| [fcnty['county'].to_sym, [fcnty['volpc'], fcnty['prcsold'], fcnty['month_price_diff'].to_i]] }]
   end
 
   def pricingview
     @arrmstpop = @view_service.CountyPriceStats
     vcntystat = AbHistoricCntyView.all
     @hshcntyst = Hash.new
-    @hshcntyst = Hash[vcntystat.map { |fcnty| [fcnty['county'].to_sym, [fcnty['volpc'], fcnty['prcsold'], fcnty['month_price_diff']]] }]
+    @hshcntyst = Hash[vcntystat.map { |fcnty| [fcnty['county'].to_sym, [fcnty['volpc'], fcnty['prcsold'], fcnty['month_price_diff'].to_i]] }]
   end
 
 
