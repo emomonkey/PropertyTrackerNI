@@ -1,6 +1,6 @@
 PropertyTracker NI
 
-This is a Web App that scrapes data of a Property Web Site in Northern Ireland and runs a series of Postgres routines to Analyse the changes and property movements on the web site. Property Tracker NI can be found at [Property Tracker NI](www.propertytrackerni.co.uk) when I have the server running. Otherwise you can read about it on my WordPress site [WordPress Site](stephenemo.wordpress.com/2015/01/11/tracking-property-in-northern-ireland-ruby-on-rails/)
+This is a Web App that scrapes data of a Property Web Site in Northern Ireland and runs a series of Postgres routines to Analyse the changes and property movements on the web site. Property Tracker NI can be found at [Property Tracker NI](www.propertytrackerni.co.uk) when I have the server running. Otherwise you can read about it on my WordPress site [WordPress Site](stephenemo.wordpress.com)
 
 Requirements
 
